@@ -78,7 +78,7 @@ var LineChart = React.createClass({
 
   render() {
     return (
-      <Chart.WithTooltip ref="chart" chart={google.visualization.LineChart} options={this._getOptions()} data={this._getDataTable()} />
+      <Chart.WithTooltip ref="chart" chart={google.visualization.LineChart} options={this._getOptions()} chartData={this._getDataTable()} />
     );
   }
 

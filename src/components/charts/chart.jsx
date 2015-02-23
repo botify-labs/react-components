@@ -1,6 +1,81 @@
 import React from 'react';
 import _ from 'lodash';
 
+import './style.scss';
+
+var ChartTooltip = React.createClass({
+
+  displayName: 'ChartTooltip',
+
+  propTypes: {
+    position: React.PropTypes.shape({
+      top: React.PropTypes.number.isRequired,
+      left: React.PropTypes.number.isRequired
+    })
+  },
+
+  getInitialState() {
+    return {
+      width: null,
+      height: null,
+    };
+  },
+
+  componentDidMount() {
+    var node = this.getDOMNode();
+
+    this.setState({
+      width: node.offsetWidth,
+      height: node.offsetHeight,
+    });
+  },
+
+  render() {
+    var style;
+    var {width, height} = this.state;
+    if (width === null) {
+      style = {position: 'absolute', top: -9999, left: -9999};
+    } else {
+      style = this._getStyle();
+    }
+
+    return (
+      <div className="ChartTooltip" style={style}>
+        I am a Tooltip!
+      </div>
+    );
+  },
+
+  _getStyle() {
+    var style = {position: 'absolute'};
+    var margin = 10; // x and y margin between the mouse and the tooltip
+    var {position} = this.props;
+    var {width, height} = this.state;
+    var containerWidth = document.body.offsetWidth;
+
+    // Calculate the best position for the tooltip so that
+    //  * it won't overlay its given focus position
+    //  * it won't cross its container's boundaries
+
+    if (position.top - height - margin > 0) {
+      style.top = position.top - height - margin;
+    } else {
+      style.top = position.top + margin;
+    }
+
+    if (position.left - width / 2 > 0 && position.left + width / 2 < containerWidth) {
+      style.left = position.left - width / 2;
+    } else if (position.left - width - margin > 0) {
+      style.left = position.left - width - margin;
+    } else {
+      style.left = position.left + margin;
+    }
+
+    return style;
+  }
+
+});
+
 var ChartWithTooltip = React.createClass({
 
   displayName: 'ChartWithTooltip',
@@ -8,32 +83,22 @@ var ChartWithTooltip = React.createClass({
   getInitialState() {
     return {
       hoveredElement: null,
-      mousePosition: null,
+      mousePosition: {top: -9999, left: -9999},
     };
   },
 
   render() {
     return (
-      <GoogleChart
-              onChartMouseOver={this._handleChartMouseOver}
-              onChartMouseOut={this._handleChartMouseOut}
-              onMouseMove={this._handleMouseMove}
-              {...this.props}>
-        {this.state.hoveredElement && this._renderTooltip()}
-      </GoogleChart>
-    );
-  },
-
-  _renderTooltip() {
-    var style = {
-      position: 'absolute',
-    };
-
-    // TODO: Calculate tooltip pos
-
-    return (
-      <div className="Chart-tooltip" style={style}>
-        // TODO: Render tooltip data
+      <div>
+        {this.state.hoveredElement &&
+          <ChartTooltip position={this.state.mousePosition} />
+        }
+        <GoogleChart
+          {...this.props}
+          onChartMouseOver={this._handleChartMouseOver}
+          onChartMouseOut={this._handleChartMouseOut}
+          onMouseMove={this._handleMouseMove}
+        />
       </div>
     );
   },
@@ -44,8 +109,8 @@ var ChartWithTooltip = React.createClass({
     this.setState({
       mousePosition: {
         // TODO: replace this with actual values
-        top: e.offsetY,
-        left: e.offsetX
+        top: e.pageY,
+        left: e.pageX
       }
     });
   },
@@ -57,9 +122,7 @@ var ChartWithTooltip = React.createClass({
 
   _handleChartMouseOut() {
     // Hide the tooltip when a chart element stops being hovered
-    this.setState({
-      hoveredElement: null,
-    });
+    this.setState({hoveredElement: null});
   }
 
 });
@@ -78,7 +141,7 @@ var GoogleChart = React.createClass({
   propTypes: {
     // Google Chart data
     // TODO: define structure
-    data: React.PropTypes.object,
+    chartData: React.PropTypes.object,
     // Google Chart options
     // TODO: define structure
     options: React.PropTypes.object,
@@ -104,10 +167,8 @@ var GoogleChart = React.createClass({
   },
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log('?', _.isEqual(nextProps, this.props) && _.isEqual(nextState, this.state));
     // TODO: use immutable!
-    return _.isEqual(nextProps, this.props) && _.isEqual(nextState, this.state);
-
+    return !(_.isEqual(nextProps, this.props) && _.isEqual(nextState, this.state));
   },
 
   componentDidUpdate(prevProps, prevState) {
@@ -116,10 +177,10 @@ var GoogleChart = React.createClass({
 
   render() {
     return (
-      <div {...this.props}>
-        <div ref="chart-container"></div>
-        <img ref="chart-image"></img>
+      <div {..._.omit(this.props, 'children', 'options', 'chartData', 'chart', 'onChartMouseOut', 'onChartMouseOver')}>
         {this.props.children}
+        <div ref="chart-container"></div>
+        <img ref="chart-image" />
       </div>
     );
   },
@@ -152,7 +213,7 @@ var GoogleChart = React.createClass({
       return;
     }
 
-    var selectedElement = this.props.adapter.getDataKeys(e);
+    var selectedElement = {};//this.props.adapter.getDataKeys(e);
     this.props.onChartSelect && this.props.onChartSelect(selectedElement);
   },
 
@@ -164,7 +225,7 @@ var GoogleChart = React.createClass({
       return;
     }
 
-    var hoveredElement = this.props.adapter.getDataKeys(e);
+    var hoveredElement = {};//this.props.adapter.getDataKeys(e);
     this.props.onChartMouseOver && this.props.onChartMouseOver(hoveredElement);
   },
 
@@ -190,7 +251,7 @@ var GoogleChart = React.createClass({
    * Redraws the chart with data and options props.
    */
   _drawChart() {
-    this.chart.draw(this.props.data, this._getOptions());
+    this.chart.draw(this.props.chartData, this._getOptions());
   },
 
 });

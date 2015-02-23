@@ -78,7 +78,7 @@ var PieChart = React.createClass({
 
   render() {
     return (
-      <Chart ref="chart" chart={google.visualization.PieChart} options={this._getOptions()} data={this._getDataTable()} />
+      <Chart ref="chart" chart={google.visualization.PieChart} options={this._getOptions()} chartData={this._getDataTable()} />
     );
   }
 
