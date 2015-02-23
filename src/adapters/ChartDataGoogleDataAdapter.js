@@ -22,9 +22,7 @@ class ChartDataGoogleDataAdapter{
    *  - Data is sum on unviable dimensions unless filters options are provided
    *  - If axes option is not provided, it uses the last two dimensions in the ChartData
    */
-  toGoogleDataArray(options){
-    options = options || Map(); //ES6 default param
-
+  toGoogleDataArray(options = Map()){
     this._setAxes(options.get('axes'));
     var valuesArray = this._getGoogleValuesArray(options.get('filters'));
 
@@ -40,7 +38,7 @@ class ChartDataGoogleDataAdapter{
     //            C5  X  X  X  X  X  X
     var googleDataArray = List();
     googleDataArray = googleDataArray.push(seriesLabels.unshift(''));
-    categoriesLabels.forEach(function(label, i){
+    categoriesLabels.forEach((label, i) => {
       googleDataArray = googleDataArray.push(valuesArray.get(i).unshift(label));
     });
 
@@ -64,7 +62,7 @@ class ChartDataGoogleDataAdapter{
     ));*/
     var googleOptions = Map();
 
-    googleOptions.set('series', this._getSeries().get('groups').map(function(group, key){
+    googleOptions.set('series', this._getSeries().get('groups').map((group, key) => {
       return Map({color: group.get('color')});
     }).toList());
 
@@ -94,7 +92,7 @@ class ChartDataGoogleDataAdapter{
         series = this._getSeries();
 
     //Iterate on each data and set it's value in the proper cell
-    data.map(function(value, key){
+    data.map((value, key) => {
       var xIndex = categories.get('groupKeys').indexOf(key.get(categories.get('key')));
       var yIndex = series.get('groupKeys').indexOf(key.get(series.get('key')));
       if(xIndex === -1 || yIndex === -1){
@@ -117,9 +115,7 @@ class ChartDataGoogleDataAdapter{
     if(!filters){
       return this.chartData.rawData;
     }
-    return this.chartData.rawData.filter(function(value, key){
-      return filters.isSubset(key);
-    });
+    return this.chartData.rawData.filter((value, key) => filters.isSubset(key));
   }
 
   _getEmptyGoogleValuesArray(){
@@ -137,9 +133,7 @@ class ChartDataGoogleDataAdapter{
    * categories axis is the last dimension unless a specific option have been set
    * series axis is the last-1 dimension unless a specific option have been set
    */
-  _setAxes(axisKeys){
-    axisKeys = axisKeys || Map(); //TODO ES6
-
+  _setAxes(axisKeys = Map()){
     this._axesKey = this._axesKey.set('categories',
       axisKeys.get('categories') || this.chartData.getDimensionKeyByIndex(0, true)
     );
@@ -170,12 +164,8 @@ class ChartDataGoogleDataAdapter{
   }*/
   _getAxesLabels(){
     return [
-      this._getCategories().get('groups').map(function(group, key){
-        return group.get('label') || key;
-      }).toList(),
-      this._getSeries().get('groups').map(function(group, key){
-        return group.get('label') || key;
-      }).toList();
+      this._getCategories().get('groups').map((group, key) => group.get('label') || key).toList(),
+      this._getSeries().get('groups').map((group, key) => group.get('label') || key).toList();
     ];
   }
 }

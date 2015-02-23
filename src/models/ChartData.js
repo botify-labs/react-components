@@ -62,7 +62,7 @@ class ChartData{
     this.rawData = this.rawData.set(keys, values);
 
     //Add dimensions or/and groups if not exist
-    keys.forEach(function(groupKey, dimKey){
+    keys.forEach((groupKey, dimKey) => {
       if(!this.hasDimensionGroup(dimKey, groupKey)){
         this.addDimensionGroup(dimKey, groupKey);
       }
@@ -91,8 +91,7 @@ class ChartData{
    * @param {Any} dimKey
    * @param {Map<String,Any>} dimMetadata {label: <String>, color: <String>, ...}
    */
-  addDimension(dimKey, dimMetadata){
-    dimMetadata = dimMetadata || Map();
+  addDimension(dimKey, dimMetadata = Map()){
     var dimensionValue = dimMetadata.set('groups', OrderedMap());
 
     this.dimensions = this.dimensions.set(dimKey, dimensionValue);
@@ -122,8 +121,7 @@ class ChartData{
    * @param {Any} groupKey
    * @param {Map<String,Any>} groupMetadata {label: <String>, color: <String>, ...}
    */
-  addDimensionGroup(dimKey, groupKey, groupMetadata){
-    groupMetadata = groupMetadata || Map();
+  addDimensionGroup(dimKey, groupKey, groupMetadata = Map()){
     //Add dimension if not exist
     if(!this.hasDimension(dimKey)){
       throw new Error("you can't add group to an unexisting group");
