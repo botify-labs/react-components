@@ -147,8 +147,13 @@ var GoogleChart = React.createClass({
   /**
    * Called when a chart data point or category is selected
    */
-  _handleChartSelect() {
-    console.log('select');
+  _handleChartSelect(e) {
+    if (!this.props.onChartSelect) {
+      return;
+    }
+
+    var selectedElement = this.props.adapter.getDataKeys(e);
+    this.props.onChartSelect && this.props.onChartSelect(selectedElement);
   },
 
   /**
@@ -160,7 +165,7 @@ var GoogleChart = React.createClass({
     }
 
     var hoveredElement = this.props.adapter.getDataKeys(e);
-    this.props.onChartMouseOver && this.props.onChartMouseOver(e);
+    this.props.onChartMouseOver && this.props.onChartMouseOver(hoveredElement);
   },
 
   /**
