@@ -1,6 +1,8 @@
 var webpack = require('webpack');
 var path = require('path');
 
+var browsers = ['Firefox > 27', 'Chrome > 20', 'Explorer > 9', 'Safari > 6', 'Opera > 11.5', 'iOS > 6.1'];
+
 var config = {
   entry: './src/index',
   output: {
@@ -22,7 +24,7 @@ var config = {
       },
       {
         test: /\.scss$/,
-        loader: "style!css!sass?outputStyle=expanded&" +
+        loader: "style!css!autoprefixer?" + JSON.stringify({browsers: browsers}) + "!sass?outputStyle=expanded&" +
           "includePaths[]=" +
             (path.resolve(__dirname, "./bower_components")) + "&" +
           "includePaths[]=" +
