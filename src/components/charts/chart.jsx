@@ -1,14 +1,65 @@
 import React from 'react';
 import _ from 'lodash';
 
-var ChartTooltip = React.createClass({
+var ChartWithTooltip = React.createClass({
 
-  displayName: 'ChartTooltip',
+  displayName: 'ChartWithTooltip',
+
+  getInitialState() {
+    return {
+      hoveredElement: null,
+      mousePosition: null,
+    };
+  },
 
   render() {
     return (
-      <div className="ChartTooltip"></div>
+      <GoogleChart
+              onChartMouseOver={this._handleChartMouseOver}
+              onChartMouseOut={this._handleChartMouseOut}
+              onMouseMove={this._handleMouseMove}
+              {...this.props}>
+        {this.state.hoveredElement && this._renderTooltip()}
+      </GoogleChart>
     );
+  },
+
+  _renderTooltip() {
+    var style = {
+      position: 'absolute',
+    };
+
+    // TODO: Calculate tooltip pos
+
+    return (
+      <div className="Chart-tooltip" style={style}>
+        // TODO: Render tooltip data
+      </div>
+    );
+  },
+
+  _handleMouseMove(e) {
+    // Keep track of the mouse position so that we can have the tooltip
+    // follow the cursor
+    this.setState({
+      mousePosition: {
+        // TODO: replace this with actual values
+        top: e.offsetY,
+        left: e.offsetX
+      }
+    });
+  },
+
+  _handleChartMouseOver(hoveredElement) {
+    // Show the tooltip when a chart element is hovered
+    this.setState({hoveredElement});
+  },
+
+  _handleChartMouseOut() {
+    // Hide the tooltip when a chart element stops being hovered
+    this.setState({
+      hoveredElement: null,
+    });
   }
 
 });
@@ -19,11 +70,10 @@ var ChartTooltip = React.createClass({
  * Something like ChartMixin({
  *   chart: google.visualization.PieChart
  * })
- * TODO: Add tooltips!
  */
-var Chart = React.createClass({
+var GoogleChart = React.createClass({
 
-  displayName: 'Chart',
+  displayName: 'GoogleChart',
 
   propTypes: {
     // Google Chart data
@@ -34,15 +84,12 @@ var Chart = React.createClass({
     options: React.PropTypes.object,
   },
 
-  getInitialState() {
-    return {
-      showTooltip: false,
-      hoveredElement: null,
-    };
-  },
-
-  exportChart() {
-    this.refs['chart-image'].getDOMNode().src = this.chart.getImageURI();
+  /**
+   * Returns underlying chart's image URI representation
+   * @return {String}
+   */
+  getImageURI() {
+    return this.chart.getImageURI();
   },
 
   componentDidMount() {
@@ -56,20 +103,23 @@ var Chart = React.createClass({
     window.removeEventListener('resize', this._drawChart);
   },
 
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('?', _.isEqual(nextProps, this.props) && _.isEqual(nextState, this.state));
+    // TODO: use immutable!
+    return _.isEqual(nextProps, this.props) && _.isEqual(nextState, this.state);
+
+  },
+
   componentDidUpdate(prevProps, prevState) {
-    // TODO: do an options and data equality check, otherwise the google chart loses its state
-    // every time we update the component
-    if (_.isEqual(prevProps, this.props) && _.isEqual(prevState, this.state)) {
-      this._drawChart();
-    }
+    this._drawChart();
   },
 
   render() {
     return (
-      <div>
-        {this.state.showTooltip && this._renderTooltip()}
+      <div {...this.props}>
         <div ref="chart-container"></div>
         <img ref="chart-image"></img>
+        {this.props.children}
       </div>
     );
   },
@@ -82,7 +132,6 @@ var Chart = React.createClass({
     this.chart = new this.props.chart(this.refs['chart-container'].getDOMNode());
 
     this._bindChartEvents();
-
     this._drawChart();
   },
 
@@ -91,8 +140,8 @@ var Chart = React.createClass({
    */
   _bindChartEvents() {
     google.visualization.events.addListener(this.chart, 'select', this._handleChartSelect);
-    google.visualization.events.addListener(this.chart, 'onmouseover', this._handleChartMouseover);
-    google.visualization.events.addListener(this.chart, 'onmouseout', this._handleChartMouseout);
+    google.visualization.events.addListener(this.chart, 'onmouseover', this._handleChartMouseOver);
+    google.visualization.events.addListener(this.chart, 'onmouseout', this._handleChartMouseOut);
   },
 
   /**
@@ -105,27 +154,20 @@ var Chart = React.createClass({
   /**
    * Called when the mouse enters a chart data point or category
    */
-  _handleChartMouseover(catIdx, serieIdx) {
-    this.setState({
-      showTooltip: true,
-      hoveredElement: {catIdx, serieIdx},
-    });
+  _handleChartMouseOver(e) {
+    if (!this.props.onChartMouseOver) {
+      return;
+    }
+
+    var hoveredElement = this.props.adapter.getDataKeys(e);
+    this.props.onChartMouseOver && this.props.onChartMouseOver(e);
   },
 
   /**
    * Called when the mouse leaves a chart data point or category
    */
-  _handleChartMouseout() {
-    this.setState({
-      showTooltip: false,
-      hoveredElement: null,
-    });
-  },
-
-  _renderTooltip() {
-    return (
-      <ChartTooltip />
-    );
+  _handleChartMouseOut() {
+    this.props.onChartMouseOut && this.props.onChartMouseOut();
   },
 
   /**
@@ -148,4 +190,6 @@ var Chart = React.createClass({
 
 });
 
-export default Chart;
+GoogleChart.WithTooltip = ChartWithTooltip;
+
+export default GoogleChart;
