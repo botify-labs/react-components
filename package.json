@@ -12,7 +12,8 @@
   "dependencies": {
     "lodash": "^3.2.0",
     "react": "^0.12.2",
-    "react-bootstrap": "^0.15.1"
+    "react-bootstrap": "^0.15.1",
+    "immutable": "~3.6.2"
   },
   "devDependencies": {
     "babel-core": "^4.3.0",
