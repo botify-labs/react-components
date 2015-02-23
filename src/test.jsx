@@ -28,7 +28,7 @@
 
 import React from 'react/addons';
 
-import {Panel, Charts, Table} from '../index';
+import {Panel, Charts, Table} from './index';
 
 var SpecificPanelController = React.createClass({
 

@@ -6,7 +6,6 @@ import Chart from './components/charts/chart';
 import LineChart from './components/charts/line-chart';
 import PieChart from './components/charts/pie-chart';
 import Table from './components/table';
-import React from 'react';
 
 export default {
   React,

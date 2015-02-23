@@ -165,7 +165,7 @@ class ChartDataGoogleDataAdapter{
   _getAxesLabels(){
     return [
       this._getCategories().get('groups').map((group, key) => group.get('label') || key).toList(),
-      this._getSeries().get('groups').map((group, key) => group.get('label') || key).toList();
+      this._getSeries().get('groups').map((group, key) => group.get('label') || key).toList()
     ];
   }
 }

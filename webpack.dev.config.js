@@ -9,7 +9,7 @@ var config = {
   entry: [
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    './src/components/test'
+    './src/test'
   ],
   output: {
     path: __dirname + '/dist/',
