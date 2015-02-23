@@ -36,25 +36,25 @@ var chartData = new ChartData();
 chartData.rawData = new List([
   {
     [
-      {'delay': {from: 0, to: 500}},
+      {'delay': 'fast'},
       {'content_type': 'text/html'}
     ]: [1]
   },
   {
     [
-      {'delay': {from: 500, to: 1000}},
+      {'delay': 'medium'},
       {'content_type': 'text/html'}
     ]: [3]
   },
   {
     [
-      {'delay': {from: 500, to: 1000}},
+      {'delay': 'medium'},
       {'content_type': 'text/css'}
     ]: [4]
   },
   {
     [
-      {'delay': {from: 2000}},
+      {'delay': 'slowest'},
       {'content_type': 'javascript'}
     ]: [4]
   }
@@ -63,22 +63,22 @@ chartData.dimensions = new OrderMap(
   {
     'delay': {
       groups:{
-        {from: 0, to: 500}: {label: "Fast (<500 ms)", color: COLORS.GOOD},
-        {from: 500, to: 1000}: {label: "Medium (500 ms < 1 s)", color: COLORS.MEDIUM},
-        {from: 1000, to: 2000}: {label: "Slow (1 s < 2 s)", color: COLORS.BAD},
-        {from: 2000}: {label: "Slowest (>2 s)", color: COLORS.VERY_BAD}
+        'fast': {label: "Fast (<500 ms)", color: COLORS.GOOD},
+        'medium': {label: "Medium (500 ms < 1 s)", color: COLORS.MEDIUM},
+        'slow': {label: "Slow (1 s < 2 s)", color: COLORS.BAD},
+        'slowest': {label: "Slowest (>2 s)", color: COLORS.VERY_BAD}
       }
     }
   },
   {
     'content_type': {
       groups: {
-        "text/html": {color: COLORS.GOOD},
-        "image/jpeg": {color: COLORS.YELLOW},
-        "image/png": {color: COLORS.YELLOW},
-        "image/gif": {color: COLORS.YELLOW},
-        "text/css": {color: COLORS.ORANGE1},
-        "not-set": {label: "Not Set", color: COLORS.VERY_BAD},
+        "text_html": {color: COLORS.GOOD, label: "text/html"},
+        "image_jpeg": {color: COLORS.YELLOW, label: "image/jpeg"},
+        "image_png": {color: COLORS.YELLOW, label: "image/png"},
+        "image_gif": {color: COLORS.YELLOW: label: "image/gif"},
+        "text_css": {color: COLORS.ORANGE1, label: "text/css"},
+        "not_set": {label: "Not Set", color: COLORS.VERY_BAD},
       }
     }
   }
