@@ -28,7 +28,7 @@
 
 import React from 'react/addons';
 
-import {Panel, LineChart, Table} from '../index';
+import {Panel, Charts, Table} from '../index';
 
 var SpecificPanelController = React.createClass({
 
@@ -37,7 +37,7 @@ var SpecificPanelController = React.createClass({
   render() {
     return (
       <Panel title="Hello world">
-        <LineChart key="pieChart" />
+        <Charts.LineChart key="pieChart" />
         <Table key="table" />
       </Panel>
     );
