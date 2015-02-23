@@ -1,0 +1,33 @@
+{
+  "name": "react-components",
+  "version": "0.0.1",
+  "description": "ReactJS components",
+  "author": "Alexandre Kirszenberg <alexandre.kirszenberg@gmail.com>",
+  "scripts": {
+    "gulp": "gulp",
+    "start": "gulp webpack-server",
+    "webpack": "webpack"
+  },
+  "main": "dist/index.js",
+  "dependencies": {
+    "lodash": "^3.2.0",
+    "react": "^0.12.2",
+    "react-bootstrap": "^0.15.1"
+  },
+  "devDependencies": {
+    "babel-core": "^4.3.0",
+    "babel-loader": "^4.0.0",
+    "bootstrap": "^3.3.2",
+    "css-loader": "^0.9.1",
+    "expose-loader": "^0.6.0",
+    "file-loader": "^0.8.1",
+    "gulp": "^3.8.11",
+    "jsx-loader": "^0.12.2",
+    "react-hot-loader": "^1.1.5",
+    "sass-loader": "^0.4.0-beta.1",
+    "style-loader": "^0.8.3",
+    "url-loader": "^0.5.5",
+    "webpack": "^1.5.3",
+    "webpack-dev-server": "^1.7.0"
+  }
+}
