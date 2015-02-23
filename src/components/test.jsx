@@ -47,4 +47,4 @@ var SpecificPanelController = React.createClass({
 
 google.load('visualization', '1.0', {'packages':['corechart']});
 
-google.setOnLoadCallback(() => React.render(<SpecificPanelController />, document.body));
+google.setOnLoadCallback(() => React.render(<SpecificPanelController />, document.getElementById('container')));
