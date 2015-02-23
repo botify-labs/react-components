@@ -66,7 +66,7 @@ class ChartData{
       if(!this.hasDimensionGroup(dimKey, groupKey)){
         this.addDimensionGroup(dimKey, groupKey);
       }
-    }.bind(this));
+    });
   }
 
   _testDataKeys(keys){
