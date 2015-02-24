@@ -190,6 +190,11 @@ var GoogleChart = React.createClass({
    * This should only be called once.
    */
   _initializeChart() {
+    this.adapter = new this.props.adapterClass(this.props.chartData);
+
+    // TODO: Remove this awful hack and move this logic into Chart
+    this.chartData = this.adapter.toGoogleDataArray();
+
     this.chart = new this.props.chart(this.refs['chart-container'].getDOMNode());
 
     this._bindChartEvents();
@@ -225,6 +230,8 @@ var GoogleChart = React.createClass({
       return;
     }
 
+    this.adapter.getDataKeys(e);
+
     var hoveredElement = {};//this.props.adapter.getDataKeys(e);
     this.props.onChartMouseOver && this.props.onChartMouseOver(hoveredElement);
   },
@@ -251,7 +258,7 @@ var GoogleChart = React.createClass({
    * Redraws the chart with data and options props.
    */
   _drawChart() {
-    this.chart.draw(this.props.chartData, this._getOptions());
+    this.chart.draw(this.chartData, this._getOptions());
   },
 
 });

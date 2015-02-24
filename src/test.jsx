@@ -23,68 +23,48 @@
 //       catch e
 //         tree = buildErrorTree this._reactInternalInstance
 //         return DOM.div null, 'ERROR HAPPENED WHAAAAT'
-
 //   return element
 
 import React from 'react/addons';
 import {Panel, Charts, Table} from './index';
 import {List} from 'immutable';
 import ChartData from './models/ChartData';
+import Immutable from 'immutable';
+import ChartDataGoogleDataAdapter from './adapters/ChartDataGoogleDataAdapter';
 
-COLORS = {}; //#lol
+var COLORS = {}; //#lol
 var chartData = new ChartData();
-chartData.rawData = new List([
-  {
-    [
-      {'delay': 'fast'},
-      {'content_type': 'text/html'}
-    ]: [1]
-  },
-  {
-    [
-      {'delay': 'medium'},
-      {'content_type': 'text/html'}
-    ]: [3]
-  },
-  {
-    [
-      {'delay': 'medium'},
-      {'content_type': 'text/css'}
-    ]: [4]
-  },
-  {
-    [
-      {'delay': 'slowest'},
-      {'content_type': 'javascript'}
-    ]: [4]
-  }
-];
-chartData.dimensions = new OrderMap(
-  {
-    'delay': {
-      groups:{
-        'fast': {label: "Fast (<500 ms)", color: COLORS.GOOD},
-        'medium': {label: "Medium (500 ms < 1 s)", color: COLORS.MEDIUM},
-        'slow': {label: "Slow (1 s < 2 s)", color: COLORS.BAD},
-        'slowest': {label: "Slowest (>2 s)", color: COLORS.VERY_BAD}
-      }
-    }
-  },
-  {
-    'content_type': {
-      groups: {
-        "text_html": {color: COLORS.GOOD, label: "text/html"},
-        "image_jpeg": {color: COLORS.YELLOW, label: "image/jpeg"},
-        "image_png": {color: COLORS.YELLOW, label: "image/png"},
-        "image_gif": {color: COLORS.YELLOW: label: "image/gif"},
-        "text_css": {color: COLORS.ORANGE1, label: "text/css"},
-        "not_set": {label: "Not Set", color: COLORS.VERY_BAD},
-      }
-    }
-  }
-);
 
+chartData.addDimension('delay');
+chartData.addDimensionGroup('delay', 'fast', new Immutable.Map({label: "Fast (<500 ms)", color: COLORS.GOOD}));
+chartData.addDimensionGroup('delay', 'medium', new Immutable.Map({label: "Medium (500 ms < 1 s)", color: COLORS.MEDIUM}));
+chartData.addDimensionGroup('delay', 'slow', new Immutable.Map({label: "Slow (1 s < 2 s)", color: COLORS.BAD}));
+chartData.addDimensionGroup('delay', 'slowest', new Immutable.Map({label: "Slowest (>2 s)", color: COLORS.VERY_BAD}));
 
+chartData.addDimension('content_type');
+chartData.addDimensionGroup('content_type', "text_html", new Immutable.Map({color: COLORS.GOOD, label: "text/html"}));
+chartData.addDimensionGroup('content_type', "image_jpeg", new Immutable.Map({color: COLORS.YELLOW, label: "image/jpeg"}));
+chartData.addDimensionGroup('content_type', "image_png", new Immutable.Map({color: COLORS.YELLOW, label: "image/png"}));
+chartData.addDimensionGroup('content_type', "image_gif", new Immutable.Map({color: COLORS.YELLOW, label: "image/gif"}));
+chartData.addDimensionGroup('content_type', "text_css", new Immutable.Map({color: COLORS.ORANGE1, label: "text/css"}));
+chartData.addDimensionGroup('content_type', "not_set", new Immutable.Map({label: "Not Set", color: COLORS.VERY_BAD}));
+
+chartData.setData(new Immutable.Map({
+  'delay': 'fast',
+  'content_type': 'text_html'
+}), new Immutable.List([1]));
+chartData.setData(new Immutable.Map({
+  'delay': 'medium',
+  'content_type': 'text_html'
+}), new Immutable.List([3]));
+chartData.setData(new Immutable.Map({
+  'delay': 'medium',
+  'content_type': 'text_css'
+}), new Immutable.List([4]));
+chartData.setData(new Immutable.Map({
+  'delay': 'slowest',
+  'content_type': 'javascript'
+}), new Immutable.List([4]));
 
 var SpecificPanelController = React.createClass({
 
@@ -93,7 +73,7 @@ var SpecificPanelController = React.createClass({
   render() {
     return (
       <Panel title="Hello world">
-        <Charts.LineChart key="pieChart" />
+        <Charts.LineChart key="pieChart" chartData={chartData} adapterClass={ChartDataGoogleDataAdapter}/>
         <Table key="table" />
       </Panel>
     );
@@ -103,4 +83,6 @@ var SpecificPanelController = React.createClass({
 
 google.load('visualization', '1.0', {'packages':['corechart']});
 
-google.setOnLoadCallback(() => React.render(<SpecificPanelController />, document.getElementById('container')));
+google.setOnLoadCallback(() => {
+  React.render(<SpecificPanelController />, document.getElementById('container'))
+});

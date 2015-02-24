@@ -38,24 +38,15 @@ var LineChart = React.createClass({
     this.refs['chart'].exportChart();
   },
 
-  /**
-   * Returns the Google DataTable to be passed as data to the child Chart
-   * @return {Google.visualization.DataTable}
-   */
-  _getDataTable() {
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Topping');
-    data.addColumn('number', 'Slices');
-    data.addRows([
-      ['Mushrooms', 10],
-      ['Onions', 4],
-      ['Olives', 1],
-      ['Zucchini', 1],
-      ['Pepperoni', 2]
-    ]);
+  // /**
+  //  * Returns the Google DataTable to be passed as data to the child Chart
+  //  * @return {Google.visualization.DataTable}
+  //  */
+  // _getDataTable() {
+  //   var adapter = new this.props.adapterClass(this.props.chartData);
 
-    return data;
-  },
+  //   return adapter.toGoogleDataArray();
+  // },
 
   /**
    * Returns the options to be passed to the child Chart
@@ -78,7 +69,7 @@ var LineChart = React.createClass({
 
   render() {
     return (
-      <Chart.WithTooltip ref="chart" chart={google.visualization.LineChart} options={this._getOptions()} chartData={this._getDataTable()} />
+      <Chart.WithTooltip ref="chart" chart={google.visualization.BarChart} options={this._getOptions()} chartData={this.props.chartData} adapterClass={this.props.adapterClass} />
     );
   }
 

@@ -70,12 +70,25 @@ class ChartDataGoogleDataAdapter{
   }
 
   /**
-   * @param  {Integer} serieIdx
-   * @param  {Integer} catIdx
+   * Returns some kind of filter on data, {dimensionKey: dimensionGroupKey}, not really data keys
+   * @param  {Object} {row, column}
    * @return {DataKeys}
    */
-  getDataKeys(serieIdx, catIdx){
+  getDataKeys({row, column}){
+    var filter = new Map();
 
+    // Series are indexed starting from 1, while categories are indexed starting from 0
+    var series = this._getSeries();
+    var serieKey = series.get('groups').keySeq().get(column - 1);
+    filter = filter.set(series.get('key'), serieKey);
+    if (row !== null) {
+      var categories = this._getCategories();
+      var categoryKey = categories.get('groups').keySeq().get(row);
+      filter = filter.set(categories.get('key'), categoryKey);
+    }
+
+    console.log(filter.toJS());
+    return filter;
   }
 
   _getCategories(){
