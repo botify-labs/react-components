@@ -55,11 +55,7 @@ var GoogleChart = React.createClass({
 
   render() {
     return (
-      <div {..._.omit(this.props, 'children', 'options', 'chartData', 'chart', 'onChartMouseOut', 'onChartMouseOver')}>
-        {this.props.children}
-        <div ref="chart-container"></div>
-        <img ref="chart-image" />
-      </div>
+      <div {..._.omit(this.props, 'children', 'options', 'chartData', 'chart', 'onChartMouseOut', 'onChartMouseOver')} />
     );
   },
 
@@ -70,7 +66,7 @@ var GoogleChart = React.createClass({
   _initializeChart() {
     this.adapter = new ChartDataGoogleDataAdapter(this.props.chartData);
 
-    this.chart = new this.props.chart(this.refs['chart-container'].getDOMNode());
+    this.chart = new this.props.chart(this.getDOMNode());
 
     this._bindChartEvents();
     this._drawChart();
