@@ -35,7 +35,7 @@ import ChartDataGoogleDataAdapter from './adapters/ChartDataGoogleDataAdapter';
 var COLORS = {}; //#lol
 var chartData = new ChartData();
 
-chartData.addMetricMetadata(Immutable.Map({
+chartData.addMetric(Immutable.Map({
   label: 'Count',
   render: v => v
 }));

@@ -49,7 +49,7 @@ var ChartTooltip = React.createClass({
       });
 
       var metrics = dataValues.map((value, index) => {
-        var metric = this.props.chartData.getMetricMetadata(index);
+        var metric = this.props.chartData.getMetric(index);
         return <div key={index}>{metric.get('label')}: {metric.get('render')(value)}</div>;
       });
 

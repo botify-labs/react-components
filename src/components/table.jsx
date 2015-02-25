@@ -56,7 +56,7 @@ var Table = React.createClass({
       });
 
       var metrics = dataValues.map((value, index) => {
-        var metric = this.props.chartData.getMetricMetadata(index);
+        var metric = this.props.chartData.getMetric(index);
         return metric.get('render')(value);
       });
 

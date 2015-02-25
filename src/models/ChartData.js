@@ -94,7 +94,7 @@ class ChartData{
   /**
    * @param {Map} metricMetadata
    */
-  addMetricMetadata(metricMetadata = Map()){
+  addMetric(metricMetadata = Map()){
     this.metrics = this.metrics.push(metricMetadata);
   }
 
@@ -102,7 +102,7 @@ class ChartData{
    * @param   {Number} index
    * @return  {Map}
    */
-  getMetricMetadata(index){
+  getMetric(index){
     return this.metrics.get(index);
   }
 
@@ -110,7 +110,7 @@ class ChartData{
    * @param   {Number} index
    * @return  {Boolean}
    */
-  hasMetricMetadata(index){
+  hasMetric(index){
     return this.metrics.has(index);
   }
 
