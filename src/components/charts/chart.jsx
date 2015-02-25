@@ -218,8 +218,10 @@ var GoogleChart = React.createClass({
       return;
     }
 
-    var selectedElement = {};//this.props.adapter.getDataKeys(e);
-    this.props.onChartSelect && this.props.onChartSelect(selectedElement);
+    var filter = this.adapter.getDataKeys(e);
+    var data = this.props.chartData.filterData(filter);
+
+    this.props.onChartSelect(data);
   },
 
   /**
@@ -230,10 +232,10 @@ var GoogleChart = React.createClass({
       return;
     }
 
-    this.adapter.getDataKeys(e);
+    var filter = this.adapter.getDataKeys(e);
+    var data = this.props.chartData.filterData(filter);
 
-    var hoveredElement = {};//this.props.adapter.getDataKeys(e);
-    this.props.onChartMouseOver && this.props.onChartMouseOver(hoveredElement);
+    this.props.onChartMouseOver(data);
   },
 
   /**
