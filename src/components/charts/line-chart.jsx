@@ -69,7 +69,7 @@ var LineChart = React.createClass({
 
   render() {
     return (
-      <Chart.WithTooltip ref="chart" chart={google.visualization.BarChart} options={this._getOptions()} chartData={this.props.chartData} adapterClass={this.props.adapterClass} />
+      <Chart ref="chart" chart={google.visualization.ColumnChart} options={this._getOptions()} chartData={this.props.chartData} adapterClass={this.props.adapterClass} />
     );
   }
 

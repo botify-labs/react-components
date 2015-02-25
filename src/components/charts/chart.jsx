@@ -1,7 +1,7 @@
-import React from 'react';
-import _ from 'lodash';
+import React from 'react/addons';
 
 import ChartData from '../../models/ChartData';
+import GoogleChart from './google-chart';
 import {Map} from 'immutable';
 import './style.scss';
 
@@ -97,9 +97,9 @@ var ChartTooltip = React.createClass({
 
 });
 
-var ChartWithTooltip = React.createClass({
+var Chart = React.createClass({
 
-  displayName: 'ChartWithTooltip',
+  displayName: 'Chart',
 
   getInitialState() {
     return {
@@ -152,144 +152,4 @@ var ChartWithTooltip = React.createClass({
 
 });
 
-/**
- * Wrapper around a generic Google Chart
- * TODO: Maybe use a mixin instead?
- * Something like ChartMixin({
- *   chart: google.visualization.PieChart
- * })
- */
-var GoogleChart = React.createClass({
-
-  displayName: 'GoogleChart',
-
-  propTypes: {
-    // Google Chart data
-    // TODO: define structure
-    chartData: React.PropTypes.object,
-    // Google Chart options
-    // TODO: define structure
-    options: React.PropTypes.object,
-  },
-
-  /**
-   * Returns underlying chart's image URI representation
-   * @return {String}
-   */
-  getImageURI() {
-    return this.chart.getImageURI();
-  },
-
-  componentDidMount() {
-    this._initializeChart();
-
-    // Redraw the chart whenever the window is resized
-    window.addEventListener('resize', this._drawChart);
-  },
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this._drawChart);
-  },
-
-  shouldComponentUpdate(nextProps, nextState) {
-    // TODO: use immutable!
-    return !(_.isEqual(nextProps, this.props) && _.isEqual(nextState, this.state));
-  },
-
-  componentDidUpdate(prevProps, prevState) {
-    this._drawChart();
-  },
-
-  render() {
-    return (
-      <div {..._.omit(this.props, 'children', 'options', 'chartData', 'chart', 'onChartMouseOut', 'onChartMouseOver')}>
-        {this.props.children}
-        <div ref="chart-container"></div>
-        <img ref="chart-image" />
-      </div>
-    );
-  },
-
-  /**
-   * Instanciates the Google Chart from the chart constructor prop.
-   * This should only be called once.
-   */
-  _initializeChart() {
-    this.adapter = new this.props.adapterClass(this.props.chartData);
-
-    // TODO: Remove this awful hack and move this logic into Chart
-    this.chartData = this.adapter.toGoogleDataArray();
-
-    this.chart = new this.props.chart(this.refs['chart-container'].getDOMNode());
-
-    this._bindChartEvents();
-    this._drawChart();
-  },
-
-  /**
-   * Binds event handlers to chart events
-   */
-  _bindChartEvents() {
-    google.visualization.events.addListener(this.chart, 'select', this._handleChartSelect);
-    google.visualization.events.addListener(this.chart, 'onmouseover', this._handleChartMouseOver);
-    google.visualization.events.addListener(this.chart, 'onmouseout', this._handleChartMouseOut);
-  },
-
-  /**
-   * Called when a chart data point or category is selected
-   */
-  _handleChartSelect(e) {
-    if (!this.props.onChartSelect) {
-      return;
-    }
-
-    var filter = this.adapter.getDataKeys(e);
-    var data = this.props.chartData.filterData(filter);
-
-    this.props.onChartSelect(data);
-  },
-
-  /**
-   * Called when the mouse enters a chart data point or category
-   */
-  _handleChartMouseOver(e) {
-    if (!this.props.onChartMouseOver) {
-      return;
-    }
-
-    var filter = this.adapter.getDataKeys(e);
-    var data = this.props.chartData.filterData(filter);
-
-    this.props.onChartMouseOver(data);
-  },
-
-  /**
-   * Called when the mouse leaves a chart data point or category
-   */
-  _handleChartMouseOut() {
-    this.props.onChartMouseOut && this.props.onChartMouseOut();
-  },
-
-  /**
-   * Returns the google chart options
-   */
-  _getOptions() {
-    return _.assign({}, this.props.options, {
-      tooltip: {
-        trigger: 'none'
-      }
-    });
-  },
-
-  /**
-   * Redraws the chart with data and options props.
-   */
-  _drawChart() {
-    this.chart.draw(this.chartData, this._getOptions());
-  },
-
-});
-
-GoogleChart.WithTooltip = ChartWithTooltip;
-
-export default GoogleChart;
+export default Chart;
