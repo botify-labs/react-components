@@ -70,11 +70,11 @@ class ChartDataGoogleDataAdapter{
   }
 
   /**
-   * Returns some kind of filter on data, {dimensionKey: dimensionGroupKey}, not really data keys
-   * @param  {Object} {row, column}
+   * Converts Google Chart selection to DataKeys
+   * @param  {Object}   {row, column}
    * @return {DataKeys}
    */
-  getDataKeys({row, column}){
+  selectionToDataKeys({row, column}){
     var filter = Map();
 
     // Series are indexed starting from 1, while categories are indexed starting from 0
