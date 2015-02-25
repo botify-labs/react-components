@@ -1,8 +1,6 @@
 import React from 'react';
-import joinClasses from 'react/lib/joinClasses';
+import classNames from 'classnames';
 import {DropdownButton, MenuItem} from 'react-bootstrap';
-
-var {classSet} = React.addons;
 
 var PanelMenu = React.createClass({
 
@@ -82,7 +80,7 @@ var PanelMenu = React.createClass({
     return (
       <DropdownButton noCaret
                       pullRight
-                      className={joinClasses(this.props.className, 'PanelMenu')}
+                      className={classNames(this.props.className, 'PanelMenu')}
                       title={<i className="fa fa-gear"/>}>
         {displayModes}
         {displayModes.length > 0 && actions.length > 0 ? <MenuItem divider/> : null}

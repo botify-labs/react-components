@@ -1,12 +1,10 @@
 import React from 'react/addons';
-import joinClasses from 'react/lib/joinClasses';
+import classNames from 'classnames';
 import _ from 'lodash';
 
 import PanelMenu from './panel-menu';
 
 import './style.scss';
-
-var {classSet} = React.addons;
 
 var Panel = React.createClass({
 
@@ -123,8 +121,7 @@ var Panel = React.createClass({
     });
 
     return (
-      <div
-          className={joinClasses(this.props.className, 'Panel')}>
+      <div className={classNames(this.props.className, 'Panel')}>
         <div className="Panel-header">
           <div className="Panel-titleWrapper">
             <div className="Panel-title" title={this.props.title}>
