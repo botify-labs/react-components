@@ -35,13 +35,22 @@ import ChartDataGoogleDataAdapter from './adapters/ChartDataGoogleDataAdapter';
 var COLORS = {}; //#lol
 var chartData = new ChartData();
 
-chartData.addDimension('delay');
+chartData.addMetricMetadata(Immutable.Map({
+  label: 'Count',
+  render: v => v
+}));
+
+chartData.addDimension('delay', Immutable.Map({
+  label: 'Delay'
+}));
 chartData.addDimensionGroup('delay', 'fast', new Immutable.Map({label: "Fast (<500 ms)", color: COLORS.GOOD}));
 chartData.addDimensionGroup('delay', 'medium', new Immutable.Map({label: "Medium (500 ms < 1 s)", color: COLORS.MEDIUM}));
 chartData.addDimensionGroup('delay', 'slow', new Immutable.Map({label: "Slow (1 s < 2 s)", color: COLORS.BAD}));
 chartData.addDimensionGroup('delay', 'slowest', new Immutable.Map({label: "Slowest (>2 s)", color: COLORS.VERY_BAD}));
 
-chartData.addDimension('content_type');
+chartData.addDimension('content_type', Immutable.Map({
+  label: 'Content Type'
+}));
 chartData.addDimensionGroup('content_type', "text_html", new Immutable.Map({color: COLORS.GOOD, label: "text/html"}));
 chartData.addDimensionGroup('content_type', "image_jpeg", new Immutable.Map({color: COLORS.YELLOW, label: "image/jpeg"}));
 chartData.addDimensionGroup('content_type', "image_png", new Immutable.Map({color: COLORS.YELLOW, label: "image/png"}));

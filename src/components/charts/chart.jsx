@@ -47,11 +47,14 @@ var ChartTooltip = React.createClass({
       var groups = dataKeys.map((groupKey, dimKey) => {
         var dimension = this.props.chartData.getDimension(dimKey);
         var group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
-        return <div>{dimKey}: {groupKey}</div>;
+        return <div>{dimension.get('label')}: {group.get('label')}</div>;
       });
-      var metrics = dataValues.map((value) => {
-        return <div>{value}</div>;
+
+      var metrics = dataValues.map((value, index) => {
+        var metric = this.props.chartData.getMetricMetadata(index);
+        return <div>{metric.get('label')}: {metric.get('render')(value)}</div>;
       });
+
       return (
         <div>
           <div>{groups.toJS()}</div>

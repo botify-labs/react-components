@@ -31,23 +31,16 @@ import {List, Map, OrderedMap} from 'immutable';
  */
 
 /**
- * @property {Map<DataKeys, DataValues>} data
- * @property {OrderMap<Any, Dimension>} dimensions
- * @property {Map} options
- * {
- *      onClick: function(),
-        axisSubLabels: {
-            axis: String
-            labels: [Any]
-        },
- * }
+ * @property {Map<DataKeys, DataValues>}  data
+ * @property {OrderMap<Any, Dimension>}   dimensions
+ * @property {List<Metric>}               metrics
  */
 class ChartData{
 
   constructor(){
     this.rawData = Map();
     this.dimensions = OrderedMap();
-    this.options = Map();
+    this.metrics = List();
   }
 
   /**
@@ -96,6 +89,29 @@ class ChartData{
       return this.rawData;
     }
     return this.rawData.filter((value, key) => filters.isSubset(key));
+  }
+
+  /**
+   * @param {Map} metricMetadata
+   */
+  addMetricMetadata(metricMetadata = Map()){
+    this.metrics = this.metrics.push(metricMetadata);
+  }
+
+  /**
+   * @param   {Number} index
+   * @return  {Map}
+   */
+  getMetricMetadata(index){
+    return this.metrics.get(index);
+  }
+
+  /**
+   * @param   {Number} index
+   * @return  {Boolean}
+   */
+  hasMetricMetadata(index){
+    return this.metrics.has(index);
   }
 
   /**
