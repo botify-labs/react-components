@@ -11,6 +11,10 @@ var Table = React.createClass({
   displayName: 'Table',
 
   statics: {
+    getDefaultDisplayModeId() {
+      return 'table';
+    },
+
     getDisplayModes() {
       return [{
         id: 'table',

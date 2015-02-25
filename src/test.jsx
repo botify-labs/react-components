@@ -56,6 +56,7 @@ chartData.addDimensionGroup('content_type', "image_jpeg", new Immutable.Map({col
 chartData.addDimensionGroup('content_type', "image_png", new Immutable.Map({color: COLORS.YELLOW, label: "image/png"}));
 chartData.addDimensionGroup('content_type', "image_gif", new Immutable.Map({color: COLORS.YELLOW, label: "image/gif"}));
 chartData.addDimensionGroup('content_type', "text_css", new Immutable.Map({color: COLORS.ORANGE1, label: "text/css"}));
+chartData.addDimensionGroup('content_type', "javascript", new Immutable.Map({color: COLORS.ORANGE1, label: "javascript"}));
 chartData.addDimensionGroup('content_type', "not_set", new Immutable.Map({label: "Not Set", color: COLORS.VERY_BAD}));
 
 chartData.setData(new Immutable.Map({

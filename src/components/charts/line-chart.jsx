@@ -72,6 +72,7 @@ var LineChart = React.createClass({
       <Chart
         ref="chart"
         chart={google.visualization.ColumnChart}
+        displayMode={this.props.displayMode}
         options={this._getOptions()}
         chartData={this.props.chartData}
       />
