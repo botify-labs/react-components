@@ -16,9 +16,11 @@ var GoogleChart = React.createClass({
   displayName: 'GoogleChart',
 
   propTypes: {
-    // Google Chart data
+    // Subclass of google.visualization.CoreChart
+    chart: React.PropTypes.func,
+    // Chart data
     chartData: React.PropTypes.instanceOf(ChartData),
-    // Google Chart options
+    // Chart options
     // TODO: define structure
     options: React.PropTypes.object,
   },
