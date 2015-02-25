@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 
 import ChartData from '../../models/ChartData';
+import ChartDataGoogleDataAdapter from '../../adapters/ChartDataGoogleDataAdapter';
 
 /**
  * Wrapper around a generic Google Chart
@@ -65,10 +66,7 @@ var GoogleChart = React.createClass({
    * This should only be called once.
    */
   _initializeChart() {
-    this.adapter = new this.props.adapterClass(this.props.chartData);
-
-    // TODO: Remove this awful hack and move this logic into Chart
-    this.chartData = this.adapter.toGoogleDataArray();
+    this.adapter = new ChartDataGoogleDataAdapter(this.props.chartData);
 
     this.chart = new this.props.chart(this.refs['chart-container'].getDOMNode());
 
@@ -151,7 +149,7 @@ var GoogleChart = React.createClass({
    * Redraws the chart with data and options props.
    */
   _drawChart() {
-    this.chart.draw(this.chartData, this._getOptions());
+    this.chart.draw(this.adapter.toGoogleDataArray(), this._getOptions());
   },
 
 });
