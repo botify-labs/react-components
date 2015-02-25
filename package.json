@@ -11,6 +11,7 @@
   "main": "dist/index.js",
   "dependencies": {
     "classnames": "^1.1.4",
+    "datatables": "^1.10.5",
     "immutable": "~3.6.2",
     "lodash": "^3.2.0",
     "react": "^0.12.2",
@@ -25,6 +26,7 @@
     "expose-loader": "^0.6.0",
     "file-loader": "^0.8.1",
     "gulp": "^3.8.11",
+    "imports-loader": "^0.6.3",
     "jsx-loader": "^0.12.2",
     "react-hot-loader": "^1.1.5",
     "sass-loader": "^0.4.0-beta.1",

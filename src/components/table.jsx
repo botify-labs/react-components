@@ -1,4 +1,10 @@
 import React from 'react';
+// Datatables tries to require jQuery
+import DataTable from 'imports?define=>false,exports=>false!datatables';
+
+import '../vendors/datatables-bootstrap/dataTables.bootstrap.css';
+// Datatables bootstrap integration tries to require jQuery too
+import 'imports?define=>false,exports=>false!../vendors/datatables-bootstrap/dataTables.bootstrap.js';
 
 var Table = React.createClass({
 
@@ -25,10 +31,60 @@ var Table = React.createClass({
     console.log('Exporting table!');
   },
 
+  componentDidMount() {
+    $(this.refs['table'].getDOMNode()).dataTable(this._getOptions());
+  },
+
   render() {
     return (
-      <div>Table showing {this.props.displayMode}</div>
+      <div class="Table">
+        <table ref="table" className="table table-striped table-bordered dataTable no-footer">
+        </table>
+      </div>
     );
+  },
+
+  _getData() {
+    return this.props.chartData.rawData.entrySeq().map(([dataKeys, dataValues]) => {
+      var groups = dataKeys.entrySeq().map(([dimKey, groupKey]) => {
+        var group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
+        return group.get('label');
+      });
+
+      var metrics = dataValues.map((value, index) => {
+        var metric = this.props.chartData.getMetricMetadata(index);
+        return metric.get('render')(value);
+      });
+
+      return groups.concat(metrics);
+    }).toJS();
+  },
+
+  _getColumns() {
+    var dimensions = this.props.chartData.dimensions.entrySeq().map(([dimensionKey, dimensionMetadata]) => {
+      return {
+        title: dimensionMetadata.get('label')
+      };
+    });
+
+    var metrics = this.props.chartData.metrics.map((metric) => {
+      return {
+        title: metric.get('label')
+      };
+    });
+
+    return dimensions.concat(metrics).toJS();
+  },
+
+  _getOptions() {
+    return {
+      data: this._getData(),
+      columns: this._getColumns(),
+      paginate: false,
+      drawCallback: () => {
+        this.forceUpdate();
+      }
+    };
   }
 
 });

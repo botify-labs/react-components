@@ -82,8 +82,8 @@ var SpecificPanelController = React.createClass({
   render() {
     return (
       <Panel title="Hello world">
-        <Charts.LineChart key="pieChart" chartData={chartData} adapterClass={ChartDataGoogleDataAdapter}/>
-        <Table key="table" />
+        <Table key="table" chartData={chartData} />
+        <Charts.LineChart key="lineChart" chartData={chartData} />
       </Panel>
     );
   }
