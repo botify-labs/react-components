@@ -84,7 +84,9 @@ var Table = React.createClass({
     return {
       data: this._getData(),
       columns: this._getColumns(),
-      paginate: false,
+      paging: false,
+      searching: false,
+      info: false,
       drawCallback: () => {
         this.forceUpdate();
       }
