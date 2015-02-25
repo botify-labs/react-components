@@ -111,15 +111,19 @@ var Chart = React.createClass({
   render() {
     return (
       <div>
-        {this.state.hoveredData &&
-          <ChartTooltip
-            position={this.state.mousePosition}
-            chartData={this.props.chartData}
-            data={this.state.hoveredData}
-          />
-        }
+        <React.addons.CSSTransitionGroup transitionName="appear">
+          {this.state.hoveredData &&
+            <ChartTooltip
+              key={this.state.hoveredData.hashCode()}
+              position={this.state.mousePosition}
+              chartData={this.props.chartData}
+              data={this.state.hoveredData}
+            />
+          }
+        </React.addons.CSSTransitionGroup>
         <GoogleChart
           {...this.props}
+          key="chart"
           onChartMouseOver={this._handleChartMouseOver}
           onChartMouseOut={this._handleChartMouseOut}
           onMouseMove={this._handleMouseMove}
