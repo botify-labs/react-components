@@ -1,6 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 
+import ChartData from '../../models/ChartData';
+import {Map} from 'immutable';
 import './style.scss';
 
 var ChartTooltip = React.createClass({
@@ -8,6 +10,8 @@ var ChartTooltip = React.createClass({
   displayName: 'ChartTooltip',
 
   propTypes: {
+    chartData: React.PropTypes.instanceOf(ChartData),
+    data: React.PropTypes.instanceOf(Map),
     position: React.PropTypes.shape({
       top: React.PropTypes.number.isRequired,
       left: React.PropTypes.number.isRequired
@@ -39,9 +43,26 @@ var ChartTooltip = React.createClass({
       style = this._getStyle();
     }
 
+    var children = this.props.data.map((dataValues, dataKeys) => {
+      var groups = dataKeys.map((groupKey, dimKey) => {
+        var dimension = this.props.chartData.getDimension(dimKey);
+        var group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
+        return <div>{dimKey}: {groupKey}</div>;
+      });
+      var metrics = dataValues.map((value) => {
+        return <div>{value}</div>;
+      });
+      return (
+        <div>
+          <div>{groups.toJS()}</div>
+          <div>{metrics.toJS()}</div>
+        </div>
+      );
+    });
+
     return (
       <div className="ChartTooltip" style={style}>
-        I am a Tooltip!
+        {children.toJS()}
       </div>
     );
   },
@@ -82,7 +103,7 @@ var ChartWithTooltip = React.createClass({
 
   getInitialState() {
     return {
-      hoveredElement: null,
+      hoveredData: null,
       mousePosition: {top: -9999, left: -9999},
     };
   },
@@ -90,8 +111,12 @@ var ChartWithTooltip = React.createClass({
   render() {
     return (
       <div>
-        {this.state.hoveredElement &&
-          <ChartTooltip position={this.state.mousePosition} />
+        {this.state.hoveredData &&
+          <ChartTooltip
+            position={this.state.mousePosition}
+            chartData={this.props.chartData}
+            data={this.state.hoveredData}
+          />
         }
         <GoogleChart
           {...this.props}
@@ -115,14 +140,14 @@ var ChartWithTooltip = React.createClass({
     });
   },
 
-  _handleChartMouseOver(hoveredElement) {
+  _handleChartMouseOver(data) {
     // Show the tooltip when a chart element is hovered
-    this.setState({hoveredElement});
+    this.setState({hoveredData: data});
   },
 
   _handleChartMouseOut() {
     // Hide the tooltip when a chart element stops being hovered
-    this.setState({hoveredElement: null});
+    this.setState({hoveredData: null});
   }
 
 });

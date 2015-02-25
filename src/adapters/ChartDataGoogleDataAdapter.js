@@ -75,7 +75,7 @@ class ChartDataGoogleDataAdapter{
    * @return {DataKeys}
    */
   getDataKeys({row, column}){
-    var filter = new Map();
+    var filter = Map();
 
     // Series are indexed starting from 1, while categories are indexed starting from 0
     var series = this._getSeries();
@@ -87,7 +87,6 @@ class ChartDataGoogleDataAdapter{
       filter = filter.set(categories.get('key'), categoryKey);
     }
 
-    console.log(filter.toJS());
     return filter;
   }
 
