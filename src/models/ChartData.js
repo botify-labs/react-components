@@ -88,6 +88,17 @@ class ChartData{
   }
 
   /**
+   * Filter RawData according to given filters
+   * @param  {DataKeys} filters
+   */
+  filterData(filters){
+    if(!filters){
+      return this.rawData;
+    }
+    return this.rawData.filter((value, key) => filters.isSubset(key));
+  }
+
+  /**
    * @param {Any} dimKey
    * @param {Map<String,Any>} dimMetadata {label: <String>, color: <String>, ...}
    */

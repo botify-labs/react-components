@@ -100,7 +100,7 @@ class ChartDataGoogleDataAdapter{
 
   _getGoogleValuesArray(filters){
     var googleValuesArray = this._getEmptyGoogleValuesArray(),
-        data = this._filterData(filters),
+        data = this.chartData.filterData(filters),
         categories = this._getCategories(),
         series = this._getSeries();
 
@@ -118,17 +118,6 @@ class ChartDataGoogleDataAdapter{
       );
     });
     return googleValuesArray;
-  }
-
-  /**
-   * Filter RawData according to given filters
-   * @param  {DataKeys} filters
-   */
-  _filterData(filters){
-    if(!filters){
-      return this.chartData.rawData;
-    }
-    return this.chartData.rawData.filter((value, key) => filters.isSubset(key));
   }
 
   _getEmptyGoogleValuesArray(){
