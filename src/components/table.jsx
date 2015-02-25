@@ -41,7 +41,7 @@ var Table = React.createClass({
 
   render() {
     return (
-      <div class="Table">
+      <div className="Table">
         <table ref="table" className="table table-striped table-bordered dataTable no-footer">
         </table>
       </div>
