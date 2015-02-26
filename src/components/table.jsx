@@ -2,9 +2,9 @@ import React from 'react';
 // Datatables tries to require jQuery
 import DataTable from 'imports?define=>false,exports=>false!datatables';
 
-import '../vendors/datatables-bootstrap/dataTables.bootstrap.css';
+import 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css';
 // Datatables bootstrap integration tries to require jQuery too
-import 'imports?define=>false,exports=>false!../vendors/datatables-bootstrap/dataTables.bootstrap.js';
+import 'imports?define=>false,exports=>false!datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js';
 
 var Table = React.createClass({
 

@@ -5,13 +5,11 @@ var browsers = ['Firefox > 27', 'Chrome > 20', 'Explorer > 9', 'Safari > 6', 'Op
 
 var config = {
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx'],
+    root: [path.resolve(__dirname, 'bower_components')]
   },
   module: {
-    noParse: [
-      // Only ignore the datatables-boostrap js file, otherwise webpack will try to parse requires
-      /vendors\/datatables-bootstrap.*\.js/
-    ],
+    noParse: [/datatables-plugins\/.*\.js$/],
     loaders: [
       {
         test: /\.scss$/,
@@ -35,7 +33,7 @@ var config = {
   }
 };
 
-var JSX_EXCLUDES = [/node_modules/, /vendors/];
+var JSX_EXCLUDES = [/node_modules/, /bower_components/];
 
 module.exports = function(dev) {
   if (dev) {

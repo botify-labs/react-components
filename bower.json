@@ -1,0 +1,10 @@
+{
+  "name": "react-components",
+  "version": "0.0.1",
+  "description": "ReactJS components",
+  "author": "Alexandre Kirszenberg <alexandre.kirszenberg@gmail.com>",
+  "main": "dist/index.js",
+  "dependencies": {
+    "datatables-plugins": "git://github.com/DataTables/Plugins.git#1.10.5"
+  }
+}
