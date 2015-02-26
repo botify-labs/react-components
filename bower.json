@@ -5,6 +5,7 @@
   "author": "Alexandre Kirszenberg <alexandre.kirszenberg@gmail.com>",
   "main": "dist/index.js",
   "dependencies": {
-    "datatables-plugins": "git://github.com/DataTables/Plugins.git#1.10.5"
+    "datatables-plugins": "git://github.com/DataTables/Plugins.git#1.10.5",
+    "venn": "git://github.com/benfred/venn.js.git#f4d1bd5b7e7bab5896b1f230cf23b11d7db60262"
   }
 }
