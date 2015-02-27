@@ -48,7 +48,7 @@ var Chart = React.createClass({
       });
 
       var metrics = dataValues.map((value, idx) => {
-        var metric = this.props.chartData.getMetric(index);
+        var metric = this.props.chartData.getMetric(idx);
         return (
           <tr key={idx}>
             <td>{metric.get('label')}</td>
@@ -60,10 +60,10 @@ var Chart = React.createClass({
       return (
         <table className="Tooltip-datum">
           <tbody className="groups">
-            {groups}
+            {groups.toJS()}
           </tbody>
           <tbody className="metrics">
-            {metrics}
+            {metrics.toJS()}
           </tbody>
         </table>
       );
