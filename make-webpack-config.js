@@ -8,6 +8,11 @@ var config = {
     extensions: ['', '.js', '.jsx'],
     root: [path.resolve(__dirname, 'bower_components')]
   },
+  plugins: [
+    new webpack.ResolverPlugin(
+      new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("bower.json", ["main"])
+    )
+  ],
   module: {
     noParse: [/datatables-plugins\/.*\.js$/],
     loaders: [
@@ -52,12 +57,13 @@ module.exports = function(dev) {
       filename: 'test.js',
       publicPath: '/dist/'
     };
-    config.plugins = [
+    config.plugins.push(
       new webpack.HotModuleReplacementPlugin(),
-    ];
+      new webpack.NoErrorsPlugin()
+    );
     config.module.loaders.push({
       test: /\.jsx?$/,
-      loaders: ['jsx-loader', 'babel-loader?experimental'],
+      loaders: ['react-hot-loader', 'babel-loader?experimental'],
       exclude: JSX_EXCLUDES
     });
   } else {
