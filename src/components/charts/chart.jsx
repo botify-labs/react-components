@@ -1,9 +1,6 @@
 import React from 'react/addons';
 
-import GoogleChart from './google-chart';
-import ChartTooltip from './chart-tooltip.jsx';
-
-import './style.scss';
+import HoverTooltip from '../tooltip/hover-tooltip';
 
 var Chart = React.createClass({
 
@@ -11,45 +8,67 @@ var Chart = React.createClass({
 
   getInitialState() {
     return {
-      hoveredData: null,
-      mousePosition: {top: -9999, left: -9999},
+      hoveredData: null
     };
   },
 
   render() {
     return (
-      <div>
-        <React.addons.CSSTransitionGroup transitionName="appear">
-          {this.state.hoveredData &&
-            <ChartTooltip
-              key={this.state.hoveredData.hashCode()}
-              position={this.state.mousePosition}
-              chartData={this.props.chartData}
-              data={this.state.hoveredData}
-            />
-          }
-        </React.addons.CSSTransitionGroup>
-        <GoogleChart
+      <HoverTooltip
+        hasTooltip={!!this.state.hoveredData}
+        renderTooltip={this._renderTooltip}
+      >
+        <this.props.chart
           {...this.props}
           key="chart"
           onChartMouseOver={this._handleChartMouseOver}
           onChartMouseOut={this._handleChartMouseOut}
-          onMouseMove={this._handleMouseMove}
+          onMouseMove={this._updateMousePosition}
         />
-      </div>
+      </HoverTooltip>
     );
   },
 
-  _handleMouseMove(e) {
-    // Keep track of the mouse position so that we can have the tooltip
-    // follow the cursor
-    this.setState({
-      mousePosition: {
-        // TODO: replace this with actual values
-        top: e.pageY,
-        left: e.pageX
-      }
+  _renderTooltip() {
+    var data = this.state.hoveredData.entrySeq().map(([dataKeys, dataValues]) => {
+      var groups = dataKeys.entrySeq().map(([dimKey, groupKey], idx) => {
+        var dimension = this.props.chartData.getDimension(dimKey);
+        var group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
+        return (
+          <tr key={idx}>
+            <td>{dimension.get('label')}</td>
+            <td>{group.get('label')}</td>
+          </tr>
+        );
+      });
+
+      var metrics = dataValues.map((value, idx) => {
+        var metric = this.props.chartData.getMetric(index);
+        return (
+          <tr key={idx}>
+            <td>{metric.get('label')}</td>
+            <td>{metric.get('render')(value)}</td>
+          </tr>
+        );
+      });
+
+      return (
+        <table className="Tooltip-datum">
+          <tbody className="groups">
+            {groups}
+          </tbody>
+          <tbody className="metrics">
+            {metrics}
+          </tbody>
+        </table>
+      );
     });
+
+    return (
+      <div className="Tooltip-data">
+        {data.toJS()}
+      </div>
+    );
   },
 
   _handleChartMouseOver(data) {

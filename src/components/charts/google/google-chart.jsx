@@ -1,8 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 
-import ChartData from '../../models/ChartData';
-import ChartDataGoogleDataAdapter from '../../adapters/ChartDataGoogleDataAdapter';
+import ChartData from '../../../models/ChartData';
+import ChartDataGoogleDataAdapter from '../../../adapters/ChartDataGoogleDataAdapter';
 
 /**
  * Wrapper around a generic Google Chart
@@ -17,7 +17,7 @@ var GoogleChart = React.createClass({
 
   propTypes: {
     // Subclass of google.visualization.CoreChart
-    chart: React.PropTypes.func,
+    googleChart: React.PropTypes.func,
     // Chart data
     chartData: React.PropTypes.instanceOf(ChartData),
     // Chart options
@@ -46,7 +46,7 @@ var GoogleChart = React.createClass({
 
   shouldComponentUpdate(nextProps, nextState) {
     // TODO: use immutable!
-    return !(_.isEqual(nextProps, this.props) && _.isEqual(nextState, this.state));
+    return !(nextProps.chartData === this.props.chartData);
   },
 
   componentDidUpdate(prevProps, prevState) {
@@ -66,7 +66,7 @@ var GoogleChart = React.createClass({
   _initializeChart() {
     this.adapter = new ChartDataGoogleDataAdapter(this.props.chartData);
 
-    this.chart = new this.props.chart(this.getDOMNode());
+    this.chart = new this.props.googleChart(this.getDOMNode());
 
     this._bindChartEvents();
     this._drawChart();

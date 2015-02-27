@@ -1,15 +1,13 @@
 import React from 'react/addons';
 import {Map} from 'immutable';
 
-import ChartData from '../../models/ChartData';
+import './tooltip.scss';
 
-var ChartTooltip = React.createClass({
+var Tooltip = React.createClass({
 
-  displayName: 'ChartTooltip',
+  displayName: 'Tooltip',
 
   propTypes: {
-    chartData: React.PropTypes.instanceOf(ChartData),
-    data: React.PropTypes.instanceOf(Map),
     position: React.PropTypes.shape({
       top: React.PropTypes.number.isRequired,
       left: React.PropTypes.number.isRequired
@@ -41,29 +39,9 @@ var ChartTooltip = React.createClass({
       style = this._getStyle();
     }
 
-    var children = this.props.data.map((dataValues, dataKeys) => {
-      var groups = dataKeys.map((groupKey, dimKey) => {
-        var dimension = this.props.chartData.getDimension(dimKey);
-        var group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
-        return <div key={`${dimKey}.${groupKey}`}>{dimension.get('label')}: {group.get('label')}</div>;
-      });
-
-      var metrics = dataValues.map((value, index) => {
-        var metric = this.props.chartData.getMetric(index);
-        return <div key={index}>{metric.get('label')}: {metric.get('render')(value)}</div>;
-      });
-
-      return (
-        <div className="ChartTooltip-data">
-          <div key="groups">{groups.toJS()}</div>
-          <div key="metrics">{metrics.toJS()}</div>
-        </div>
-      );
-    });
-
     return (
-      <div className="ChartTooltip" style={style}>
-        {children.toJS()}
+      <div className="Tooltip" style={style}>
+        {this.props.children}
       </div>
     );
   },
@@ -98,4 +76,4 @@ var ChartTooltip = React.createClass({
 
 });
 
-export default ChartTooltip;
+export default Tooltip;
