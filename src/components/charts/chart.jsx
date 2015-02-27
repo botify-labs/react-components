@@ -12,6 +12,10 @@ var Chart = React.createClass({
     };
   },
 
+  getImageURI() {
+    return this.refs.chart.getImageURI();
+  },
+
   render() {
     return (
       <HoverTooltip
@@ -21,6 +25,7 @@ var Chart = React.createClass({
         <this.props.chart
           {...this.props}
           key="chart"
+          ref="chart"
           onChartMouseOver={this._handleChartMouseOver}
           onChartMouseOut={this._handleChartMouseOut}
           onMouseMove={this._updateMousePosition}
