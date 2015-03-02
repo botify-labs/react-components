@@ -7,42 +7,87 @@ import venn from 'imports?window=>{}!exports?window.venn!venn';
 
 import HoverTooltip from './tooltip/hover-tooltip';
 
-/**
- * Wrapper around the venn d3 library
- */
-var VennDiagram = React.createClass({
+import './venn-diagram.scss';
 
-  displayName: 'VennDiagram',
+var VennLegend = React.createClass({
+
+  render() {
+    var sets = this.props.sets.map((set, idx) => {
+      return (
+        <li
+          key={`set${idx}`}
+          onMouseOver={this.props.onMouseOver && this.props.onMouseOver.bind(null, set)}
+          onMouseOut={this.props.onMouseOut && this.props.onMouseOut.bind(null, set)}
+        >
+          <div
+            className="VennLegend-square"
+            style={{backgroundColor: set.metadata.color}}
+          />
+          {set.metadata.label}
+        </li>
+      );
+    });
+
+    var intersections = this.props.intersections.map((intersection, idx) => {
+      return (
+        <li
+          key={`intersection${idx}`}
+          onMouseOver={this.props.onMouseOver && this.props.onMouseOver.bind(null, intersection)}
+          onMouseOut={this.props.onMouseOut && this.props.onMouseOut.bind(null, intersection)}
+        >
+          <div
+            className="VennLegend-square"
+            style={{backgroundColor: intersection.metadata.color}}
+          />
+          {intersection.metadata.label}
+        </li>
+      );
+    });
+
+    return (
+      <ul className="VennLegend">
+        {sets}
+        {intersections}
+      </ul>
+    );
+  }
+
+});
+
+var VennCircles = React.createClass({
+
+  displayName: 'VennCircles',
+
+  componentDidMount() {
+    this._scale();
+
+    window.addEventListener('resize', this._scale);
+  },
 
   getInitialState() {
     return {
-      hoveredData: null,
-      width: null
+      width: 1000,
+      height: 1000
     };
   },
 
-  componentDidMount() {
+  _scale() {
     this.setState({
-      width: this.getDOMNode().offsetWidth
+      width: this.getDOMNode().offsetWidth,
+      height: this.getDOMNode().offsetHeight
     });
   },
 
   render() {
-    if (this.state.width === null) {
-      return <div></div>;
-    }
-
-    var width = this.state.width;
-    var height = 400;
     var padding = 10;
 
     // get positions for each set
     var circles = venn.venn(this.props.sets, this.props.intersections);
-    circles = venn.scaleSolution(circles, this.state.width, height, padding);
+    circles = venn.scaleSolution(circles, this.state.width, this.state.height, padding);
 
     var circleElements = circles.map((set, idx) => {
       var stroke, strokeWidth;
-      if (set === this.state.hoveredData) {
+      if (set === this.props.activeElement) {
         stroke = 'black';
         strokeWidth = 5;
       }
@@ -66,7 +111,7 @@ var VennDiagram = React.createClass({
       var sets = intersection.sets;
       var combination = [circles[sets[0]], circles[sets[1]]];
       var stroke, strokeWidth;
-      if (intersection === this.state.hoveredData) {
+      if (intersection === this.props.activeElement) {
         stroke = 'black';
         strokeWidth = 5;
       }
@@ -85,31 +130,84 @@ var VennDiagram = React.createClass({
     });
 
     return (
+      <svg
+        className="VennCircles"
+        width={this.props.width}
+        height={this.props.height}
+      >
+        {circleElements}
+        {intersectionElements}
+      </svg>
+    );
+  },
+
+  _handleMouseOver(thing) {
+    if (this.props.onMouseOver) {
+      this.props.onMouseOver(thing);
+    }
+  },
+
+  _handleMouseOut(thing) {
+    if (this.props.onMouseOut) {
+      this.props.onMouseOut(thing);
+    }
+  }
+
+})
+
+/**
+ * Wrapper around the venn d3 library
+ */
+var VennDiagram = React.createClass({
+
+  displayName: 'VennDiagram',
+
+  getInitialState() {
+    return {
+      activeElement: null,
+      width: null
+    };
+  },
+
+  render() {
+    return (
       <HoverTooltip
-        hasTooltip={!!this.state.hoveredData}
+        hasTooltip={!!this.state.activeElement}
         renderTooltip={this._renderTooltip}
       >
-        <svg width={width} height={height} ref="svg">
-          {circleElements}
-          {intersectionElements}
-        </svg>
+        <div className="VennChart" style={{height: 500}}>
+          <VennCircles
+            ref="canvas"
+            sets={this.props.sets}
+            intersections={this.props.intersections}
+            activeElement={this.state.activeElement}
+            onMouseOver={this._handleMouseOver}
+            onMouseOut={this._handleMouseOut}
+          />
+          <VennLegend
+            sets={this.props.sets}
+            intersections={this.props.intersections}
+            onMouseOver={this._handleMouseOver}
+            onMouseOut={this._handleMouseOut}
+          />
+        </div>
       </HoverTooltip>
     );
   },
 
   _handleMouseOver(thing) {
-    this.setState({hoveredData: thing});
+    this.setState({activeElement: thing});
   },
 
   _handleMouseOut(thing) {
-    this.setState({hoveredData: null});
+    this.setState({activeElement: null});
   },
 
   _renderTooltip() {
     return (
       <div>
-        <div>{this.state.hoveredData.metadata.label}</div>
-        <div>Size: {this.state.hoveredData.size}</div>
+        <div>{this.state.activeElement.metadata.label}</div>
+        <div>Size: {this.state.activeElement.size}</div>
       </div>
     );
   },
