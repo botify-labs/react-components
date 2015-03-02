@@ -64,14 +64,14 @@ var sets = [
   {
     metadata: {
       label: 'Current URLs',
-      color: COLORS.ORANGE1
+      color: 'red'
     },
     size: 100
   },
   {
     metadata: {
       label: 'Previous URLs',
-      color: COLORS.GREEN
+      color: 'blue'
     },
     size: 80
   }
@@ -81,7 +81,8 @@ var intersections = [
   {
     sets: [0, 1],
     metadata: {
-      label: 'Common URLs'
+      label: 'Common URLs',
+      color: 'purple'
     },
     size: 40
   }

@@ -1,10 +1,9 @@
 import React from 'react';
 import Immutable from 'immutable';
-import d3 from 'd3';
 
 // venn sets itself on the window object and expects d3 to be globally set as well
 // below is a shim that fixes this
-import venn from 'imports?d3=d3,window=>{}!exports?window.venn!venn';
+import venn from 'imports?window=>{}!exports?window.venn!venn';
 
 import HoverTooltip from './tooltip/hover-tooltip';
 
@@ -37,16 +36,16 @@ var VennDiagram = React.createClass({
     var height = 400;
     var padding = 10;
 
-    var colours = d3.scale.category10();
-
     // get positions for each set
     var circles = venn.venn(this.props.sets, this.props.intersections);
     circles = venn.scaleSolution(circles, this.state.width, height, padding);
 
     var circleElements = circles.map((set, idx) => {
-      var style = {
-        stroke: set === this.state.hoveredData ? 'black' : null
-      };
+      var stroke, strokeWidth;
+      if (set === this.state.hoveredData) {
+        stroke = 'black';
+        strokeWidth = 5;
+      }
 
       return (
         <circle
@@ -56,9 +55,9 @@ var VennDiagram = React.createClass({
           r={set.radius}
           cx={set.x}
           cy={set.y}
-          fill={colours(idx)}
-          style={style}
-          opacity="0.5"
+          fill={set.metadata.color}
+          stroke={stroke}
+          strokeWidth={strokeWidth}
         />
       );
     });
@@ -66,18 +65,21 @@ var VennDiagram = React.createClass({
     var intersectionElements = this.props.intersections.map((intersection, idx) => {
       var sets = intersection.sets;
       var combination = [circles[sets[0]], circles[sets[1]]];
-      var style = {
-        stroke: intersection === this.state.hoveredData ? 'black' : null
-      };
+      var stroke, strokeWidth;
+      if (intersection === this.state.hoveredData) {
+        stroke = 'black';
+        strokeWidth = 5;
+      }
 
       return (
         <path
           key={`intersection${idx}`}
           onMouseOver={this._handleMouseOver.bind(null, intersection)}
           onMouseOut={this._handleMouseOut.bind(null, intersection)}
-          style={style}
+          stroke={stroke}
+          strokeWidth={strokeWidth}
           d={venn.intersectionAreaPath(combination) + 'Z'}
-          fill="transparent"
+          fill={intersection.metadata.color}
         />
       );
     });
