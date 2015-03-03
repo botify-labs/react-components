@@ -292,9 +292,9 @@ var VennLegend = React.createClass({
 
 });
 
-var VennCircles = React.createClass({
+var VennCanvas = React.createClass({
 
-  displayName: 'VennCircles',
+  displayName: 'VennCanvas',
 
   componentDidMount() {
     this._scale();
@@ -378,7 +378,7 @@ var VennCircles = React.createClass({
 
     return (
       <svg
-        className="VennCircles"
+        className="VennCanvas"
         width={this.props.width}
         height={this.props.height}
       >
@@ -425,7 +425,7 @@ var VennDiagram = React.createClass({
         renderTooltip={this._renderTooltip}
       >
         <div className="VennChart" style={{height: 500}}>
-          <VennCircles
+          <VennCanvas
             ref="canvas"
             sets={this.props.sets}
             intersections={this.props.intersections}
