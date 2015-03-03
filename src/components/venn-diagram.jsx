@@ -247,6 +247,50 @@ var CircleDifferenceStroke = React.createClass({
 
 });
 
+var CircleDifferenceHighlight = React.createClass({
+
+  render() {
+    var {c1, c2, width, fill} = this.props;
+
+    return (
+      <CircleDifference
+        c1={_.assign({}, c1, {
+          radius: c1.radius - width
+        })}
+        c2={_.assign({}, c2, {
+          radius: c2.radius + width
+        })}
+        fill={fill}
+        style={{pointerEvents: 'none'}}
+        {..._.omit(this.props, 'fill', 'width', 'c1', 'c2')}
+      />
+    );
+  }
+
+});
+
+var CircleIntersectionHighlight = React.createClass({
+
+  render() {
+    var {c1, c2, width, fill} = this.props;
+
+    return (
+      <CircleIntersection
+        c1={_.assign({}, c1, {
+          radius: c1.radius - width
+        })}
+        c2={_.assign({}, c2, {
+          radius: c2.radius - width
+        })}
+        fill={fill}
+        style={{pointerEvents: 'none'}}
+        {..._.omit(this.props, 'fill', 'width', 'c1', 'c2')}
+      />
+    );
+  }
+
+});
+
 var VennLegend = React.createClass({
 
   render() {
