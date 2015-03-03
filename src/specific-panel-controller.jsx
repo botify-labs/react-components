@@ -60,18 +60,21 @@ var currentUrls = allUrls;
 var previousUrls = disappearedUrls + (allUrls - newUrls);
 var commonUrls = allUrls - newUrls;
 
+// TODO: faire classe? définir structure
+// addSet
+// addIntersection
 var sets = [
   {
     metadata: {
       label: 'Current URLs',
-      color: 'red'
+      color: '#FFDC00'
     },
     size: 100
   },
   {
     metadata: {
       label: 'Previous URLs',
-      color: 'blue'
+      color: '#FF4136'
     },
     size: 80
   }
@@ -82,9 +85,21 @@ var intersections = [
     sets: [0, 1],
     metadata: {
       label: 'Common URLs',
-      color: 'purple'
+      color: '#FF851B'
     },
     size: 40
+  }
+];
+
+// TODO: offrir la possibilité
+var exclusives = [
+  {
+    set: 0,
+    label: 'New URLS'
+  },
+  {
+    set: 1,
+    label: 'Disappeared URLs'
   }
 ];
 
@@ -166,6 +181,7 @@ var SpecificPanelController = React.createClass({
         key="vennDiagram"
         sets={sets}
         intersections={intersections}
+        exclusives={exclusives}
       />
     );
   },

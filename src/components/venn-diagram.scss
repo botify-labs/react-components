@@ -20,13 +20,13 @@
   > li {
     display: flex;
     align-items: center;
+    margin: 2px 0;
   }
 
   .VennLegend-square {
     display: inline-block;
     width: 15px;
     height: 15px;
-    border-radius: 3px;
     margin-right: 0.4em;
   }
 }

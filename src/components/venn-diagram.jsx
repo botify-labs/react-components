@@ -1,5 +1,7 @@
 import React from 'react';
 import Immutable from 'immutable';
+import _ from 'lodash';
+import Color from 'color';
 
 // venn sets itself on the window object and expects d3 to be globally set as well
 // below is a shim that fixes this
@@ -8,6 +10,242 @@ import venn from 'imports?window=>{}!exports?window.venn!venn';
 import HoverTooltip from './tooltip/hover-tooltip';
 
 import './venn-diagram.scss';
+
+function getFullShape(dim = 10000) {
+  var halfDim = dim / 2;
+  return [
+    `M ${-halfDim} ${-halfDim}`,
+    `L ${halfDim} ${-halfDim}`,
+    `L ${halfDim} ${halfDim}`,
+    `L ${-halfDim} ${halfDim}`,
+    `Z`
+  ].join(' ');
+}
+
+function getCircleShape(x, y, radius) {
+  return [
+    `M ${x} ${y}`,
+    `m ${-radius}, 0`,
+    `a ${radius},${radius} 0 1,0 ${radius * 2},0`,
+    `a ${radius},${radius} 0 1,0 ${-radius * 2},0`,
+    `Z`
+  ].join(' ');
+}
+
+var UniqueIdMixin = {
+
+  componentWillMount() {
+    this._id = _.uniqueId();
+  },
+
+  _getId(id) {
+    return `${this._id}.${id}`;
+  }
+
+};
+
+var Path = React.createClass({
+
+  componentDidMount() {
+    if (this.props.inverse) {
+      this._setFillRule();
+    }
+  },
+
+  componentDidUpdate() {
+    if (this.props.inverse) {
+      this._setFillRule();
+    }
+  },
+
+  _setFillRule() {
+    this.getDOMNode().setAttribute('fill-rule', 'evenodd');
+  },
+
+  render() {
+    var {d, inverse} = this.props;
+
+    if (inverse) {
+      d = getFullShape() + d;
+    }
+
+    return <path d={d} {..._.omit(this.props, 'd', 'inverse')}/>;
+  }
+
+});
+
+var Circle = React.createClass({
+
+  render() {
+    var {x, y, radius} = this.props;
+
+    return (
+      <Path d={getCircleShape(x, y, radius)} {..._.omit(this.props, 'x', 'y', 'radius')}/>
+    );
+  }
+
+});
+
+
+var Mask = React.createClass({
+
+  mixins: [UniqueIdMixin],
+
+  componentDidMount() {
+    this._setMask();
+  },
+
+  componentDidUpdate() {
+    this._setMask();
+  },
+
+  _setMask() {
+    this.refs.group.getDOMNode().setAttribute('mask', `url(#${this._getId('mask')})`)
+  },
+
+  render() {
+    return (
+      <g>
+        <mask id={this._getId('mask')}>
+          {this.props.mask}
+        </mask>
+        <g ref="group" {..._.omit(this.props, 'children', 'mask')}>
+          {this.props.children}
+        </g>
+      </g>
+    );
+  }
+
+});
+
+var ClipPath = React.createClass({
+
+  mixins: [UniqueIdMixin],
+
+  componentDidMount() {
+    this._setClipPath();
+  },
+
+  componentDidUpdate() {
+    this._setClipPath();
+  },
+
+  _setClipPath() {
+    this.refs.group.getDOMNode().setAttribute('clip-path', `url(#${this._getId('clipPath')})`)
+  },
+
+  render() {
+    return (
+      <g>
+        <clipPath id={this._getId('clipPath')}>
+          {this.props.path}
+        </clipPath>
+        <g ref="group" {..._.omit(this.props, 'children', 'path')}>
+          {this.props.children}
+        </g>
+      </g>
+    );
+  }
+
+});
+
+var CircleIntersection = React.createClass({
+
+  render() {
+    var {c1, c2, fill, inverse} = this.props;
+
+    var clipPath = <Circle {...c2} />;
+
+    return (
+      <ClipPath path={clipPath} {..._.omit(this.props, 'fill', 'c1', 'c2')}>
+        <Circle fill={fill} {...c1} />
+      </ClipPath>
+    );
+  }
+
+});
+
+var CircleDifference = React.createClass({
+
+  render() {
+    var {c1, c2, fill} = this.props;
+
+    var clipPath = <Circle inverse={true} {...c2} />;
+
+    return (
+      <ClipPath path={clipPath} {..._.omit(this.props, 'fill', 'c1', 'c2')}>
+        <Circle fill={fill} {...c1} />
+      </ClipPath>
+    );
+  }
+
+});
+
+var CircleIntersectionStroke = React.createClass({
+
+  render() {
+    var {c1, c2, width, fill} = this.props;
+
+    var mask = (
+      <g>
+        <CircleIntersection
+          c1={c1}
+          c2={c2}
+          fill="white"
+        />
+        <CircleIntersection
+          c1={_.assign({}, c1, {
+            radius: c1.radius - width
+          })}
+          c2={_.assign({}, c2, {
+            radius: c2.radius - width
+          })}
+          fill="black"
+        />
+      </g>
+    );
+
+    return (
+      <Mask style={{pointerEvents: 'none'}} mask={mask} {..._.omit(this.props, 'fill', 'c1', 'c2')}>
+        <rect width="100%" height="100%" fill={fill} />
+      </Mask>
+    );
+  }
+
+});
+
+var CircleDifferenceStroke = React.createClass({
+
+  render() {
+    var {c1, c2, width, fill} = this.props;
+
+    var mask = (
+      <g>
+        <CircleDifference
+          c1={c1}
+          c2={c2}
+          fill="white"
+        />
+        <CircleDifference
+          c1={_.assign({}, c1, {
+            radius: c1.radius - width
+          })}
+          c2={_.assign({}, c2, {
+            radius: c2.radius + width
+          })}
+          fill="black"
+        />
+      </g>
+    );
+
+    return (
+      <Mask style={{pointerEvents: 'none'}} mask={mask} {..._.omit(this.props, 'fill', 'c1', 'c2')}>
+        <rect width="100%" height="100%" fill={fill} />
+      </Mask>
+    );
+  }
+
+});
 
 var VennLegend = React.createClass({
 
@@ -85,45 +323,54 @@ var VennCircles = React.createClass({
     var circles = venn.venn(this.props.sets, this.props.intersections);
     circles = venn.scaleSolution(circles, this.state.width, this.state.height, padding);
 
+    var intersectionStroke, differenceStroke;
+
     var circleElements = circles.map((set, idx) => {
-      var stroke, strokeWidth;
       if (set === this.props.activeElement) {
-        stroke = 'black';
-        strokeWidth = 5;
+        differenceStroke = (
+          <CircleDifferenceStroke
+            c1={set}
+            c2={circles[1 - idx]}
+            fill={Color(set.metadata.color).darken(0.2).rgbString()}
+            width={4}
+          />
+        );
       }
 
       return (
-        <circle
+        <CircleDifference
           key={`circle${idx}`}
           onMouseOver={this._handleMouseOver.bind(null, set)}
           onMouseOut={this._handleMouseOut.bind(null, set)}
-          r={set.radius}
-          cx={set.x}
-          cy={set.y}
+          c1={set}
+          c2={circles[1 - idx]}
           fill={set.metadata.color}
-          stroke={stroke}
-          strokeWidth={strokeWidth}
         />
       );
     });
 
     var intersectionElements = this.props.intersections.map((intersection, idx) => {
       var sets = intersection.sets;
-      var combination = [circles[sets[0]], circles[sets[1]]];
-      var stroke, strokeWidth;
+      var [c1, c2] = [circles[sets[0]], circles[sets[1]]];
+
       if (intersection === this.props.activeElement) {
-        stroke = 'black';
-        strokeWidth = 5;
+        intersectionStroke = (
+          <CircleIntersectionStroke
+            c1={c1}
+            c2={c2}
+            fill={Color(intersection.metadata.color).darken(0.2).rgbString()}
+            width={4}
+          />
+        );
       }
 
       return (
-        <path
+        <CircleIntersection
           key={`intersection${idx}`}
           onMouseOver={this._handleMouseOver.bind(null, intersection)}
           onMouseOut={this._handleMouseOut.bind(null, intersection)}
-          stroke={stroke}
-          strokeWidth={strokeWidth}
-          d={venn.intersectionAreaPath(combination) + 'Z'}
+          c1={c1}
+          c2={c2}
           fill={intersection.metadata.color}
         />
       );
@@ -137,6 +384,8 @@ var VennCircles = React.createClass({
       >
         {circleElements}
         {intersectionElements}
+        {intersectionStroke}
+        {differenceStroke}
       </svg>
     );
   },
