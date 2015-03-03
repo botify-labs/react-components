@@ -369,13 +369,17 @@ var VennCanvas = React.createClass({
 
     var intersectionStroke, differenceStroke;
 
-    var circleElements = circles.map((set, idx) => {
-      if (set === this.props.activeElement) {
+    var exclusiveElements = circles.map((set, idx) => {
+      var exclusive = this.props.exclusives[idx];
+      var color = Color(set.metadata.color);
+
+      if (exclusive === this.props.activeElement) {
+        var activeColor = color.clone().lightness(color.lightness() + 10);
         differenceStroke = (
-          <CircleDifferenceStroke
+          <CircleDifferenceHighlight
             c1={set}
             c2={circles[1 - idx]}
-            fill={Color(set.metadata.color).darken(0.2).rgbString()}
+            fill={activeColor.rgbString()}
             width={4}
           />
         );
@@ -384,11 +388,11 @@ var VennCanvas = React.createClass({
       return (
         <CircleDifference
           key={`circle${idx}`}
-          onMouseOver={this._handleMouseOver.bind(null, set)}
-          onMouseOut={this._handleMouseOut.bind(null, set)}
+          onMouseOver={this._handleMouseOver.bind(null, exclusive)}
+          onMouseOut={this._handleMouseOut.bind(null, exclusive)}
           c1={set}
           c2={circles[1 - idx]}
-          fill={set.metadata.color}
+          fill={color.rgbString()}
         />
       );
     });
@@ -396,13 +400,15 @@ var VennCanvas = React.createClass({
     var intersectionElements = this.props.intersections.map((intersection, idx) => {
       var sets = intersection.sets;
       var [c1, c2] = [circles[sets[0]], circles[sets[1]]];
+      var color = Color(intersection.metadata.color);
 
       if (intersection === this.props.activeElement) {
+        var activeColor = color.clone().lightness(color.lightness() + 10);
         intersectionStroke = (
-          <CircleIntersectionStroke
+          <CircleIntersectionHighlight
             c1={c1}
             c2={c2}
-            fill={Color(intersection.metadata.color).darken(0.2).rgbString()}
+            fill={activeColor.rgbString()}
             width={4}
           />
         );
@@ -426,7 +432,7 @@ var VennCanvas = React.createClass({
         width={this.props.width}
         height={this.props.height}
       >
-        {circleElements}
+        {exclusiveElements}
         {intersectionElements}
         {intersectionStroke}
         {differenceStroke}
@@ -473,6 +479,7 @@ var VennDiagram = React.createClass({
             ref="canvas"
             sets={this.props.sets}
             intersections={this.props.intersections}
+            exclusives={this.props.exclusives}
             activeElement={this.state.activeElement}
             onMouseOver={this._handleMouseOver}
             onMouseOut={this._handleMouseOut}
@@ -480,6 +487,7 @@ var VennDiagram = React.createClass({
           <VennLegend
             sets={this.props.sets}
             intersections={this.props.intersections}
+            exclusives={this.props.exclusives}
             onMouseOver={this._handleMouseOver}
             onMouseOut={this._handleMouseOut}
           />

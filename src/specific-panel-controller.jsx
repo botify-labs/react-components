@@ -67,16 +67,16 @@ var sets = [
   {
     metadata: {
       label: 'Current URLs',
-      color: '#FFDC00'
+      color: '#2ECC40'
     },
-    size: 100
+    size: currentUrls
   },
   {
     metadata: {
       label: 'Previous URLs',
-      color: '#FF4136'
+      color: '#0074D9'
     },
-    size: 80
+    size: previousUrls
   }
 ];
 
@@ -85,21 +85,27 @@ var intersections = [
     sets: [0, 1],
     metadata: {
       label: 'Common URLs',
-      color: '#FF851B'
+      color: '#2ee3e3'
     },
-    size: 40
+    size: commonUrls
   }
 ];
 
 // TODO: offrir la possibilité
 var exclusives = [
   {
-    set: 0,
-    label: 'New URLS'
+    metadata: {
+      label: 'New URLS',
+      color: '#2ECC40'
+    },
+    size: newUrls
   },
   {
-    set: 1,
-    label: 'Disappeared URLs'
+    metadata: {
+      label: 'Disappeared URLs',
+      color: '#0074D9'
+    },
+    size: disappearedUrls
   }
 ];
 
