@@ -92,7 +92,7 @@ const VennCanvas = React.createClass({
         <el.class
           key={idx}
           onMouseOver={onMouseOver && onMouseOver.bind(null, el.set)}
-          onMouseOut={onMouseOut && onMouseOver.bind(null, el.set)}
+          onMouseOut={onMouseOut && onMouseOut.bind(null, el.set)}
           c1={el.c1}
           c2={el.c2}
           fill={el.set.get('color')}
