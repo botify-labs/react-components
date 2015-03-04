@@ -4,52 +4,30 @@ const VennLegend = React.createClass({
 
   displayName: 'VennLegend',
 
-  propTypes: {
-    sets: React.PropTypes.array,
-    intersections: React.PropTypes.array,
-    exclusives: React.PropTypes.array,
-    activeElement: React.PropTypes.object,
-    onMouseOver: React.PropTypes.func,
-    onMouseOut: React.PropTypes.func,
-  },
-
   render() {
-    let exclusives = this.props.exclusives.map((set, idx) => {
+    let {vennData, activeSet, inclusive} = this.props;
+
+    let sets = vennData.getSets();
+    let intersections = vennData.getIntersections().valueSeq();
+    let elements = sets.concat(intersections).map((set, idx) => {
       return (
         <li
-          key={`set${idx}`}
+          key={idx}
           onMouseOver={this.props.onMouseOver && this.props.onMouseOver.bind(null, set)}
           onMouseOut={this.props.onMouseOut && this.props.onMouseOut.bind(null, set)}
         >
           <div
             className="VennLegend-square"
-            style={{backgroundColor: set.metadata.color}}
+            style={{backgroundColor: set.get('color')}}
           />
-          {set.metadata.label}
+          {set.get(inclusive ? 'inclusiveLabel' : 'exclusiveLabel')}
         </li>
       );
-    });
-
-    let intersections = this.props.intersections.map((intersection, idx) => {
-      return (
-        <li
-          key={`intersection${idx}`}
-          onMouseOver={this.props.onMouseOver && this.props.onMouseOver.bind(null, intersection)}
-          onMouseOut={this.props.onMouseOut && this.props.onMouseOut.bind(null, intersection)}
-        >
-          <div
-            className="VennLegend-square"
-            style={{backgroundColor: intersection.metadata.color}}
-          />
-          {intersection.metadata.label}
-        </li>
-      );
-    });
+    }).toJS();
 
     return (
       <ul className="VennLegend">
-        {exclusives}
-        {intersections}
+        {elements}
       </ul>
     );
   }

@@ -5,6 +5,7 @@ import Chart from './components/charts/chart';
 import GoogleColumnChart from './components/charts/google/google-column-chart';
 import VennDiagram from './components/venn-diagram/venn-diagram';
 import ChartData from './models/ChartData';
+import VennData from './models/VennData';
 import Immutable from 'immutable';
 
 var COLORS = {}; //#lol
@@ -19,38 +20,38 @@ chartData.addMetric(Immutable.Map({
 chartData.addDimension('delay', Immutable.Map({
   label: 'Delay'
 }));
-chartData.addDimensionGroup('delay', 'fast', new Immutable.Map({label: "Fast (<500 ms)", color: COLORS.GOOD}));
-chartData.addDimensionGroup('delay', 'medium', new Immutable.Map({label: "Medium (500 ms < 1 s)", color: COLORS.MEDIUM}));
-chartData.addDimensionGroup('delay', 'slow', new Immutable.Map({label: "Slow (1 s < 2 s)", color: COLORS.BAD}));
-chartData.addDimensionGroup('delay', 'slowest', new Immutable.Map({label: "Slowest (>2 s)", color: COLORS.VERY_BAD}));
+chartData.addDimensionGroup('delay', 'fast', Immutable.Map({label: "Fast (<500 ms)", color: COLORS.GOOD}));
+chartData.addDimensionGroup('delay', 'medium', Immutable.Map({label: "Medium (500 ms < 1 s)", color: COLORS.MEDIUM}));
+chartData.addDimensionGroup('delay', 'slow', Immutable.Map({label: "Slow (1 s < 2 s)", color: COLORS.BAD}));
+chartData.addDimensionGroup('delay', 'slowest', Immutable.Map({label: "Slowest (>2 s)", color: COLORS.VERY_BAD}));
 
 chartData.addDimension('content_type', Immutable.Map({
   label: 'Content Type'
 }));
-chartData.addDimensionGroup('content_type', "text_html", new Immutable.Map({color: COLORS.GOOD, label: "text/html"}));
-chartData.addDimensionGroup('content_type', "image_jpeg", new Immutable.Map({color: COLORS.YELLOW, label: "image/jpeg"}));
-chartData.addDimensionGroup('content_type', "image_png", new Immutable.Map({color: COLORS.YELLOW, label: "image/png"}));
-chartData.addDimensionGroup('content_type', "image_gif", new Immutable.Map({color: COLORS.YELLOW, label: "image/gif"}));
-chartData.addDimensionGroup('content_type', "text_css", new Immutable.Map({color: COLORS.ORANGE1, label: "text/css"}));
-chartData.addDimensionGroup('content_type', "javascript", new Immutable.Map({color: COLORS.ORANGE1, label: "javascript"}));
-chartData.addDimensionGroup('content_type', "not_set", new Immutable.Map({label: "Not Set", color: COLORS.VERY_BAD}));
+chartData.addDimensionGroup('content_type', "text_html", Immutable.Map({color: COLORS.GOOD, label: "text/html"}));
+chartData.addDimensionGroup('content_type', "image_jpeg", Immutable.Map({color: COLORS.YELLOW, label: "image/jpeg"}));
+chartData.addDimensionGroup('content_type', "image_png", Immutable.Map({color: COLORS.YELLOW, label: "image/png"}));
+chartData.addDimensionGroup('content_type', "image_gif", Immutable.Map({color: COLORS.YELLOW, label: "image/gif"}));
+chartData.addDimensionGroup('content_type', "text_css", Immutable.Map({color: COLORS.ORANGE1, label: "text/css"}));
+chartData.addDimensionGroup('content_type', "javascript", Immutable.Map({color: COLORS.ORANGE1, label: "javascript"}));
+chartData.addDimensionGroup('content_type', "not_set", Immutable.Map({label: "Not Set", color: COLORS.VERY_BAD}));
 
-chartData.setData(new Immutable.Map({
+chartData.setData(Immutable.Map({
   'delay': 'fast',
   'content_type': 'text_html'
-}), new Immutable.List([1]));
-chartData.setData(new Immutable.Map({
+}), Immutable.List([1]));
+chartData.setData(Immutable.Map({
   'delay': 'medium',
   'content_type': 'text_html'
-}), new Immutable.List([3]));
-chartData.setData(new Immutable.Map({
+}), Immutable.List([3]));
+chartData.setData(Immutable.Map({
   'delay': 'medium',
   'content_type': 'text_css'
-}), new Immutable.List([4]));
-chartData.setData(new Immutable.Map({
+}), Immutable.List([4]));
+chartData.setData(Immutable.Map({
   'delay': 'slowest',
   'content_type': 'javascript'
-}), new Immutable.List([4]));
+}), Immutable.List([4]));
 
 var newUrls = 100;
 var disappearedUrls = 50;
@@ -60,53 +61,32 @@ var currentUrls = allUrls;
 var previousUrls = disappearedUrls + (allUrls - newUrls);
 var commonUrls = allUrls - newUrls;
 
-// TODO: faire classe? définir structure
-// addSet
-// addIntersection
-var sets = [
-  {
-    metadata: {
-      label: 'Current URLs',
-      color: '#2ECC40'
-    },
-    size: currentUrls
-  },
-  {
-    metadata: {
-      label: 'Previous URLs',
-      color: '#0074D9'
-    },
-    size: previousUrls
-  }
-];
+var vennData = new VennData();
 
-var intersections = [
-  {
-    sets: [0, 1],
-    metadata: {
-      label: 'Common URLs',
-      color: '#2ee3e3'
-    },
-    size: commonUrls
-  }
-];
+var set1 = Immutable.Map({
+  size: currentUrls,
+  color: '#80bbe7',
+  // inclusiveLabel: 'Current URLs',
+  exclusiveLabel: 'New URLs',
+});
 
-var exclusives = [
-  {
-    metadata: {
-      label: 'New URLS',
-      color: '#2ECC40'
-    },
-    size: newUrls
-  },
-  {
-    metadata: {
-      label: 'Disappeared URLs',
-      color: '#0074D9'
-    },
-    size: disappearedUrls
-  }
-];
+var set2 = Immutable.Map({
+  size: previousUrls,
+  color: '#ffbf85',
+  // inclusiveLabel: 'Previous URLs',
+  exclusiveLabel: 'Disappeared URLs',
+});
+
+vennData.addSet(set1);
+vennData.addSet(set2);
+
+var set3 = Immutable.Map({
+  size: commonUrls,
+  color: '#c2bca6',
+  exclusiveLabel: 'Common URLs',
+});
+
+vennData.addIntersection(Immutable.Set.of(set1, set2), set3);
 
 var ChartRenderer = React.createClass({
 
@@ -184,9 +164,8 @@ var SpecificPanelController = React.createClass({
     return (
       <VennDiagram
         key="vennDiagram"
-        sets={sets}
-        intersections={intersections}
-        exclusives={exclusives}
+        vennData={vennData}
+        inclusive
       />
     );
   },

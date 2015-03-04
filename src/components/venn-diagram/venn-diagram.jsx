@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import _ from 'lodash';
 import HoverTooltip from '../tooltip/hover-tooltip';
 import VennCanvas from './venn-canvas';
 import VennLegend from './venn-legend';
+import VennData from '../../models/VennData';
 
 import './venn-diagram.scss';
 
@@ -14,37 +15,38 @@ const VennDiagram = React.createClass({
   displayName: 'VennDiagram',
 
   propTypes: {
-    sets: React.PropTypes.array,
-    intersections: React.PropTypes.array,
-    exclusives: React.PropTypes.array,
+    vennData: PropTypes.instanceOf(VennData).isRequired,
+    inclusive: PropTypes.bool
+  },
+
+  getDefaultProps() {
+    return {
+      inclusive: false
+    };
   },
 
   getInitialState() {
     return {
-      activeElement: null
+      activeSet: null
     };
   },
 
   render() {
     return (
       <HoverTooltip
-        hasTooltip={!!this.state.activeElement}
+        hasTooltip={!!this.state.activeSet}
         renderTooltip={this._renderTooltip}
       >
         <div className="VennChart" style={{height: 500}}>
           <VennCanvas
             ref="canvas"
-            sets={this.props.sets}
-            intersections={this.props.intersections}
-            exclusives={this.props.exclusives}
-            activeElement={this.state.activeElement}
+            vennData={this.props.vennData}
+            activeSet={this.state.activeSet}
             onMouseOver={this._handleMouseOver}
             onMouseOut={this._handleMouseOut}
           />
           <VennLegend
-            sets={this.props.sets}
-            intersections={this.props.intersections}
-            exclusives={this.props.exclusives}
+            vennData={this.props.vennData}
             onMouseOver={this._handleMouseOver}
             onMouseOut={this._handleMouseOut}
           />
@@ -54,18 +56,20 @@ const VennDiagram = React.createClass({
   },
 
   _handleMouseOver(thing) {
-    this.setState({activeElement: thing});
+    this.setState({activeSet: thing});
   },
 
   _handleMouseOut(thing) {
-    this.setState({activeElement: null});
+    this.setState({activeSet: null});
   },
 
   _renderTooltip() {
+    let {inclusive} = this.props;
+
     return (
       <div>
-        <div>{this.state.activeElement.metadata.label}</div>
-        <div>Size: {this.state.activeElement.size}</div>
+        <div>{this.state.activeSet.get(inclusive ? 'inclusiveLabel' : 'exclusiveLabel')}</div>
+        <div>Size: {this.props.vennData.getSizeOf(this.state.activeSet, inclusive)}</div>
       </div>
     );
   },

@@ -2,7 +2,6 @@ import React from 'react';
 // venn sets itself on the window object and expects d3 to be globally set as well
 // below is a shim that fixes this
 import venn from 'imports?window=>{}!exports?window.venn!venn';
-import Color from 'color';
 
 import Circle, {
   CircleDifference, CircleIntersection,
@@ -12,15 +11,6 @@ import Circle, {
 const VennCanvas = React.createClass({
 
   displayName: 'VennCanvas',
-
-  propTypes: {
-    sets: React.PropTypes.array,
-    intersections: React.PropTypes.array,
-    exclusives: React.PropTypes.array,
-    activeElement: React.PropTypes.object,
-    onMouseOver: React.PropTypes.func,
-    onMouseOut: React.PropTypes.func,
-  },
 
   componentDidMount() {
     this._scale();
@@ -43,13 +33,35 @@ const VennCanvas = React.createClass({
   },
 
   render() {
+    let {vennData, inclusive} = this.props;
+    let {width, height} = this.state;
     let padding = 10;
 
-    // get positions for each set
-    let circles = venn.venn(this.props.sets, this.props.intersections);
-    circles = venn.scaleSolution(circles, this.state.width, this.state.height, padding);
+    let vennSets = vennData.getSets().toIndexedSeq();
+    let vennIntersections = vennData.getIntersections();
 
-    let diffElements = this.props.exclusives.map((set, idx) => {
+    let sets = vennSets
+      .map((set) => {
+        return {
+          size: set.get('size')
+        };
+      })
+      .toJS();
+    let intersections = vennIntersections
+      .entrySeq()
+      .map(([sets, intersection]) => {
+        return {
+          sets: sets.map((set) => vennSets.indexOf(set)).toJS(),
+          size: intersection.get('size')
+        };
+      })
+      .toJS();
+
+    let circles = venn.venn(sets, intersections);
+    circles = venn.scaleSolution(circles, width, height, padding);
+
+    // TODO: this part doesn't support sets.length > 2 || intersections.length > 1 || inclusive
+    let setElements = vennSets.map((set, idx) => {
       return {
         set: set,
         c1: circles[idx],
@@ -57,32 +69,27 @@ const VennCanvas = React.createClass({
         class: CircleDifference
       };
     });
-    let interElements = this.props.intersections.map((set) => {
+    let interElements = vennIntersections.entrySeq().map(([sets, intersection]) => {
       return {
-        set: set,
-        c1: circles[set.sets[0]],
-        c2: circles[set.sets[1]],
+        set: intersection,
+        c1: circles[vennSets.indexOf(sets.first())],
+        c2: circles[vennSets.indexOf(sets.last())],
         class: CircleIntersection
       };
     });
-    let elements = diffElements.concat(interElements).map((el, idx) => {
-      let color = Color(el.set.metadata.color);
-
+    let elements = setElements.concat(interElements).map((el, idx) => {
       return (
         <el.class
           key={idx}
-          onMouseOver={this._handleMouseOver.bind(null, el)}
-          onMouseOut={this._handleMouseOut.bind(null, el)}
+          onMouseOver={this._handleMouseOver.bind(null, el.set)}
+          onMouseOut={this._handleMouseOut.bind(null, el.set)}
           c1={el.c1}
           c2={el.c2}
-          fill={
-            el.set === this.props.activeElement ?
-              color.clone().lightness(color.lightness() + 10).rgbString() :
-              color.rgbString()
-          }
+          fill={el.set.get('color')}
+          opacity={el.set === this.props.activeSet ? 1 : 0.8}
         />
       );
-    });
+    }).toJS();
 
     return (
       <svg className="VennCanvas">
@@ -91,15 +98,15 @@ const VennCanvas = React.createClass({
     );
   },
 
-  _handleMouseOver(el) {
+  _handleMouseOver(set) {
     if (this.props.onMouseOver) {
-      this.props.onMouseOver(el.set);
+      this.props.onMouseOver(set);
     }
   },
 
-  _handleMouseOut(el) {
+  _handleMouseOut(set) {
     if (this.props.onMouseOut) {
-      this.props.onMouseOut(el.set);
+      this.props.onMouseOut(set);
     }
   }
 
