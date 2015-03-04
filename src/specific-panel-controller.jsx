@@ -3,7 +3,7 @@ import Panel from './components/panel/panel';
 import Table from './components/table';
 import Chart from './components/charts/chart';
 import GoogleColumnChart from './components/charts/google/google-column-chart';
-import VennDiagram from './components/venn-diagram';
+import VennDiagram from './components/venn-diagram/venn-diagram';
 import ChartData from './models/ChartData';
 import Immutable from 'immutable';
 
@@ -91,7 +91,6 @@ var intersections = [
   }
 ];
 
-// TODO: offrir la possibilité
 var exclusives = [
   {
     metadata: {

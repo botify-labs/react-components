@@ -1,8 +1,9 @@
 var gulp = require('gulp');
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
-var config = require('./webpack.config');
-var devConfig = require('./webpack.dev.config');
+var makeConfig = require('./make-webpack-config');
+var devConfig = makeConfig('dev');
+var config = makeConfig('dist');
 
 var DEBUG = process.env.NODE_ENV !== 'production';
 
