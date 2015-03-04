@@ -15,6 +15,7 @@ const VennCanvas = React.createClass({
   componentDidMount() {
     this._scale();
 
+    // Re-scale the canvas whenever the window resizes
     window.addEventListener('resize', this._scale);
   },
 
@@ -25,6 +26,9 @@ const VennCanvas = React.createClass({
     };
   },
 
+  /**
+   * Recalculate the venn diagram so that it fits into the canvas
+   */
   _scale() {
     this.setState({
       width: this.getDOMNode().offsetWidth,
@@ -33,13 +37,14 @@ const VennCanvas = React.createClass({
   },
 
   render() {
-    let {vennData, inclusive} = this.props;
+    let {vennData, inclusive, onMouseOver, onMouseOut} = this.props;
     let {width, height} = this.state;
     let padding = 10;
 
     let vennSets = vennData.getSets().toIndexedSeq();
     let vennIntersections = vennData.getIntersections();
 
+    // Transform our data into a structure venn.js understands
     let sets = vennSets
       .map((set) => {
         return {
@@ -60,7 +65,12 @@ const VennCanvas = React.createClass({
     let circles = venn.venn(sets, intersections);
     circles = venn.scaleSolution(circles, width, height, padding);
 
-    // TODO: this part doesn't support sets.length > 2 || intersections.length > 1 || inclusive
+    // Create circle intersections and circle differences to represent our sets and set intersections.
+    // Since sets and set intersections are extremely similar, they share a lot of code.
+    // TODO: this part doesn't support cases where we have more than two sets or/and the diagram is inclusive
+    // In order to support those cases display-wise we'd probably need to switch to a vector library more
+    // powerful than standard SVG 1.1. Vector boolean operations are really hard to do in SVG 1.1, whereas
+    // PaperJS has them built in.
     let setElements = vennSets.map((set, idx) => {
       return {
         set: set,
@@ -81,8 +91,8 @@ const VennCanvas = React.createClass({
       return (
         <el.class
           key={idx}
-          onMouseOver={this._handleMouseOver.bind(null, el.set)}
-          onMouseOut={this._handleMouseOut.bind(null, el.set)}
+          onMouseOver={onMouseOver && onMouseOver.bind(null, el.set)}
+          onMouseOut={onMouseOut && onMouseOver.bind(null, el.set)}
           c1={el.c1}
           c2={el.c2}
           fill={el.set.get('color')}
@@ -96,18 +106,6 @@ const VennCanvas = React.createClass({
         {elements}
       </svg>
     );
-  },
-
-  _handleMouseOver(set) {
-    if (this.props.onMouseOver) {
-      this.props.onMouseOver(set);
-    }
-  },
-
-  _handleMouseOut(set) {
-    if (this.props.onMouseOut) {
-      this.props.onMouseOut(set);
-    }
   }
 
 });

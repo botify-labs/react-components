@@ -8,7 +8,7 @@ import VennData from '../../models/VennData';
 import './venn-diagram.scss';
 
 /**
- * Wrapper around the venn d3 library
+ * Wrapper around the venn.js library
  */
 const VennDiagram = React.createClass({
 
@@ -41,6 +41,7 @@ const VennDiagram = React.createClass({
           <VennCanvas
             ref="canvas"
             vennData={this.props.vennData}
+            inclusive={this.props.inclusive}
             activeSet={this.state.activeSet}
             onMouseOver={this._handleMouseOver}
             onMouseOut={this._handleMouseOut}
@@ -64,12 +65,10 @@ const VennDiagram = React.createClass({
   },
 
   _renderTooltip() {
-    let {inclusive} = this.props;
-
     return (
       <div>
-        <div>{this.state.activeSet.get(inclusive ? 'inclusiveLabel' : 'exclusiveLabel')}</div>
-        <div>Size: {this.props.vennData.getSizeOf(this.state.activeSet, inclusive)}</div>
+        <div>{this.state.activeSet.get('label')}</div>
+        <div>Size: {this.props.vennData.getSizeOf(this.state.activeSet, this.props.inclusive)}</div>
       </div>
     );
   },

@@ -5,7 +5,7 @@ const VennLegend = React.createClass({
   displayName: 'VennLegend',
 
   render() {
-    let {vennData, activeSet, inclusive} = this.props;
+    let {vennData, activeSet} = this.props;
 
     let sets = vennData.getSets();
     let intersections = vennData.getIntersections().valueSeq();
@@ -20,7 +20,7 @@ const VennLegend = React.createClass({
             className="VennLegend-square"
             style={{backgroundColor: set.get('color')}}
           />
-          {set.get(inclusive ? 'inclusiveLabel' : 'exclusiveLabel')}
+          {set.get('label')}
         </li>
       );
     }).toJS();

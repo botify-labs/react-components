@@ -7,6 +7,7 @@ import VennDiagram from './components/venn-diagram/venn-diagram';
 import ChartData from './models/ChartData';
 import VennData from './models/VennData';
 import Immutable from 'immutable';
+import Color from 'color';
 
 var COLORS = {}; //#lol
 
@@ -63,18 +64,20 @@ var commonUrls = allUrls - newUrls;
 
 var vennData = new VennData();
 
+var c1 = Color('#80bbe7');
+var c2 = Color('#ffbf85');
+var c3 = c1.clone().mix(c2, 0.5).negate();
+
 var set1 = Immutable.Map({
   size: currentUrls,
-  color: '#80bbe7',
-  // inclusiveLabel: 'Current URLs',
-  exclusiveLabel: 'New URLs',
+  color: c1.rgbString(),
+  label: 'New URLs',
 });
 
 var set2 = Immutable.Map({
   size: previousUrls,
-  color: '#ffbf85',
-  // inclusiveLabel: 'Previous URLs',
-  exclusiveLabel: 'Disappeared URLs',
+  color: c2.rgbString(),
+  label: 'Disappeared URLs',
 });
 
 vennData.addSet(set1);
@@ -82,8 +85,8 @@ vennData.addSet(set2);
 
 var set3 = Immutable.Map({
   size: commonUrls,
-  color: '#c2bca6',
-  exclusiveLabel: 'Common URLs',
+  color: c3.rgbString(),
+  label: 'Common URLs',
 });
 
 vennData.addIntersection(Immutable.Set.of(set1, set2), set3);
