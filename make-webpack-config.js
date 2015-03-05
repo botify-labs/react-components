@@ -1,48 +1,48 @@
-var webpack = require('webpack');
-var path = require('path');
+module.exports = function(build) {
+  var webpack = require('webpack');
+  var path = require('path');
+  var bower_path = path.resolve(__dirname, 'bower_components');
+  var npm_path = path.resolve(__dirname, 'node_modules');
 
-var browsers = ['Firefox > 27', 'Chrome > 20', 'Explorer > 9', 'Safari > 6', 'Opera > 11.5', 'iOS > 6.1'];
+  var browsers = ['Firefox > 27', 'Chrome > 20', 'Explorer > 9', 'Safari > 6', 'Opera > 11.5', 'iOS > 6.1'];
+  var autoprefixer_config = 'autoprefixer?' + JSON.stringify({browsers: browsers});
+  var jsx_excludes = [/node_modules/, /bower_components/];
 
-var config = {
-  resolve: {
-    extensions: ['', '.js', '.jsx'],
-    root: [path.resolve(__dirname, 'bower_components')]
-  },
-  plugins: [
-    new webpack.ResolverPlugin(
-      new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("bower.json", ["main"])
-    )
-  ],
-  module: {
-    noParse: [/datatables-plugins\/.*\.js$/],
-    loaders: [
-      {
-        test: /\.scss$/,
-        loader: "style!css!autoprefixer?" + JSON.stringify({browsers: browsers}) + "!sass?outputStyle=expanded&" +
-          "includePaths[]=" +
-            (path.resolve(__dirname, "./bower_components")) + "&" +
-          "includePaths[]=" +
-            (path.resolve(__dirname, "./node_modules"))
-      },
-      {
-        test: /\.css$/,
-        loader: "style!css!autoprefixer?" + JSON.stringify({browsers: browsers})
-      },
-      { test: /\.png$/,                         loader: "file" },
-      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,    loader: "url?limit=10000&minetype=application/font-woff" },
-      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,   loader: "url?limit=10000&minetype=application/font-woff" },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,     loader: "url?limit=10000&minetype=application/octet-stream" },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,     loader: "file" },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,     loader: "url?limit=10000&minetype=image/svg+xml" },
-      { test: /\.json$/,                        loader: "json" }
-    ]
-  }
-};
+  var config = {
+    resolve: {
+      extensions: ['', '.js', '.jsx'],
+      root: [path.resolve(__dirname, 'bower_components')]
+    },
+    plugins: [
+      new webpack.ResolverPlugin(
+        new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
+      )
+    ],
+    module: {
+      noParse: [/datatables-plugins\/.*\.js$/],
+      loaders: [
+        {
+          test: /\.scss$/,
+          loader: 'style!css!' + autoprefixer_config + '!sass?outputStyle=expanded&' +
+            'includePaths[]=' + bower_path + '&' + 'includePaths[]=' + bower_path
+        },
+        {
+          test: /\.css$/,
+          loader: 'style!css!' + autoprefixer_config
+        },
+        { test: /\.png$/,                         loader: 'file' },
+        { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,    loader: 'url?limit=10000&minetype=application/font-woff' },
+        { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,   loader: 'url?limit=10000&minetype=application/font-woff' },
+        { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,     loader: 'url?limit=10000&minetype=application/octet-stream' },
+        { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,     loader: 'file' },
+        { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,     loader: 'url?limit=10000&minetype=image/svg+xml' },
+        { test: /\.json$/,                        loader: 'json' }
+      ]
+    }
+  };
 
-var JSX_EXCLUDES = [/node_modules/, /bower_components/];
-
-module.exports = function(dev) {
-  if (dev) {
+  switch (build) {
+  case 'dev':
     // This is not as dirty as it looks. It just generates source maps without being crazy slow.
     // Source map lines will be slightly offset, use config.devtool = 'source-map'; to generate cleaner source maps.
     config.devtool = 'eval';
@@ -65,9 +65,10 @@ module.exports = function(dev) {
     config.module.loaders.push({
       test: /\.jsx?$/,
       loaders: ['react-hot-loader', 'babel-loader?experimental'],
-      exclude: JSX_EXCLUDES
+      exclude: jsx_excludes
     });
-  } else {
+    break;
+  case 'dist':
     config.entry = './src/index';
     config.output = {
       path: __dirname + '/dist/',
@@ -75,11 +76,16 @@ module.exports = function(dev) {
       publicPath: '/dist/',
       libraryTarget: 'amd'
     };
+    config.plugins.push(
+      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.UglifyJsPlugin()
+    );
     config.module.loaders.push({
       test: /\.jsx?$/,
-      loaders: ['jsx-loader', 'babel-loader?experimental'],
-      exclude: JSX_EXCLUDES
+      loaders: ['babel-loader?experimental'],
+      exclude: jsx_excludes
     });
+    break;
   }
 
   return config;
