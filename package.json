@@ -22,22 +22,26 @@
     "react-bootstrap": "~0.15.1"
   },
   "devDependencies": {
-    "autoprefixer-loader": "^1.1.0",
+    "autoprefixer-loader": "1.1.0",
     "babel-core": "^4.3.0",
     "babel-loader": "^4.0.0",
     "bootstrap": "^3.3.2",
+    "chalk": "^1.0.0",
     "css-loader": "^0.9.1",
     "exports-loader": "^0.6.2",
     "expose-loader": "^0.6.0",
     "file-loader": "^0.8.1",
     "gulp": "^3.8.11",
+    "gulp-util": "^3.0.4",
     "imports-loader": "^0.6.3",
     "json-loader": "^0.5.1",
+    "loader-utils": "^0.2.6",
     "react-hot-loader": "^1.1.5",
-    "sass-loader": "^0.4.0-beta.1",
-    "style-loader": "^0.8.3",
+    "sass-loader": "0.4.1",
+    "style-loader": "0.8.3",
     "url-loader": "^0.5.5",
     "webpack": "^1.5.3",
+    "webpack-dependency-tree": "0.0.2",
     "webpack-dev-server": "^1.7.0"
   }
 }

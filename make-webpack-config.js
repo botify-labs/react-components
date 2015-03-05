@@ -1,11 +1,12 @@
 module.exports = function(build) {
   var webpack = require('webpack');
   var path = require('path');
+
   var bower_path = path.resolve(__dirname, 'bower_components');
   var npm_path = path.resolve(__dirname, 'node_modules');
 
   var browsers = ['Firefox > 27', 'Chrome > 20', 'Explorer > 9', 'Safari > 6', 'Opera > 11.5', 'iOS > 6.1'];
-  var autoprefixer_config = 'autoprefixer?' + JSON.stringify({browsers: browsers});
+  var autoprefixer_config = JSON.stringify({browsers: browsers});
   var jsx_excludes = [/node_modules/, /bower_components/];
 
   var config = {
@@ -19,16 +20,15 @@ module.exports = function(build) {
       )
     ],
     module: {
-      noParse: [/datatables-plugins\/.*\.js$/],
       loaders: [
         {
           test: /\.scss$/,
-          loader: 'style!css!' + autoprefixer_config + '!sass?outputStyle=expanded&' +
+          loader: 'style!css!autoprefixer?' + autoprefixer_config + '!sass?outputStyle=expanded&' +
             'includePaths[]=' + bower_path + '&' + 'includePaths[]=' + bower_path
         },
         {
           test: /\.css$/,
-          loader: 'style!css!' + autoprefixer_config
+          loader: 'style!css!autoprefixer?' + autoprefixer_config
         },
         { test: /\.png$/,                         loader: 'file' },
         { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,    loader: 'url?limit=10000&minetype=application/font-woff' },
@@ -69,6 +69,10 @@ module.exports = function(build) {
     });
     break;
   case 'dist':
+    config.plugins.push(
+      new webpack.optimize.UglifyJsPlugin()
+    );
+  case 'optimize':
     config.entry = './src/index';
     config.output = {
       path: __dirname + '/dist/',
@@ -77,8 +81,7 @@ module.exports = function(build) {
       libraryTarget: 'amd'
     };
     config.plugins.push(
-      new webpack.optimize.DedupePlugin(),
-      new webpack.optimize.UglifyJsPlugin()
+      new webpack.optimize.DedupePlugin()
     );
     config.module.loaders.push({
       test: /\.jsx?$/,
