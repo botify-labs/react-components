@@ -138,6 +138,11 @@ var SpecificPanelController = React.createClass({
         id: 'chart',
         label: 'Display Chart',
         render: this._renderChart
+      },
+      {
+        id: 'table',
+        label: 'Display Table',
+        render: this._renderTable
       }
     ];
   },
@@ -169,6 +174,15 @@ var SpecificPanelController = React.createClass({
         key="vennDiagram"
         vennData={vennData}
         inclusive
+      />
+    );
+  },
+
+  _renderTable() {
+    return (
+      <Table
+        key="table"
+        chartData={chartData}
       />
     );
   },
