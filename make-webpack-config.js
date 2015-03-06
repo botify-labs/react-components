@@ -24,7 +24,7 @@ module.exports = function(build) {
         {
           test: /\.scss$/,
           loader: 'style!css!autoprefixer?' + autoprefixer_config + '!sass?outputStyle=expanded&' +
-            'includePaths[]=' + bower_path + '&' + 'includePaths[]=' + bower_path
+            'includePaths[]=' + bower_path + '&' + 'includePaths[]=' + npm_path
         },
         {
           test: /\.css$/,
