@@ -34,13 +34,14 @@ var HoverTooltip = React.createClass({
   },
 
   _handleMouseMove(e) {
+    let rect = this.getDOMNode().getBoundingClientRect();
     // Keep track of the mouse position so that we can have the tooltip
     // follow the cursor
     this.setState({
       mousePosition: {
         // TODO: replace this with actual values
-        top: e.pageY,
-        left: e.pageX
+        top: e.pageY - rect.top,
+        left: e.pageX - rect.left,
       }
     });
   },
