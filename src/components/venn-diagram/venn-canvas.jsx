@@ -37,7 +37,7 @@ const VennCanvas = React.createClass({
   render() {
     let {vennData, inclusive, onMouseOver, onMouseOut} = this.props;
     let {width, height} = this.state;
-    let padding = 10;
+    let padding = 30;
 
     let vennSets = vennData.getSets().toIndexedSeq();
     let vennIntersections = vennData.getIntersections();
