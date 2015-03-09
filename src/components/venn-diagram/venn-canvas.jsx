@@ -1,7 +1,5 @@
 import React from 'react';
-// venn sets itself on the window object and expects d3 to be globally set as well
-// below is a shim that fixes this
-import venn from 'imports?window=>{}!exports?window.venn!venn';
+import venn from 'venn.js';
 
 import Circle, {
   CircleDifference, CircleIntersection,
@@ -46,8 +44,9 @@ const VennCanvas = React.createClass({
 
     // Transform our data into a structure venn.js understands
     let sets = vennSets
-      .map((set) => {
+      .map((set, idx) => {
         return {
+          sets: [idx],
           size: set.get('size')
         };
       })
@@ -62,7 +61,8 @@ const VennCanvas = React.createClass({
       })
       .toJS();
 
-    let circles = venn.venn(sets, intersections);
+
+    let circles = venn.venn(sets.concat(intersections));
     circles = venn.scaleSolution(circles, width, height, padding);
 
     // Create circle intersections and circle differences to represent our sets and set intersections.
