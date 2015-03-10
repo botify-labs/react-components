@@ -8,6 +8,10 @@
     "start": "gulp webpack-server"
   },
   "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/botify-labs/react-components.git"
+  },
   "dependencies": {
     "bootstrap-sass": "~3.3.3",
     "classnames": "^1.1.4",
