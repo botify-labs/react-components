@@ -19,16 +19,18 @@ var HoverTooltip = React.createClass({
   },
 
   render() {
+    let {hasTooltip, renderTooltip, children, ...otherProps} = this.props;
+
     return (
-      <div onMouseMove={this._handleMouseMove}>
-        {this.props.hasTooltip &&
+      <div {...otherProps} onMouseMove={this._handleMouseMove}>
+        {hasTooltip &&
           <Tooltip
             key="__tooltip"
             position={this.state.mousePosition}
-            children={this.props.renderTooltip()}
+            children={renderTooltip()}
           />
         }
-        {this.props.children}
+        {children}
       </div>
     );
   },

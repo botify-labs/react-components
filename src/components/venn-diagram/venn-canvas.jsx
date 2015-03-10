@@ -10,13 +10,6 @@ const VennCanvas = React.createClass({
 
   displayName: 'VennCanvas',
 
-  componentDidMount() {
-    this._scale();
-
-    // Re-scale the canvas whenever the window resizes
-    window.addEventListener('resize', this._scale);
-  },
-
   getInitialState() {
     return {
       width: 1000,
@@ -24,18 +17,30 @@ const VennCanvas = React.createClass({
     };
   },
 
+  componentDidMount() {
+    this._scale();
+
+    // Re-scale the canvas whenever the window resizes
+    window.addEventListener('resize', this._scale);
+  },
+
+  componentDidUpdate() {
+    this._scale();
+  },
+
   /**
    * Recalculate the venn diagram so that it fits into the canvas
    */
   _scale() {
-    this.setState({
-      width: this.getDOMNode().offsetWidth,
-      height: this.getDOMNode().offsetHeight
-    });
+    let {offsetWidth, offsetHeight} = this.getDOMNode();
+
+    if (offsetWidth !== this.state.width || offsetHeight !== this.state.height) {
+      this.setState({width: offsetWidth, height: offsetHeight});
+    }
   },
 
   render() {
-    let {vennData, inclusive, onMouseOver, onMouseOut} = this.props;
+    let {vennData, inclusive, onClick, onMouseOver, onMouseOut} = this.props;
     let {width, height} = this.state;
     let padding = 30;
 
@@ -91,6 +96,7 @@ const VennCanvas = React.createClass({
       return (
         <el.class
           key={idx}
+          onClick={onClick && onClick.bind(null, el.set, idx)}
           onMouseOver={onMouseOver && onMouseOver.bind(null, el.set)}
           onMouseOut={onMouseOut && onMouseOut.bind(null, el.set)}
           c1={el.c1}
