@@ -20,8 +20,6 @@ var devConfig = makeConfig('dev');
 var optiConfig = makeConfig('optimize');
 var config = makeConfig('dist');
 
-var package = require('./package.json');
-
 var DEBUG = process.env.NODE_ENV !== 'production';
 
 gulp.task('lib', ['clean:lib'], function(done) {
@@ -72,7 +70,7 @@ gulp.task('release', ['lib', 'dist', 'bump'], function() {
       'git push origin <%= pkg.version %>'
     ], {
       templateData: {
-        pkg: require('package.json'),
+        pkg: require('./package.json'),
         date: strftime('%Y/%m/%d', new Date())
       }
     }));
