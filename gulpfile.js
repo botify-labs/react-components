@@ -65,7 +65,7 @@ gulp.task('bump', function() {
 gulp.task('release', ['lib', 'dist', 'bump'], function() {
   return gulp.src('')
     .pipe(shell([
-      'git add -A',
+      'git add -A lib/ dist/',
       'git commit -a -m "Release <%= pkg.version %>"',
       'git tag -a <%= pkg.version %> -m "Release <%= date %> <%= pkg.version %>"',
       'git push origin HEAD',
