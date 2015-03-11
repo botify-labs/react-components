@@ -32,23 +32,25 @@ const VennDiagram = React.createClass({
   },
 
   render() {
-    let {vennData, inclusive, ...otherProps} = this.props;
+    let {vennData, inclusive, onClick, ...otherProps} = this.props;
     return (
       <HoverTooltip
         hasTooltip={!!this.state.activeSet}
         renderTooltip={this._renderTooltip}
       >
-        <div className="VennChart" {...otherProps}>
+        <div {...otherProps} className="VennChart">
           <VennCanvas
             ref="canvas"
             vennData={vennData}
             inclusive={inclusive}
             activeSet={this.state.activeSet}
+            onClick={onClick}
             onMouseOver={this._handleMouseOver}
             onMouseOut={this._handleMouseOut}
           />
           <VennLegend
             vennData={vennData}
+            onClick={onClick}
             onMouseOver={this._handleMouseOver}
             onMouseOut={this._handleMouseOut}
           />
