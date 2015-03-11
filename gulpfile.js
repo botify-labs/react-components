@@ -30,6 +30,11 @@ gulp.task('lib', ['clean:lib'], function(done) {
     .pipe(gulp.dest('lib'));
 });
 
+gulp.task('styles', ['clean:lib'], function(done) {
+  return gulp.src('src/**/*.scss')
+    .pipe(gulp.dest('lib'));
+});
+
 gulp.task('dist', ['clean:dist'], function(done) {
   webpack(config, function(err, stats) {
     if (err) {
@@ -60,7 +65,7 @@ gulp.task('bump-version', function() {
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('release', ['lib', 'dist', 'bump-version'], function() {
+gulp.task('release', ['lib', 'styles', 'dist', 'bump-version'], function() {
   return gulp.src('')
     .pipe(shell([
       'git add -u', // Add modified files (package.json, bower.json, ...)
