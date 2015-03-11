@@ -63,7 +63,8 @@ gulp.task('bump-version', function() {
 gulp.task('release', ['lib', 'dist', 'bump-version'], function() {
   return gulp.src('')
     .pipe(shell([
-      'git add -A lib/ dist/',
+      'git add -u', // Add modified files (package.json, bower.json, ...)
+      'git add -A lib/ dist/', // Add all changes in lib/ and dist
       'git commit -a -m "Release <%= pkg.version %>"',
       'git tag -a <%= pkg.version %> -m "Release <%= date %> <%= pkg.version %>"',
       'git push origin HEAD',
