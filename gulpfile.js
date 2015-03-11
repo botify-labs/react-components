@@ -5,6 +5,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var shell = require('gulp-shell');
 var bump = require('gulp-bump');
 
+var fs = require('fs');
 var chalk = require('chalk');
 var del = require('del');
 var strftime = require('strftime');
@@ -92,6 +93,19 @@ gulp.task('dep-tree', function(done) {
     gutil.log(dependencyTree.treeToString(dependencyTree.fromStats(stats), {pretty: true}));
 
     done();
+  });
+});
+
+gulp.task('stats', function(done) {
+  webpack(optiConfig, function(err, stats) {
+    if (err) {
+      throw new gutil.PluginError('webpack', err);
+    }
+    var jsonStats = stats.toJson();
+    if (jsonStats.errors.length > 0) {
+      throw new gutil.PluginError('webpack', jsonStats.errors.join('\n'));
+    }
+    fs.writeFile('stats.json', JSON.stringify(jsonStats), done);
   });
 });
 
