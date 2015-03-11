@@ -2,8 +2,13 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var babel = require('gulp-babel');
 var sourcemaps = require('gulp-sourcemaps');
+var shell = require('gulp-shell');
+var bump = require('gulp-bump');
 
 var chalk = require('chalk');
+var del = require('del');
+var strftime = require('strftime');
+var argv = require('yargs').argv;
 
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
@@ -14,9 +19,11 @@ var devConfig = makeConfig('dev');
 var optiConfig = makeConfig('optimize');
 var config = makeConfig('dist');
 
+var package = require('./package.json');
+
 var DEBUG = process.env.NODE_ENV !== 'production';
 
-gulp.task('lib', function(done) {
+gulp.task('lib', ['clean:lib'], function(done) {
   return gulp.src(['src/**/*.js', 'src/**/*.jsx'])
     .pipe(sourcemaps.init())
     .pipe(babel({experimental: true}))
@@ -24,7 +31,7 @@ gulp.task('lib', function(done) {
     .pipe(gulp.dest('lib'));
 });
 
-gulp.task('dist', function(done) {
+gulp.task('dist', ['clean:dist'], function(done) {
   webpack(config, function(err, stats) {
     if (err) {
       throw new gutil.PluginError('webpack', err);
@@ -38,6 +45,36 @@ gulp.task('dist', function(done) {
     }
     done();
   });
+});
+
+gulp.task('clean:lib', function(done) {
+  del(['lib/'], done);
+});
+
+gulp.task('clean:dist', function(done) {
+  del(['dist/'], done);
+});
+
+gulp.task('bump', function() {
+  return gulp.src(['package.json', 'bower.json'])
+    .pipe(bump(argv))
+    .pipe(gulp.dest('./'));
+});
+
+gulp.task('release', ['lib', 'dist', 'bump'], function() {
+  return gulp.src('')
+    .pipe(shell([
+      'git add -A',
+      'git commit -a -m "Release <%= pkg.version %>"',
+      'git tag -a <%= pkg.version %> -m "Release <%= date %> <%= pkg.version %>"',
+      'git push origin HEAD',
+      'git push origin <%= pkg.version %>'
+    ], {
+      templateData: {
+        pkg: require('package.json'),
+        date: strftime('%Y/%m/%d', new Date())
+      }
+    }));
 });
 
 gulp.task('dep-tree', function(done) {
