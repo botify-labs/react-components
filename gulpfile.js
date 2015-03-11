@@ -24,7 +24,7 @@ gulp.task('lib', function(done) {
     .pipe(gulp.dest('lib'));
 });
 
-gulp.task('webpack-dist', function(done) {
+gulp.task('dist', function(done) {
   webpack(config, function(err, stats) {
     if (err) {
       throw new gutil.PluginError('webpack', err);
@@ -40,7 +40,7 @@ gulp.task('webpack-dist', function(done) {
   });
 });
 
-gulp.task('webpack-tree', function(done) {
+gulp.task('dep-tree', function(done) {
   webpack(optiConfig, function(err, stats) {
     if (err) {
       throw new gutil.PluginError('webpack', err);
@@ -58,7 +58,7 @@ gulp.task('webpack-tree', function(done) {
   });
 });
 
-gulp.task('webpack-server', function() {
+gulp.task('server', function() {
   new WebpackDevServer(webpack(devConfig), {
     publicPath: devConfig.output.publicPath,
     hot: true
