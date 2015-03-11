@@ -1,17 +1,36 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+var babel = require('gulp-babel');
+var sourcemaps = require('gulp-sourcemaps');
+var shell = require('gulp-shell');
+var bump = require('gulp-bump');
+
+var fs = require('fs');
+var chalk = require('chalk');
+var del = require('del');
+var strftime = require('strftime');
+var argv = require('yargs').argv;
+
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 var dependencyTree = require('webpack-dependency-tree');
+
 var makeConfig = require('./make-webpack-config');
 var devConfig = makeConfig('dev');
 var optiConfig = makeConfig('optimize');
 var config = makeConfig('dist');
-var chalk = require('chalk');
 
 var DEBUG = process.env.NODE_ENV !== 'production';
 
-gulp.task('webpack-dist', function(done) {
+gulp.task('lib', ['clean:lib'], function(done) {
+  return gulp.src(['src/**/*.js', 'src/**/*.jsx'])
+    .pipe(sourcemaps.init())
+    .pipe(babel({experimental: true}))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('lib'));
+});
+
+gulp.task('dist', ['clean:dist'], function(done) {
   webpack(config, function(err, stats) {
     if (err) {
       throw new gutil.PluginError('webpack', err);
@@ -27,7 +46,38 @@ gulp.task('webpack-dist', function(done) {
   });
 });
 
-gulp.task('webpack-tree', function(done) {
+gulp.task('clean:lib', function(done) {
+  del(['lib/'], done);
+});
+
+gulp.task('clean:dist', function(done) {
+  del(['dist/'], done);
+});
+
+gulp.task('bump-version', function() {
+  return gulp.src(['package.json', 'bower.json'])
+    .pipe(bump(argv))
+    .pipe(gulp.dest('./'));
+});
+
+gulp.task('release', ['lib', 'dist', 'bump-version'], function() {
+  return gulp.src('')
+    .pipe(shell([
+      'git add -u', // Add modified files (package.json, bower.json, ...)
+      'git add -A lib/ dist/', // Add all changes in lib/ and dist
+      'git commit -a -m "Release <%= pkg.version %>"',
+      'git tag -a <%= pkg.version %> -m "Release <%= date %> <%= pkg.version %>"',
+      'git push origin HEAD',
+      'git push origin <%= pkg.version %>'
+    ], {
+      templateData: {
+        pkg: require('./package.json'),
+        date: strftime('%Y/%m/%d', new Date())
+      }
+    }));
+});
+
+gulp.task('dep-tree', function(done) {
   webpack(optiConfig, function(err, stats) {
     if (err) {
       throw new gutil.PluginError('webpack', err);
@@ -45,7 +95,20 @@ gulp.task('webpack-tree', function(done) {
   });
 });
 
-gulp.task('webpack-server', function() {
+gulp.task('stats', function(done) {
+  webpack(optiConfig, function(err, stats) {
+    if (err) {
+      throw new gutil.PluginError('webpack', err);
+    }
+    var jsonStats = stats.toJson();
+    if (jsonStats.errors.length > 0) {
+      throw new gutil.PluginError('webpack', jsonStats.errors.join('\n'));
+    }
+    fs.writeFile('stats.json', JSON.stringify(jsonStats), done);
+  });
+});
+
+gulp.task('server', function() {
   new WebpackDevServer(webpack(devConfig), {
     publicPath: devConfig.output.publicPath,
     hot: true
@@ -57,7 +120,3 @@ gulp.task('webpack-server', function() {
     console.log('Listening at localhost:3000');
   });
 });
-
-gulp.task('dev', ['webpack-server']);
-
-gulp.task('default', ['webpack']);
