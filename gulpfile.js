@@ -54,13 +54,13 @@ gulp.task('clean:dist', function(done) {
   del(['dist/'], done);
 });
 
-gulp.task('bump', function() {
+gulp.task('bump-version', function() {
   return gulp.src(['package.json', 'bower.json'])
     .pipe(bump(argv))
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('release', ['lib', 'dist', 'bump'], function() {
+gulp.task('release', ['lib', 'dist', 'bump-version'], function() {
   return gulp.src('')
     .pipe(shell([
       'git add -A lib/ dist/',
