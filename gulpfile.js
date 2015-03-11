@@ -1,15 +1,28 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+var babel = require('gulp-babel');
+var sourcemaps = require('gulp-sourcemaps');
+
+var chalk = require('chalk');
+
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 var dependencyTree = require('webpack-dependency-tree');
+
 var makeConfig = require('./make-webpack-config');
 var devConfig = makeConfig('dev');
 var optiConfig = makeConfig('optimize');
 var config = makeConfig('dist');
-var chalk = require('chalk');
 
 var DEBUG = process.env.NODE_ENV !== 'production';
+
+gulp.task('lib', function(done) {
+  return gulp.src(['src/**/*.js', 'src/**/*.jsx'])
+    .pipe(sourcemaps.init())
+    .pipe(babel({experimental: true}))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('lib'));
+});
 
 gulp.task('webpack-dist', function(done) {
   webpack(config, function(err, stats) {
@@ -57,7 +70,3 @@ gulp.task('webpack-server', function() {
     console.log('Listening at localhost:3000');
   });
 });
-
-gulp.task('dev', ['webpack-server']);
-
-gulp.task('default', ['webpack']);
