@@ -1,7 +1,7 @@
 import React from 'react/addons';
 
 import HoverTooltip from '../tooltip/hover-tooltip';
-import TooltipData from '../tooltip/tooltip-data';
+import TooltipTable from '../tooltip/tooltip-table';
 
 var Chart = React.createClass({
 
@@ -48,11 +48,11 @@ var Chart = React.createClass({
         return [metric.get('label'), metric.get('render')(value)]
       });
 
-      return <TooltipData groups={groups.toJS()} metrics={metrics.toJS()} />;
+      return <TooltipTable groups={groups.toJS()} metrics={metrics.toJS()} />;
     });
 
     return (
-      <div className="Chart-tooltipData">
+      <div className="Chart-tooltip">
         {data.toJS()}
       </div>
     );

@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import _ from 'lodash';
 import HoverTooltip from '../tooltip/hover-tooltip';
-import TooltipData from '../tooltip/tooltip-data';
+import TooltipData from '../tooltip/tooltip-table';
 import VennCanvas from './venn-canvas';
 import VennLegend from './venn-legend';
 import VennData from '../../models/VennData';

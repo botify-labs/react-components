@@ -1,4 +1,4 @@
-.TooltipData {
+.TooltipTable {
   table {
     // Otherwise tr borders won't show correctly
     border-collapse: collapse;
@@ -8,7 +8,7 @@
   tbody {
     border-bottom: 2px solid #CCC;
 
-    &.TooltipData-groups {
+    &.TooltipTable-groups {
       background: #EEE;
     }
     &:last-child {
@@ -26,7 +26,7 @@
     td {
       padding: 4px 7px;
 
-      &.TooltipData-cell-label {
+      &.TooltipTable-cell-label {
         font-weight: bold;
         border-right: 1px dotted #CCC;
       }

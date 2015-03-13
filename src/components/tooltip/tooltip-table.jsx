@@ -1,10 +1,10 @@
 import React from 'react/addons';
 
-import './tooltip-data.scss';
+import './tooltip-table.scss';
 
-var TooltipData = React.createClass({
+var TooltipTable = React.createClass({
 
-  displayName: 'TooltipData',
+  displayName: 'TooltipTable',
 
   propTypes: {
     groups: React.PropTypes.arrayOf(React.PropTypes.array),
@@ -13,27 +13,27 @@ var TooltipData = React.createClass({
 
   render() {
     return (
-      <div className="TooltipData">
+      <div className="TooltipTable">
         <table>
-          <tbody className="TooltipData-groups">
+          <tbody className="TooltipTable-groups">
             {this.props.groups && this.props.groups.map((group, idx) => (
-              <tr key={idx} className="TooltipData-cell">
-                <td className="TooltipData-cell-label">
+              <tr key={idx} className="TooltipTable-cell">
+                <td className="TooltipTable-cell-label">
                   {group[0]}
                 </td>
-                <td className="TooltipData-cell-value">
+                <td className="TooltipTable-cell-value">
                   {group[1]}
                 </td>
               </tr>
             ))}
           </tbody>
-          <tbody className="TooltipData-metrics">
+          <tbody className="TooltipTable-metrics">
             {this.props.metrics && this.props.metrics.map((metric, idx) => (
-              <tr key={idx} className="TooltipData-cell">
-                <td className="TooltipData-cell-label">
+              <tr key={idx} className="TooltipTable-cell">
+                <td className="TooltipTable-cell-label">
                   {metric[0]}
                 </td>
-                <td className="TooltipData-cell-value">
+                <td className="TooltipTable-cell-value">
                   {metric[1]}
                 </td>
               </tr>
@@ -46,4 +46,4 @@ var TooltipData = React.createClass({
 
 });
 
-export default TooltipData;
+export default TooltipTable;
