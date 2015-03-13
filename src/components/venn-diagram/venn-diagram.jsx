@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import _ from 'lodash';
 import HoverTooltip from '../tooltip/hover-tooltip';
+import TooltipData from '../tooltip/tooltip-data';
 import VennCanvas from './venn-canvas';
 import VennLegend from './venn-legend';
 import VennData from '../../models/VennData';
@@ -16,12 +17,16 @@ const VennDiagram = React.createClass({
 
   propTypes: {
     vennData: PropTypes.instanceOf(VennData).isRequired,
-    inclusive: PropTypes.bool
+    setLabel: PropTypes.string,
+    sizeLabel: PropTypes.string,
+    inclusive: PropTypes.bool,
   },
 
   getDefaultProps() {
     return {
-      inclusive: false
+      setLabel: 'Set',
+      sizeLabel: 'Size',
+      inclusive: false,
     };
   },
 
@@ -69,20 +74,14 @@ const VennDiagram = React.createClass({
 
   _renderTooltip() {
     return (
-      <table className="Tooltip-data">
-        <tbody className="Tooltip-groups">
-          <tr>
-            <td className="Tooltip-cell-label">Set</td>
-            <td>{this.state.activeSet.get('label')}</td>
-          </tr>
-        </tbody>
-        <tbody className="Tooltip-metrics">
-          <tr>
-            <td className="Tooltip-cell-label">Size</td>
-            <td>{this.props.vennData.getSizeOf(this.state.activeSet, this.props.inclusive)}</td>
-          </tr>
-        </tbody>
-      </table>
+      <TooltipData
+        groups={[
+          [this.props.setLabel, this.state.activeSet.get('label')]
+        ]}
+        metrics={[
+          [this.props.sizeLabel, this.props.vennData.getSizeOf(this.state.activeSet, this.props.inclusive)]
+        ]}
+      />
     );
   },
 

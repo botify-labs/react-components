@@ -1,6 +1,7 @@
 import React from 'react/addons';
 
 import HoverTooltip from '../tooltip/hover-tooltip';
+import TooltipData from '../tooltip/tooltip-data';
 
 var Chart = React.createClass({
 
@@ -39,38 +40,19 @@ var Chart = React.createClass({
       var groups = dataKeys.entrySeq().map(([dimKey, groupKey], idx) => {
         var dimension = this.props.chartData.getDimension(dimKey);
         var group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
-        return (
-          <tr key={idx}>
-            <td className="Tooltip-cell-label">{dimension.get('label')}</td>
-            <td>{group.get('label')}</td>
-          </tr>
-        );
+        return [dimension.get('label'), group.get('label')];
       });
 
       var metrics = dataValues.map((value, idx) => {
         var metric = this.props.chartData.getMetric(idx);
-        return (
-          <tr key={idx}>
-            <td className="Tooltip-cell-label">{metric.get('label')}</td>
-            <td>{metric.get('render')(value)}</td>
-          </tr>
-        );
+        return [metric.get('label'), metric.get('render')(value)]
       });
 
-      return (
-        <table className="Tooltip-datum">
-          <tbody className="Tooltip-groups">
-            {groups.toJS()}
-          </tbody>
-          <tbody className="Tooltip-metrics">
-            {metrics.toJS()}
-          </tbody>
-        </table>
-      );
+      return <TooltipData groups={groups.toJS()} metrics={metrics.toJS()} />;
     });
 
     return (
-      <div className="Tooltip-data">
+      <div className="Chart-tooltipData">
         {data.toJS()}
       </div>
     );
