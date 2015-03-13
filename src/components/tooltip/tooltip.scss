@@ -1,28 +1,48 @@
 .Tooltip {
   z-index: 1;
-  padding: 6px 10px;
   background: white;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
   max-width: 300px;
 
   // This makes sure the tooltip never traps the mouse
   pointer-events: none;
 
-  &.appear-enter {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  &.appear-enter-active {
-    opacity: 1;
-    transform: scale(1);
-    transition: transform 0.08s, opacity 0.08s;
+
+  table {
+    // Otherwise tr borders won't show correctly
+    border-collapse: collapse;
   }
 
-  &.appear-leave-active {
-    opacity: 0;
-    transform: scale(0.8);
-    transition: transform 0.08s, opacity 0.08s;
+  .Tooltip-data {
+    tbody {
+      border-bottom: 2px solid #CCC;
+
+      &.Tooltip-groups {
+        background: #EEE;
+      }
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    tr {
+      border-bottom: 1px solid #CCC;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      td {
+        padding: 4px 7px;
+
+        &.Tooltip-cell-label {
+          font-weight: bold;
+          border-right: 1px dotted #CCC;
+        }
+      }
+    }
   }
 
 }

@@ -69,10 +69,20 @@ const VennDiagram = React.createClass({
 
   _renderTooltip() {
     return (
-      <div>
-        <div>{this.state.activeSet.get('label')}</div>
-        <div>Size: {this.props.vennData.getSizeOf(this.state.activeSet, this.props.inclusive)}</div>
-      </div>
+      <table className="Tooltip-data">
+        <tbody className="Tooltip-groups">
+          <tr>
+            <td className="Tooltip-cell-label">Set</td>
+            <td>{this.state.activeSet.get('label')}</td>
+          </tr>
+        </tbody>
+        <tbody className="Tooltip-metrics">
+          <tr>
+            <td className="Tooltip-cell-label">Size</td>
+            <td>{this.props.vennData.getSizeOf(this.state.activeSet, this.props.inclusive)}</td>
+          </tr>
+        </tbody>
+      </table>
     );
   },
 

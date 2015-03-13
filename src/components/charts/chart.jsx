@@ -41,7 +41,7 @@ var Chart = React.createClass({
         var group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
         return (
           <tr key={idx}>
-            <td>{dimension.get('label')}</td>
+            <td className="Tooltip-cell-label">{dimension.get('label')}</td>
             <td>{group.get('label')}</td>
           </tr>
         );
@@ -51,7 +51,7 @@ var Chart = React.createClass({
         var metric = this.props.chartData.getMetric(idx);
         return (
           <tr key={idx}>
-            <td>{metric.get('label')}</td>
+            <td className="Tooltip-cell-label">{metric.get('label')}</td>
             <td>{metric.get('render')(value)}</td>
           </tr>
         );
@@ -59,10 +59,10 @@ var Chart = React.createClass({
 
       return (
         <table className="Tooltip-datum">
-          <tbody className="groups">
+          <tbody className="Tooltip-groups">
             {groups.toJS()}
           </tbody>
-          <tbody className="metrics">
+          <tbody className="Tooltip-metrics">
             {metrics.toJS()}
           </tbody>
         </table>
