@@ -173,6 +173,7 @@ var SpecificPanelController = React.createClass({
       <VennDiagram
         key="vennDiagram"
         vennData={vennData}
+        onClick={() => console.log('hello')}
         inclusive
       />
     );

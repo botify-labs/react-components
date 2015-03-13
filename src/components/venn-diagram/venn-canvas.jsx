@@ -96,6 +96,7 @@ const VennCanvas = React.createClass({
       return (
         <el.class
           key={idx}
+          style={onClick && {cursor: 'pointer'}}
           onClick={onClick && onClick.bind(null, el.set, idx)}
           onMouseOver={onMouseOver && onMouseOver.bind(null, el.set)}
           onMouseOut={onMouseOut && onMouseOut.bind(null, el.set)}
