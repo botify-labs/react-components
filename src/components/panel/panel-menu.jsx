@@ -56,22 +56,33 @@ var PanelMenu = React.createClass({
   },
 
   render() {
-    var displayModes = this.props.displayModes.map((displayMode) => {
+    var displayModes = this.props.displayModes.map((displayMode, idx) => {
+      let disabled = displayMode.id === this.props.currentDisplayModeId;
       return (
-        <MenuItem key={displayMode.id}
-                  className={displayMode.id === this.props.currentDisplayModeId && 'text-muted'}
-                  onSelect={this._handleDisplayModeSelect.bind(null, displayMode)}>
-          <i className={`fa ${displayMode.icon}`}/>
+        <MenuItem key={idx}
+                  className={disabled && 'disabled'}
+                  href={null}
+                  onSelect={!disabled && this._handleDisplayModeSelect.bind(null, displayMode)}>
+          {displayMode.icon &&
+            <i className={classNames('fa', displayMode.icon)}/>
+          }
           {displayMode.label}
         </MenuItem>
       );
     });
 
-    var actions = this.props.actions.map((action) => {
+    var actions = this.props.actions.map((action, idx) => {
+      if (action.type === 'divider') {
+        return <MenuItem key={idx} divider />
+      }
+
       return (
-        <MenuItem key={action.id}
+        <MenuItem key={idx}
+                  href={action.href || null}
                   onSelect={this._handleActionSelect.bind(null, action)}>
-          <i className={`fa ${action.icon}`}></i>
+          {action.icon &&
+            <i className={classNames('fa', action.icon)}></i>
+          }
           {action.label}
         </MenuItem>
       );
@@ -83,7 +94,9 @@ var PanelMenu = React.createClass({
                       className={classNames(this.props.className, 'PanelMenu')}
                       title={<i className="fa fa-gear"/>}>
         {displayModes}
-        {displayModes.length > 0 && actions.length > 0 ? <MenuItem divider/> : null}
+        {displayModes.length > 0 && actions.length > 0 &&
+          <MenuItem key="divider" divider />
+        }
         {actions}
       </DropdownButton>
     );
