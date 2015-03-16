@@ -1,10 +1,9 @@
-import React from 'react/addons';
+import React, {PropTypes} from 'react/addons';
 import classNames from 'classnames';
 import _ from 'lodash';
 
 import PanelMenu from './panel-menu';
 
-import 'font-awesome/css/font-awesome.css';
 import './style.scss';
 
 var Panel = React.createClass({
@@ -12,9 +11,21 @@ var Panel = React.createClass({
   displayName: 'Panel',
 
   propTypes: {
-    title: React.PropTypes.string, // Panel title
-    displayModes: React.PropTypes.array,
-    actions: React.PropTypes.array
+    title: PropTypes.node,
+    titleActions: PropTypes.node,
+    headerActions: PropTypes.node,
+    displayModes: PropTypes.array,
+    defaultDisplayModeId: PropTypes.string,
+    // TODO: Maybe replace actions with PropTypes.node
+    actions: PropTypes.array
+  },
+
+  getDefaultProps() {
+    return {
+      title: '',
+      displayModes: [],
+      actions: [],
+    };
   },
 
   getInitialState() {
@@ -42,28 +53,37 @@ var Panel = React.createClass({
   },
 
   render() {
-    var displayModes = this.props.displayModes;
-    var actions = this.props.actions;
+    let {
+      displayModes, actions, className, title, titleActions,
+      headerActions, children, ...otherProps
+    } = this.props;
 
     var currentDisplayMode = _.find(displayModes, {id: this.state.currentDisplayModeId});
 
     return (
-      <div className={classNames(this.props.className, 'Panel')}>
+      <div className={classNames(className, 'Panel')} {...otherProps}>
         <div className="Panel-header">
           <div className="Panel-titleWrapper">
-            <div className="Panel-title" title={this.props.title}>
-              {this.props.title}
+            <div className="Panel-title" title={title}>
+              {title}
             </div>
+            {titleActions &&
+              <div className="Panel-titleActions">
+                {titleActions}
+              </div>
+            }
           </div>
           <div className="Panel-actions">
-            <PanelMenu  currentDisplayModeId={this.state.currentDisplayModeId}
-                        displayModes={displayModes}
-                        actions={actions}
-                        onAction={this._handleAction}
-                        onDiplayMode={this._handleDisplayMode}/>
+            {headerActions}
+            <PanelMenu currentDisplayModeId={this.state.currentDisplayModeId}
+                       displayModes={displayModes}
+                       actions={actions}
+                       onAction={this._handleAction}
+                       onDiplayMode={this._handleDisplayMode}/>
           </div>
         </div>
         <div className="Panel-body">
+          {children}
           {currentDisplayMode.render()}
         </div>
       </div>
