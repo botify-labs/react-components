@@ -14,9 +14,10 @@ var Panel = React.createClass({
     title: PropTypes.node,
     titleActions: PropTypes.node,
     headerActions: PropTypes.node,
-    displayModes: React.PropTypes.array,
-    defaultDisplayModeId: React.PropTypes.string,
-    actions: React.PropTypes.array
+    displayModes: PropTypes.array,
+    defaultDisplayModeId: PropTypes.string,
+    // TODO: Maybe replace actions with PropTypes.node
+    actions: PropTypes.array
   },
 
   getDefaultProps() {
