@@ -1,12 +1,12 @@
 import React, {PropTypes} from 'react';
 import _ from 'lodash';
-import HoverTooltip from '../tooltip/hover-tooltip';
-import TooltipData from '../tooltip/tooltip-table';
-import VennCanvas from './venn-canvas';
-import VennLegend from './venn-legend';
+import HoverTooltip from '../tooltip/HoverTooltip';
+import TooltipData from '../tooltip/TooltipTable';
+import VennCanvas from './VennCanvas';
+import VennLegend from './VennLegend';
 import VennData from '../../models/VennData';
 
-import './venn-diagram.scss';
+import './VennDiagram.scss';
 
 /**
  * Wrapper around the venn.js library

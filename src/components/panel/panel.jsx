@@ -2,7 +2,7 @@ import React from 'react/addons';
 import classNames from 'classnames';
 import _ from 'lodash';
 
-import PanelMenu from './panel-menu';
+import PanelMenu from './PanelMenu';
 
 import 'font-awesome/css/font-awesome.css';
 import './style.scss';

@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import UniqueIdMixin from './unique-id-mixin';
+import UniqueIdMixin from './UniqueIdMixin';
 
 const Mask = React.createClass({
 

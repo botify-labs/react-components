@@ -1,7 +1,7 @@
 import React from 'react/addons';
 import {Map} from 'immutable';
 
-import Tooltip from './tooltip';
+import Tooltip from './Tooltip';
 
 var HoverTooltip = React.createClass({
 

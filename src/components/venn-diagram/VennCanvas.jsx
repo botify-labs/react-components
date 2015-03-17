@@ -4,7 +4,7 @@ import venn from 'venn.js';
 import Circle, {
   CircleDifference, CircleIntersection,
   CircleDifferenceInterior, CircleIntersectionInterior
-} from '../svg/circle';
+} from '../svg/Circle';
 
 const VennCanvas = React.createClass({
 

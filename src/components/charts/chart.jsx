@@ -1,7 +1,7 @@
 import React from 'react/addons';
 
-import HoverTooltip from '../tooltip/hover-tooltip';
-import TooltipTable from '../tooltip/tooltip-table';
+import HoverTooltip from '../tooltip/HoverTooltip';
+import TooltipTable from '../tooltip/TooltipTable';
 
 var Chart = React.createClass({
 

@@ -1,7 +1,7 @@
 import React from 'react/addons';
 import {Map} from 'immutable';
 
-import './tooltip.scss';
+import './Tooltip.scss';
 
 var Tooltip = React.createClass({
 
