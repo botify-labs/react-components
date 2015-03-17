@@ -1,0 +1,35 @@
+.TooltipTable {
+  table {
+    // Otherwise tr borders won't show correctly
+    border-collapse: collapse;
+  }
+
+
+  tbody {
+    border-bottom: 2px solid #CCC;
+
+    &.TooltipTable-groups {
+      background: #EEE;
+    }
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  tr {
+    border-bottom: 1px solid #CCC;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    td {
+      padding: 4px 7px;
+
+      &.TooltipTable-cell-label {
+        font-weight: bold;
+        border-right: 1px dotted #CCC;
+      }
+    }
+  }
+}

@@ -1,11 +1,12 @@
 import React, {PropTypes} from 'react';
 import _ from 'lodash';
-import HoverTooltip from '../tooltip/hover-tooltip';
-import VennCanvas from './venn-canvas';
-import VennLegend from './venn-legend';
+import HoverTooltip from '../tooltip/HoverTooltip';
+import TooltipData from '../tooltip/TooltipTable';
+import VennCanvas from './VennCanvas';
+import VennLegend from './VennLegend';
 import VennData from '../../models/VennData';
 
-import './venn-diagram.scss';
+import './VennDiagram.scss';
 
 /**
  * Wrapper around the venn.js library
@@ -16,12 +17,16 @@ const VennDiagram = React.createClass({
 
   propTypes: {
     vennData: PropTypes.instanceOf(VennData).isRequired,
-    inclusive: PropTypes.bool
+    setLabel: PropTypes.string,
+    sizeLabel: PropTypes.string,
+    inclusive: PropTypes.bool,
   },
 
   getDefaultProps() {
     return {
-      inclusive: false
+      setLabel: 'Set',
+      sizeLabel: 'Size',
+      inclusive: false,
     };
   },
 
@@ -69,10 +74,14 @@ const VennDiagram = React.createClass({
 
   _renderTooltip() {
     return (
-      <div>
-        <div>{this.state.activeSet.get('label')}</div>
-        <div>Size: {this.props.vennData.getSizeOf(this.state.activeSet, this.props.inclusive)}</div>
-      </div>
+      <TooltipData
+        groups={[
+          [this.props.setLabel, this.state.activeSet.get('label')]
+        ]}
+        metrics={[
+          [this.props.sizeLabel, this.props.vennData.getSizeOf(this.state.activeSet, this.props.inclusive)]
+        ]}
+      />
     );
   },
 

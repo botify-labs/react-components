@@ -1,11 +1,11 @@
 import React from 'react/addons';
-import Panel from './components/panel/panel';
-import Table from './components/table';
-import Chart from './components/charts/chart';
-import GoogleColumnChart from './components/charts/google/google-column-chart';
-import VennDiagram from './components/venn-diagram/venn-diagram';
-import ChartData from './models/ChartData';
-import VennData from './models/VennData';
+import Panel from '../components/panel/Panel';
+import Table from '../components/Table';
+import Chart from '../components/charts/Chart';
+import GoogleColumnChart from '../components/charts/google/GoogleColumnChart';
+import VennDiagram from '../components/venn-diagram/VennDiagram';
+import ChartData from '../models/ChartData';
+import VennData from '../models/VennData';
 import Immutable from 'immutable';
 import Color from 'color';
 
@@ -173,6 +173,7 @@ var SpecificPanelController = React.createClass({
       <VennDiagram
         key="vennDiagram"
         vennData={vennData}
+        onClick={() => console.log('hello')}
         inclusive
       />
     );

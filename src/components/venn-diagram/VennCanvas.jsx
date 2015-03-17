@@ -4,7 +4,7 @@ import venn from 'venn.js';
 import Circle, {
   CircleDifference, CircleIntersection,
   CircleDifferenceInterior, CircleIntersectionInterior
-} from '../svg/circle';
+} from '../svg/Circle';
 
 const VennCanvas = React.createClass({
 
@@ -96,6 +96,7 @@ const VennCanvas = React.createClass({
       return (
         <el.class
           key={idx}
+          style={onClick && {cursor: 'pointer'}}
           onClick={onClick && onClick.bind(null, el.set, idx)}
           onMouseOver={onMouseOver && onMouseOver.bind(null, el.set)}
           onMouseOut={onMouseOut && onMouseOut.bind(null, el.set)}

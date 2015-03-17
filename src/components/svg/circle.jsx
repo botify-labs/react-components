@@ -1,8 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
-import Path from './path';
-import Mask from './mask';
-import ClipPath from './clip-path';
+import Path from './Path';
+import Mask from './Mask';
+import ClipPath from './ClipPath';
 
 const Circle = React.createClass({
 

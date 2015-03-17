@@ -13,6 +13,7 @@ const VennLegend = React.createClass({
       return (
         <li
           key={idx}
+          style={onClick && {cursor: 'pointer'}}
           onClick={onClick && onClick.bind(null, set, idx)}
           onMouseOver={onMouseOver && onMouseOver.bind(null, set)}
           onMouseOut={onMouseOut && onMouseOut.bind(null, set)}

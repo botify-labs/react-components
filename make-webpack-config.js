@@ -51,7 +51,7 @@ module.exports = function(build) {
     config.entry = [
       'webpack-dev-server/client?http://localhost:3000',
       'webpack/hot/only-dev-server',
-      './src/test'
+      './src/tests/index.jsx'
     ];
     config.output = {
       path: __dirname + '/dist/',

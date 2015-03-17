@@ -1,6 +1,6 @@
 import React from 'react';
 
-import GoogleChart from './google-chart';
+import GoogleChart from './GoogleChart';
 
 /**
  * Wrapper around google.visualization.ColumnChart

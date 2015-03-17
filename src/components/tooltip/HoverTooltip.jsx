@@ -1,7 +1,7 @@
 import React from 'react/addons';
 import {Map} from 'immutable';
 
-import Tooltip from './tooltip';
+import Tooltip from './Tooltip';
 
 var HoverTooltip = React.createClass({
 
@@ -22,7 +22,7 @@ var HoverTooltip = React.createClass({
     let {hasTooltip, renderTooltip, children, ...otherProps} = this.props;
 
     return (
-      <div {...otherProps} onMouseMove={this._handleMouseMove}>
+      <div {...otherProps} style={{position: 'relative'}} onMouseMove={this._handleMouseMove}>
         {hasTooltip &&
           <Tooltip
             key="__tooltip"

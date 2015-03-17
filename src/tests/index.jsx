@@ -27,7 +27,7 @@
 
 import React from 'react';
 
-import SpecificPanelController from './specific-panel-controller';
+import SpecificPanelController from './SpecificPanelController';
 
 google.load('visualization', '1.0', {'packages':['corechart']});
 
