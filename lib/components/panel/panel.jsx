@@ -8,7 +8,7 @@ var classNames = _interopRequire(require("classnames"));
 
 var _ = _interopRequire(require("lodash"));
 
-var PanelMenu = _interopRequire(require("./panel-menu"));
+var PanelMenu = _interopRequire(require("./PanelMenu"));
 
 require("font-awesome/css/font-awesome.css");
 

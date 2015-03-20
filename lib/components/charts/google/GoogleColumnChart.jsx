@@ -6,7 +6,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var React = _interopRequire(require("react"));
 
-var GoogleChart = _interopRequire(require("./google-chart"));
+var GoogleChart = _interopRequire(require("./GoogleChart"));
 
 /**
  * Wrapper around google.visualization.ColumnChart

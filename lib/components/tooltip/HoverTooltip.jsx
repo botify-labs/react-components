@@ -10,7 +10,7 @@ var React = _interopRequire(require("react/addons"));
 
 var Map = require("immutable").Map;
 
-var Tooltip = _interopRequire(require("./tooltip"));
+var Tooltip = _interopRequire(require("./Tooltip"));
 
 var HoverTooltip = React.createClass({
 
@@ -37,7 +37,7 @@ var HoverTooltip = React.createClass({
 
     return React.createElement(
       "div",
-      _extends({}, otherProps, { onMouseMove: this._handleMouseMove }),
+      _extends({}, otherProps, { style: { position: "relative" }, onMouseMove: this._handleMouseMove }),
       hasTooltip && React.createElement(Tooltip, {
         key: "__tooltip",
         position: this.state.mousePosition,

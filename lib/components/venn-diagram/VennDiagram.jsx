@@ -14,15 +14,17 @@ var PropTypes = _react.PropTypes;
 
 var _ = _interopRequire(require("lodash"));
 
-var HoverTooltip = _interopRequire(require("../tooltip/hover-tooltip"));
+var HoverTooltip = _interopRequire(require("../tooltip/HoverTooltip"));
 
-var VennCanvas = _interopRequire(require("./venn-canvas"));
+var TooltipData = _interopRequire(require("../tooltip/TooltipTable"));
 
-var VennLegend = _interopRequire(require("./venn-legend"));
+var VennCanvas = _interopRequire(require("./VennCanvas"));
+
+var VennLegend = _interopRequire(require("./VennLegend"));
 
 var VennData = _interopRequire(require("../../models/VennData"));
 
-require("./venn-diagram.scss");
+require("./VennDiagram.scss");
 
 /**
  * Wrapper around the venn.js library
@@ -33,13 +35,15 @@ var VennDiagram = React.createClass({
 
   propTypes: {
     vennData: PropTypes.instanceOf(VennData).isRequired,
-    inclusive: PropTypes.bool
-  },
+    setLabel: PropTypes.string,
+    sizeLabel: PropTypes.string,
+    inclusive: PropTypes.bool },
 
   getDefaultProps: function getDefaultProps() {
     return {
-      inclusive: false
-    };
+      setLabel: "Set",
+      sizeLabel: "Size",
+      inclusive: false };
   },
 
   getInitialState: function getInitialState() {
@@ -93,21 +97,10 @@ var VennDiagram = React.createClass({
   },
 
   _renderTooltip: function _renderTooltip() {
-    return React.createElement(
-      "div",
-      null,
-      React.createElement(
-        "div",
-        null,
-        this.state.activeSet.get("label")
-      ),
-      React.createElement(
-        "div",
-        null,
-        "Size: ",
-        this.props.vennData.getSizeOf(this.state.activeSet, this.props.inclusive)
-      )
-    );
+    return React.createElement(TooltipData, {
+      groups: [[this.props.setLabel, this.state.activeSet.get("label")]],
+      metrics: [[this.props.sizeLabel, this.props.vennData.getSizeOf(this.state.activeSet, this.props.inclusive)]]
+    });
   } });
 
 module.exports = VennDiagram;

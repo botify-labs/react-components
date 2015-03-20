@@ -31,7 +31,7 @@ var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["defau
 
 var React = _interopRequire(require("react"));
 
-var SpecificPanelController = _interopRequire(require("./specific-panel-controller"));
+var SpecificPanelController = _interopRequire(require("./SpecificPanelController"));
 
 google.load("visualization", "1.0", { packages: ["corechart"] });
 

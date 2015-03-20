@@ -8,7 +8,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var React = _interopRequire(require("react/addons"));
 
-var HoverTooltip = _interopRequire(require("../tooltip/hover-tooltip"));
+var HoverTooltip = _interopRequire(require("../tooltip/HoverTooltip"));
+
+var TooltipTable = _interopRequire(require("../tooltip/TooltipTable"));
 
 var Chart = React.createClass({
 
@@ -58,59 +60,20 @@ var Chart = React.createClass({
 
         var dimension = _this.props.chartData.getDimension(dimKey);
         var group = _this.props.chartData.getDimensionGroup(dimKey, groupKey);
-        return React.createElement(
-          "tr",
-          { key: idx },
-          React.createElement(
-            "td",
-            null,
-            dimension.get("label")
-          ),
-          React.createElement(
-            "td",
-            null,
-            group.get("label")
-          )
-        );
+        return [dimension.get("label"), group.get("label")];
       });
 
       var metrics = dataValues.map(function (value, idx) {
         var metric = _this.props.chartData.getMetric(idx);
-        return React.createElement(
-          "tr",
-          { key: idx },
-          React.createElement(
-            "td",
-            null,
-            metric.get("label")
-          ),
-          React.createElement(
-            "td",
-            null,
-            metric.get("render")(value)
-          )
-        );
+        return [metric.get("label"), metric.get("render")(value)];
       });
 
-      return React.createElement(
-        "table",
-        { className: "Tooltip-datum" },
-        React.createElement(
-          "tbody",
-          { className: "groups" },
-          groups.toJS()
-        ),
-        React.createElement(
-          "tbody",
-          { className: "metrics" },
-          metrics.toJS()
-        )
-      );
+      return React.createElement(TooltipTable, { groups: groups.toJS(), metrics: metrics.toJS() });
     });
 
     return React.createElement(
       "div",
-      { className: "Tooltip-data" },
+      { className: "Chart-tooltip" },
       data.toJS()
     );
   },

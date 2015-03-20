@@ -4,19 +4,19 @@ var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["defau
 
 var React = _interopRequire(require("react/addons"));
 
-var Panel = _interopRequire(require("./components/panel/panel"));
+var Panel = _interopRequire(require("../components/panel/Panel"));
 
-var Table = _interopRequire(require("./components/table"));
+var Table = _interopRequire(require("../components/Table"));
 
-var Chart = _interopRequire(require("./components/charts/chart"));
+var Chart = _interopRequire(require("../components/charts/Chart"));
 
-var GoogleColumnChart = _interopRequire(require("./components/charts/google/google-column-chart"));
+var GoogleColumnChart = _interopRequire(require("../components/charts/google/GoogleColumnChart"));
 
-var VennDiagram = _interopRequire(require("./components/venn-diagram/venn-diagram"));
+var VennDiagram = _interopRequire(require("../components/venn-diagram/VennDiagram"));
 
-var ChartData = _interopRequire(require("./models/ChartData"));
+var ChartData = _interopRequire(require("../models/ChartData"));
 
-var VennData = _interopRequire(require("./models/VennData"));
+var VennData = _interopRequire(require("../models/VennData"));
 
 var Immutable = _interopRequire(require("immutable"));
 
@@ -175,6 +175,9 @@ var SpecificPanelController = React.createClass({
     return React.createElement(VennDiagram, {
       key: "vennDiagram",
       vennData: vennData,
+      onClick: function () {
+        return console.log("hello");
+      },
       inclusive: true
     });
   },

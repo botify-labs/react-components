@@ -8,7 +8,7 @@ var React = _interopRequire(require("react"));
 
 var venn = _interopRequire(require("venn.js"));
 
-var _svgCircle = require("../svg/circle");
+var _svgCircle = require("../svg/Circle");
 
 var Circle = _interopRequire(_svgCircle);
 
@@ -125,6 +125,7 @@ var VennCanvas = React.createClass({
     var elements = setElements.concat(interElements).map(function (el, idx) {
       return React.createElement(el["class"], {
         key: idx,
+        style: onClick && { cursor: "pointer" },
         onClick: onClick && onClick.bind(null, el.set, idx),
         onMouseOver: onMouseOver && onMouseOver.bind(null, el.set),
         onMouseOut: onMouseOut && onMouseOut.bind(null, el.set),

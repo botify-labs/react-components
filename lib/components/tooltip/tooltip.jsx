@@ -6,7 +6,7 @@ var React = _interopRequire(require("react/addons"));
 
 var Map = require("immutable").Map;
 
-require("./tooltip.scss");
+require("./Tooltip.scss");
 
 var Tooltip = React.createClass({
 

@@ -8,11 +8,11 @@ var React = _interopRequire(require("react"));
 
 var _ = _interopRequire(require("lodash"));
 
-var Path = _interopRequire(require("./path"));
+var Path = _interopRequire(require("./Path"));
 
-var Mask = _interopRequire(require("./mask"));
+var Mask = _interopRequire(require("./Mask"));
 
-var ClipPath = _interopRequire(require("./clip-path"));
+var ClipPath = _interopRequire(require("./ClipPath"));
 
 var Circle = React.createClass({
 

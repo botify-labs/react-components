@@ -8,7 +8,7 @@ var React = _interopRequire(require("react"));
 
 var _ = _interopRequire(require("lodash"));
 
-var UniqueIdMixin = _interopRequire(require("./unique-id-mixin"));
+var UniqueIdMixin = _interopRequire(require("./UniqueIdMixin"));
 
 var ClipPath = React.createClass({
   displayName: "ClipPath",
