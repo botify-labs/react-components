@@ -44,7 +44,7 @@ const VennCanvas = React.createClass({
     let {width, height} = this.state;
     let padding = 30;
 
-    let vennSets = vennData.getSets().toIndexedSeq();
+    let vennSets = vennData.getSets();
     let vennIntersections = vennData.getIntersections();
 
     // Transform our data into a structure venn.js understands
@@ -57,7 +57,6 @@ const VennCanvas = React.createClass({
       })
       .toJS();
     let intersections = vennIntersections
-      .entrySeq()
       .map(([sets, intersection]) => {
         return {
           sets: sets.map((set) => vennSets.indexOf(set)).toJS(),
@@ -84,7 +83,7 @@ const VennCanvas = React.createClass({
         class: CircleDifference
       };
     });
-    let interElements = vennIntersections.entrySeq().map(([sets, intersection]) => {
+    let interElements = vennIntersections.map(([sets, intersection]) => {
       return {
         set: intersection,
         c1: circles[vennSets.indexOf(sets.first())],
