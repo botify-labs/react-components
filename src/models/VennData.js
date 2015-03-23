@@ -54,7 +54,7 @@ class VennData {
           if (intersection === undefined) {
             return;
           }
-          size -= intersection.get('size');
+          size -= this.getSizeOf(intersection, false);
         });
       } else if (this.intersections.contains(set)) {
         let sets = this.intersections.findKey((other) => other === set);
@@ -63,7 +63,7 @@ class VennData {
             return;
           }
           if (otherSets.isSubset(sets)) {
-            size -= otherIntersection.get('size');
+            size -= this.getSizeOf(otherIntersection, false);
           }
         });
       }
