@@ -12,7 +12,7 @@ var PanelMenu = _interopRequire(require("./PanelMenu"));
 
 require("font-awesome/css/font-awesome.css");
 
-require("./style.scss");
+require("./Panel.scss");
 
 var Panel = React.createClass({
 
