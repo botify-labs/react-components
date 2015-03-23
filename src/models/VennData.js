@@ -58,15 +58,15 @@ class VennData {
   }
 
   getSets() {
-    return this.sets;
+    return this.sets.valueSeq();
   }
 
   getIntersections() {
-    return this.intersections;
+    return this.intersections.entrySeq();
   }
 
-  getIntersection(set1, set2) {
-    return this.intersections.get(Set.of(set1, set2));
+  getIntersection(...sets) {
+    return this.intersections.get(Set.of(...sets));
   }
 
   _testSet(set){
