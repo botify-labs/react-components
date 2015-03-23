@@ -5,7 +5,7 @@ import _ from 'lodash';
 import PanelMenu from './PanelMenu';
 
 import 'font-awesome/css/font-awesome.css';
-import './style.scss';
+import './Panel.scss';
 
 var Panel = React.createClass({
 
