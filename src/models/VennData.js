@@ -50,7 +50,7 @@ class VennData {
           if (other === set) {
             return;
           }
-          let intersection = this.getIntersection(set, other);
+          let intersection = this.getIntersectionOf(set, other);
           if (intersection === undefined) {
             return;
           }
@@ -93,7 +93,7 @@ class VennData {
    * @param  {Array<VennSet>} sets
    * @return {VennIntersection}
    */
-  getIntersection(...sets) {
+  getIntersectionOf(...sets) {
     return this.intersections.get(Set.of(...sets));
   }
 
