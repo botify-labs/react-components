@@ -46,23 +46,15 @@ class VennData {
 
     if (!inclusive) {
       if (this.sets.contains(set)) {
-        this.sets.forEach((other) => {
-          if (other === set) {
-            return;
+        this.intersections.forEach((intersection, sets) => {
+          if (sets.contains(set)) {
+            size -= this.getSizeOf(intersection, false);
           }
-          let intersection = this.getIntersectionOf(set, other);
-          if (intersection === undefined) {
-            return;
-          }
-          size -= this.getSizeOf(intersection, false);
         });
       } else if (this.intersections.contains(set)) {
         let sets = this.intersections.findKey((other) => other === set);
         this.intersections.forEach((otherIntersection, otherSets) => {
-          if (otherIntersection === set) {
-            return;
-          }
-          if (otherSets.isSubset(sets)) {
+          if (otherIntersection !== set && sets.isSubset(otherSets)) {
             size -= this.getSizeOf(otherIntersection, false);
           }
         });
