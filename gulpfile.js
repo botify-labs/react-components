@@ -18,6 +18,7 @@ var dependencyTree = require('webpack-dependency-tree');
 var makeConfig = require('./make-webpack-config');
 var devConfig = makeConfig('dev');
 var optiConfig = makeConfig('optimize');
+var testConfig = makeConfig('test');
 var config = makeConfig('dist');
 
 var DEBUG = process.env.NODE_ENV !== 'production';
