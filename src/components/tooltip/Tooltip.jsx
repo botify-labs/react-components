@@ -31,9 +31,9 @@ var Tooltip = React.createClass({
 
   render() {
     var style;
-    var {width, height} = this.state;
+    var { width, height } = this.state;
     if (width === null) {
-      style = {position: 'absolute', top: -9999, left: -9999};
+      style = { position: 'absolute', top: -9999, left: -9999 };
     } else {
       style = this._getStyle();
     }
@@ -46,10 +46,10 @@ var Tooltip = React.createClass({
   },
 
   _getStyle() {
-    var style = {position: 'absolute'};
+    var style = { position: 'fixed' };
     var margin = 10; // x and y margin between the mouse and the tooltip
-    var {position} = this.props;
-    var {width, height} = this.state;
+    var { position } = this.props;
+    var { width, height } = this.state;
     var containerWidth = document.body.offsetWidth;
 
     // Calculate the best position for the tooltip so that
