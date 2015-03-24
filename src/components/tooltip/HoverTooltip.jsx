@@ -1,5 +1,4 @@
 import React from 'react/addons';
-import {Map} from 'immutable';
 
 import Tooltip from './Tooltip';
 
