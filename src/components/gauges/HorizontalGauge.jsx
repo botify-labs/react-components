@@ -5,9 +5,9 @@ import TooltipTable from '../tooltip/TooltipTable';
 import './HorizontalGauge.scss';
 
 let stackPropType = PropTypes.shape({
-  label: PropTypes.string,
-  value: PropTypes.number,
-  color: PropTypes.string
+  label: PropTypes.string.isRequired,
+  value: PropTypes.number.isRequired,
+  color: PropTypes.string.isRequired
 });
 
 const HorizontalGauge = React.createClass({
@@ -23,8 +23,8 @@ const HorizontalGauge = React.createClass({
      *  * === is the second stack
      *  * blank space is the `all` stack
      */
-    all: stackPropType,
-    stacks: PropTypes.arrayOf(stackPropType)
+    all: stackPropType.isRequired,
+    stacks: PropTypes.arrayOf(stackPropType).isRequired
   },
 
   getInitialState() {
@@ -56,7 +56,7 @@ const HorizontalGauge = React.createClass({
   },
 
   render() {
-    let { stacks, all } = this.props;
+    let { stacks, all, style, ...otherProps } = this.props;
     let { hasTooltip } = this.state;
     return (
       <HoverTooltip
@@ -64,13 +64,15 @@ const HorizontalGauge = React.createClass({
         renderTooltip={this._renderTooltip}
       >
         <div
+          {...otherProps}
           onMouseEnter={this._handleMouseEnter}
           onMouseLeave={this._handleMouseLeave}
           className="HorizontalGauge"
-          style={{ backgroundColor: all.color }}
+          style={{ ...style, backgroundColor: all.color }}
         >
-          {stacks.map((stack) => (
+          {stacks.map((stack, idx) => (
             <div
+              key={idx}
               className="HorizontalGauge-stack"
               style={{
                 width: `${stack.value / all.value * 100}%`,

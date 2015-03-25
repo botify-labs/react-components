@@ -27,13 +27,14 @@ describe('HorizontalGauge', () => {
 
   it('should render a tooltip on hover', () => {
     let gauge = render(<HorizontalGauge stacks={stacks} all={all} />);
+    let gaugeNode = React.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge'));
     let tooltips;
     // TestUtils.Simulate.{mouseEnter, mouseLeave} don't work (yet)
     // See https://github.com/facebook/react/issues/1297
-    TestUtils.SimulateNative.mouseOver(React.findDOMNode(gauge));
+    TestUtils.SimulateNative.mouseOver(gaugeNode);
     tooltips = TestUtils.scryRenderedComponentsWithType(gauge, Tooltip);
     expect(tooltips.length).toBe(1);
-    TestUtils.SimulateNative.mouseOut(React.findDOMNode(gauge));
+    TestUtils.SimulateNative.mouseOut(gaugeNode);
     tooltips = TestUtils.scryRenderedComponentsWithType(gauge, Tooltip);
     expect(tooltips.length).toBe(0);
     unmount(gauge);
@@ -41,7 +42,7 @@ describe('HorizontalGauge', () => {
 
   it('should render stacks with a width relative their values and with the provided color', () => {
     let gauge = render(<HorizontalGauge stacks={stacks} all={all} />);
-    let gaugeNode = React.findDOMNode(gauge);
+    let gaugeNode = React.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge'));
     expect(gaugeNode.style.backgroundColor).toBe(all.color);
     let stacksComponents = TestUtils.scryRenderedDOMComponentsWithClass(gauge, 'HorizontalGauge-stack');
     expect(stacksComponents.length).toBe(stacks.length);
