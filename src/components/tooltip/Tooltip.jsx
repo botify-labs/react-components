@@ -10,7 +10,14 @@ var Tooltip = React.createClass({
     position: React.PropTypes.shape({
       top: React.PropTypes.number.isRequired,
       left: React.PropTypes.number.isRequired
-    })
+    }),
+    margin: React.PropTypes.number
+  },
+
+  getDefaultProps() {
+    return {
+      margin: 10, // x and y margin between the mouse and the tooltip
+    };
   },
 
   getInitialState() {
@@ -21,7 +28,7 @@ var Tooltip = React.createClass({
   },
 
   componentDidMount() {
-    var node = this.getDOMNode();
+    var node = React.findDOMNode(this);
 
     this.setState({
       width: node.offsetWidth,
@@ -29,26 +36,38 @@ var Tooltip = React.createClass({
     });
   },
 
+  componentDidUpdate(prevProps, prevState) {
+    var node = React.findDOMNode(this);
+    let width = node.offsetWidth;
+    let height = node.offsetHeight;
+
+    if (width != prevState.width || height != prevState.height) {
+      this.setState({
+        width: node.offsetWidth,
+        height: node.offsetHeight,
+      });
+    }
+  },
+
   render() {
-    var style;
-    var { width, height } = this.state;
+    let { style, children, ...otherProps } = this.props;
+    let { width, height } = this.state;
     if (width === null) {
-      style = { position: 'absolute', top: -9999, left: -9999 };
+      style = { ...style, position: 'fixed', top: -9999, left: -9999 };
     } else {
-      style = this._getStyle();
+      style = { ...style, ...this._getStyle() };
     }
 
     return (
-      <div className="Tooltip" style={style}>
-        {this.props.children}
+      <div {...otherProps} className="Tooltip" style={style}>
+        {children}
       </div>
     );
   },
 
   _getStyle() {
     var style = { position: 'fixed' };
-    var margin = 10; // x and y margin between the mouse and the tooltip
-    var { position } = this.props;
+    var { position, margin } = this.props;
     var { width, height } = this.state;
     var containerWidth = document.body.offsetWidth;
 
