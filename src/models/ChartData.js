@@ -95,6 +95,9 @@ class ChartData{
    * @param {Map} metricMetadata
    */
   addMetric(metricMetadata = Map()){
+    if(!Map.isMap(metricMetadata)){
+      throw new TypeError("metricMetadata is not a Map");
+    }
     this.metrics = this.metrics.push(metricMetadata);
   }
 
@@ -119,14 +122,16 @@ class ChartData{
    * @param {Map<String,Any>} dimMetadata {label: <String>, color: <String>, ...}
    */
   addDimension(dimKey, dimMetadata = Map()){
+    if(!Map.isMap(dimMetadata)){
+      throw new TypeError("dimMetadata is not a Map");
+    }
     var dimensionValue = dimMetadata.set('groups', OrderedMap());
 
     this.dimensions = this.dimensions.set(dimKey, dimensionValue);
   }
 
   getDimensionKeyByIndex(index, fromEnd){
-    var start = !fromEnd ? index : -(index+1),
-        end = start+1 !== 0 ? start+1 : undefined;
+    index = fromEnd ? (this.dimensions.count() - 1) - index : index;
     return this.dimensions.keySeq().get(index);
   }
 
@@ -149,11 +154,12 @@ class ChartData{
    * @param {Map<String,Any>} groupMetadata {label: <String>, color: <String>, ...}
    */
   addDimensionGroup(dimKey, groupKey, groupMetadata = Map()){
-    //Add dimension if not exist
     if(!this.hasDimension(dimKey)){
-      throw new Error("you can't add group to an unexisting group");
+      throw new Error("you can't add a dimension group to a dimension that doesn't exist");
     }
-
+    if(!Map.isMap(groupMetadata)){
+      throw new TypeError("groupMetadata is not a Map");
+    }
     this.dimensions = this.dimensions.setIn([dimKey, 'groups', groupKey], groupMetadata);
   }
   /**
