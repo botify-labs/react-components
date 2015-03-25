@@ -59,7 +59,7 @@ module.exports = function(build, grep) {
       new webpack.DefinePlugin({
         // This allows to dynamically define what test files we want to run
         // See karma.conf.js
-        GREP: grep || '/\\.spec\\.js$/'
+        GREP: grep || '/\\.spec\\.jsx?$/'
       }),
       new webpack.ProvidePlugin({
         expect: 'expect'
