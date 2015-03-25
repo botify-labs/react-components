@@ -4,7 +4,7 @@ var argv = require('yargs').argv;
 
 module.exports = function(config) {
   config.set({
-    browsers: ['Chrome'],
+    browsers: ['ChromeWithExtension'],
     // singleRun: true,
     frameworks: ['mocha'],
     files: [
@@ -15,6 +15,12 @@ module.exports = function(config) {
       'test/entry.js': ['webpack', 'sourcemap']
     },
     reporters: ['dots'],
-    webpack: makeWebpackConfig('test', argv.grep)
+    webpack: makeWebpackConfig('test', argv.grep),
+    customLaunchers: {
+      ChromeWithExtension: {
+        base: 'Chrome',
+        flags: argv.extension && ['--load-extension=' + argv.extension]
+      }
+    }
   });
 };
