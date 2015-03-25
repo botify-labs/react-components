@@ -1,16 +1,24 @@
 import React from 'react/addons';
 
 export function renderEach(element, callback) {
-  let component, node;
+  let component;
   beforeEach(() => {
-    node = document.createElement('div');
-    document.body.appendChild(node);
-    component = React.render(element, node);
-    callback(component);
+    callback(component = render(element));
   });
 
   afterEach(() => {
-    document.body.removeChild(node);
+    unmount(component);
   });
 };
 
+export function render(element) {
+  let node = document.createElement('div');
+  document.body.appendChild(node);
+  return React.render(element, node);
+};
+
+export function unmount(component) {
+  let node = React.findDOMNode(component).parentNode;
+  React.unmountComponentAtNode(node);
+  document.body.removeChild(node);
+};
