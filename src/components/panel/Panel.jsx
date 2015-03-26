@@ -12,6 +12,8 @@ var Panel = React.createClass({
   displayName: 'Panel',
 
   propTypes: {
+    className: React.PropTypes.string,
+    defaultDisplayModeId: React.PropTypes.string,
     title: React.PropTypes.string, // Panel title
     displayModes: React.PropTypes.array,
     actions: React.PropTypes.array
@@ -56,11 +58,11 @@ var Panel = React.createClass({
             </div>
           </div>
           <div className="Panel-actions">
-            <PanelMenu  currentDisplayModeId={this.state.currentDisplayModeId}
-                        displayModes={displayModes}
-                        actions={actions}
-                        onAction={this._handleAction}
-                        onDiplayMode={this._handleDisplayMode}/>
+            <PanelMenu currentDisplayModeId={this.state.currentDisplayModeId}
+                       displayModes={displayModes}
+                       actions={actions}
+                       onAction={this._handleAction}
+                       onDiplayMode={this._handleDisplayMode}/>
           </div>
         </div>
         <div className="Panel-body">

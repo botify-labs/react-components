@@ -93,9 +93,7 @@ vennData.addIntersection(Immutable.Set.of(set1, set2), set3);
 
 var ChartRenderer = React.createClass({
 
-  getImageURI() {
-    return this.refs.chart.getImageURI();
-  },
+  displayName: 'ChartRenderer',
 
   render() {
     var style = {
@@ -105,9 +103,9 @@ var ChartRenderer = React.createClass({
 
     return (
       <div style={style}>
-        {this.props.render()}
+        {this.props.children}
       </div>
-    )
+    );
   }
 
 });
@@ -197,7 +195,14 @@ var SpecificPanelController = React.createClass({
       height: 500
     };
 
-    var chart = React.render(<ChartRenderer render={this._renderChart} />, div);
+    var chart = React.render(
+      <ChartRenderer
+        style={style}
+        getImageURI={() => this.refs.chart.getImageURI()}
+      >
+        {this._renderChart()}
+      </ChartRenderer>
+    , div);
 
     var imageURI = chart.getImageURI();
     window.open(imageURI);

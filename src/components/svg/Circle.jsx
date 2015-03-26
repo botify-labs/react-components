@@ -23,11 +23,12 @@ const Circle = React.createClass({
   _getCircleShape() {
     let {x, y, radius} = this.props;
 
+    // `\,` are a @WORKAROUND: See https://github.com/babel/babel-eslint/issues/31
     return [
       `M ${x} ${y}`,
-      `m ${-radius}, 0`,
-      `a ${radius},${radius} 0 1,0 ${radius * 2},0`,
-      `a ${radius},${radius} 0 1,0 ${-radius * 2},0`,
+      `m ${-radius}\, 0`,
+      `a ${radius}\,${radius} 0 1,0 ${radius * 2}\,0`,
+      `a ${radius}\,${radius} 0 1,0 ${-radius * 2}\,0`,
       `Z`
     ].join(' ');
   },
@@ -228,9 +229,10 @@ const CircleIntersectionInterior = React.createClass({
 
 });
 
-export default Circle;
-export {
+// @WORKAROUND: See https://github.com/babel/babel-eslint/issues/8
+_.assign(Circle, {
   CircleIntersection, CircleDifference,
   CircleIntersectionStroke, CircleDifferenceStroke,
   CircleIntersectionInterior, CircleDifferenceInterior
-};
+});
+export default Circle;

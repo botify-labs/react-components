@@ -2,10 +2,15 @@ import React from 'react/addons';
 
 import HoverTooltip from '../tooltip/HoverTooltip';
 import TooltipTable from '../tooltip/TooltipTable';
+import ChartData from '../../models/ChartData';
 
 var Chart = React.createClass({
 
   displayName: 'Chart',
+
+  propTypes: {
+    chartData: React.PropTypes.instanceOf(ChartData)
+  },
 
   getInitialState() {
     return {
@@ -45,7 +50,7 @@ var Chart = React.createClass({
 
       var metrics = dataValues.map((value, idx) => {
         var metric = this.props.chartData.getMetric(idx);
-        return [metric.get('label'), metric.get('render')(value)]
+        return [metric.get('label'), metric.get('render')(value)];
       });
 
       return <TooltipTable groups={groups.toJS()} metrics={metrics.toJS()} />;

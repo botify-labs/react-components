@@ -4,7 +4,14 @@ import UniqueIdMixin from './UniqueIdMixin';
 
 const Mask = React.createClass({
 
+  displayName: 'Mask',
+
   mixins: [UniqueIdMixin],
+
+  propTypes: {
+    // Shape used to clip the Mask's children
+    mask: React.PropTypes.node
+  },
 
   render() {
     let { mask, children, style, ...otherProps } = this.props;
@@ -12,10 +19,10 @@ const Mask = React.createClass({
     return (
       <g>
         <mask id={this._getId('mask')}>
-          {this.props.mask}
+          {mask}
         </mask>
         <g {...otherProps} style={{ ...style, mask: `url(#${this._getId('mask')})` }}>
-          {this.props.children}
+          {children}
         </g>
       </g>
     );

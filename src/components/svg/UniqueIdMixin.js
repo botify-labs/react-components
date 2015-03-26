@@ -1,7 +1,9 @@
+let uniqueId = 0;
+
 const UniqueIdMixin = {
 
   componentWillMount() {
-    this._id = _.uniqueId();
+    this._id = uniqueId++;
   },
 
   _getId(id) {

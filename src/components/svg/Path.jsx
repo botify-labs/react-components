@@ -12,6 +12,13 @@ const fullShape = [
 
 const Path = React.createClass({
 
+  displayName: 'Path',
+
+  propTypes: {
+    // Is this an inversed shape?
+    inverse: React.PropTypes.bool
+  },
+
   render() {
     let { d, inverse, style = {}, ...otherProps } = this.props;
 

@@ -1,12 +1,12 @@
 
-import {List, Map, OrderedMap} from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 
 /**
  * @property {Map} _axes Map of axes relative dimension key
  * @param {[type]} chartData [description]
  */
 class ChartDataGoogleDataAdapter{
-  constructor(chartData){
+  constructor(chartData) {
     this.chartData = chartData;
     this._axesKey = Map();
     return this;
@@ -22,7 +22,7 @@ class ChartDataGoogleDataAdapter{
    *  - Data is sum on unviable dimensions unless filters options are provided
    *  - If axes option is not provided, it uses the last two dimensions in the ChartData
    */
-  toGoogleDataArray(options = Map()){
+  toGoogleDataArray(options = Map()) {
     this._setAxes(options.get('axes'));
     var valuesArray = this._getGoogleValuesArray(options.get('filters'));
 
@@ -45,7 +45,7 @@ class ChartDataGoogleDataAdapter{
     return google.visualization.arrayToDataTable(googleDataArray.toJS());
   }
 
-  toGoogleOptions(percentage){
+  toGoogleOptions(percentage) {
     /*var googleOptions = this.chartData.options.merge(Map(  //DEFAULT OPTIONS TO BE PUT IN CHART COMPONENT
       {
         series: {},
@@ -74,7 +74,7 @@ class ChartDataGoogleDataAdapter{
    * @param  {Object}   {row, column}
    * @return {DataKeys}
    */
-  selectionToDataKeys({row, column}){
+  selectionToDataKeys({row, column}) {
     var filter = Map();
 
     // Series are indexed starting from 1, while categories are indexed starting from 0
@@ -90,14 +90,14 @@ class ChartDataGoogleDataAdapter{
     return filter;
   }
 
-  _getCategories(){
+  _getCategories() {
     return this._getAxis(this._axesKey.get('categories'));
   }
-  _getSeries(){
+  _getSeries() {
     return this._getAxis(this._axesKey.get('series'));
   }
 
-  _getGoogleValuesArray(filters){
+  _getGoogleValuesArray(filters) {
     var googleValuesArray = this._getEmptyGoogleValuesArray(),
         data = this.chartData.filterData(filters),
         categories = this._getCategories(),
@@ -107,7 +107,7 @@ class ChartDataGoogleDataAdapter{
     data.map((value, key) => {
       var xIndex = categories.get('groupKeys').indexOf(key.get(categories.get('key')));
       var yIndex = series.get('groupKeys').indexOf(key.get(series.get('key')));
-      if(xIndex === -1 || yIndex === -1){
+      if (xIndex === -1 || yIndex === -1) {
         throw new Error('data [' + key + ',' + value + '] have a dimension group\'s key undefined');
       }
 
@@ -119,11 +119,11 @@ class ChartDataGoogleDataAdapter{
     return googleValuesArray;
   }
 
-  _getEmptyGoogleValuesArray(){
+  _getEmptyGoogleValuesArray() {
     var googleValuesArray = List();
-    for(var x=0; x < this._getCategories().get('groupKeys').size; x++){
+    for (var x = 0; x < this._getCategories().get('groupKeys').size; x++) {
       googleValuesArray = googleValuesArray.push(new List());
-      for(var y=0; y < this._getSeries().get('groupKeys').size; y++){
+      for (var y = 0; y < this._getSeries().get('groupKeys').size; y++) {
         googleValuesArray = googleValuesArray.setIn([x, y], 0);
       }
     }
@@ -134,7 +134,7 @@ class ChartDataGoogleDataAdapter{
    * categories axis is the last dimension unless a specific option have been set
    * series axis is the last-1 dimension unless a specific option have been set
    */
-  _setAxes(axisKeys = Map()){
+  _setAxes(axisKeys = Map()) {
     this._axesKey = this._axesKey.set('categories',
       axisKeys.get('categories') || this.chartData.getDimensionKeyByIndex(0, true)
     );
@@ -148,7 +148,7 @@ class ChartDataGoogleDataAdapter{
    * Return ChartData relative dimension and precomute helpers
    * @return {Dimension}
    */
-  _getAxis(axisKey){
+  _getAxis(axisKey) {
     var dimension = this.chartData.getDimension(axisKey);
     return dimension
       .set('key', axisKey)
@@ -163,7 +163,7 @@ class ChartDataGoogleDataAdapter{
     info = info.set('groupKeys', info.get('value').get('groups').keySeq());
     return info;
   }*/
-  _getAxesLabels(){
+  _getAxesLabels() {
     return [
       this._getCategories().get('groups').map((group, key) => group.get('label') || key).toList(),
       this._getSeries().get('groups').map((group, key) => group.get('label') || key).toList()

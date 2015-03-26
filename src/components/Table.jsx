@@ -1,5 +1,8 @@
 import React from 'react';
 import DataTable from 'datatables';
+import $ from 'jquery';
+
+import ChartData from '../models/ChartData';
 
 import 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css';
 import 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js';
@@ -7,6 +10,10 @@ import 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js';
 var Table = React.createClass({
 
   displayName: 'Table',
+
+  propTypes: {
+    chartData: React.PropTypes.instanceOf(ChartData)
+  },
 
   statics: {
     getDefaultDisplayModeId() {
@@ -34,7 +41,7 @@ var Table = React.createClass({
   },
 
   componentDidMount() {
-    $(this.refs['table'].getDOMNode()).dataTable(this._getOptions());
+    $(this.refs.table.getDOMNode()).dataTable(this._getOptions());
   },
 
   render() {
