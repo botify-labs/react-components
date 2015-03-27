@@ -60,22 +60,25 @@ const HorizontalGauge = React.createClass({
     let { hasTooltip } = this.state;
     return (
       <HoverTooltip
-        onMouseEnter={this._handleMouseEnter}
-        onMouseLeave={this._handleMouseLeave}
         hasTooltip={hasTooltip}
         renderTooltip={this._renderTooltip}
-        className="HorizontalGauge"
-        style={{ backgroundColor: all.color }}
       >
-        {stacks.map((stack) => (
-          <div
-            className="HorizontalGauge-stack"
-            style={{
-              width: `${stack.value / all.value * 100}%`,
-              backgroundColor: stack.color,
-            }}
-          />
-        ))}
+        <div
+          onMouseEnter={this._handleMouseEnter}
+          onMouseLeave={this._handleMouseLeave}
+          className="HorizontalGauge"
+          style={{ backgroundColor: all.color }}
+        >
+          {stacks.map((stack) => (
+            <div
+              className="HorizontalGauge-stack"
+              style={{
+                width: `${stack.value / all.value * 100}%`,
+                backgroundColor: stack.color,
+              }}
+            />
+          ))}
+        </div>
       </HoverTooltip>
     );
 
