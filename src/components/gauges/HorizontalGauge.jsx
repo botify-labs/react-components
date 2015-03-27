@@ -15,6 +15,14 @@ const HorizontalGauge = React.createClass({
   displayName: 'HorizontalGauge',
 
   propTypes: {
+    /**
+     * Stacks are filled areas of the gauge.
+     * All is the background area of the gauge.
+     * Example: [#######====     ]
+     *  * ### is the first stack
+     *  * === is the second stack
+     *  * blank space is the `all` stack
+     */
     all: stackPropType,
     stacks: PropTypes.arrayOf(stackPropType)
   },
