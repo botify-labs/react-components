@@ -1,5 +1,4 @@
 import React from 'react/addons';
-import {Map} from 'immutable';
 
 import Tooltip from './Tooltip';
 
@@ -19,10 +18,10 @@ var HoverTooltip = React.createClass({
   },
 
   render() {
-    let {hasTooltip, renderTooltip, children, ...otherProps} = this.props;
+    let { hasTooltip, renderTooltip, children, style, ...otherProps } = this.props;
 
     return (
-      <div {...otherProps} style={{position: 'relative'}} onMouseMove={this._handleMouseMove}>
+      <div {...otherProps} style={{...style, position: 'relative'}} onMouseMove={this._handleMouseMove}>
         {hasTooltip &&
           <Tooltip
             key="__tooltip"
@@ -36,14 +35,12 @@ var HoverTooltip = React.createClass({
   },
 
   _handleMouseMove(e) {
-    let rect = this.getDOMNode().getBoundingClientRect();
     // Keep track of the mouse position so that we can have the tooltip
     // follow the cursor
     this.setState({
       mousePosition: {
-        // TODO: replace this with actual values
-        top: e.pageY - rect.top,
-        left: e.pageX - rect.left,
+        top: e.pageY,
+        left: e.pageX
       }
     });
   },
