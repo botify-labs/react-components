@@ -1,4 +1,4 @@
-module.exports = function(build) {
+module.exports = function(build, grep) {
   var webpack = require('webpack');
   var path = require('path');
 
@@ -42,6 +42,30 @@ module.exports = function(build) {
   };
 
   switch (build) {
+  case 'test':
+    config.devtool = 'inline-source-map';
+    config.cache = true;
+    config.output = {
+      path: __dirname + '/dist/',
+      filename: 'test.js',
+      publicPath: '/dist/'
+    };
+    config.module.loaders.push({
+      test: /\.jsx?$/,
+      loaders: ['babel-loader?experimental'],
+      exclude: jsx_excludes
+    });
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        // This allows to dynamically define what test files we want to run
+        // See karma.conf.js
+        GREP: grep || '/\\.spec\\.jsx?$/'
+      }),
+      new webpack.ProvidePlugin({
+        expect: 'expect'
+      })
+    );
+    break;
   case 'dev':
     // This is not as dirty as it looks. It just generates source maps without being crazy slow.
     // Source map lines will be slightly offset, use config.devtool = 'source-map'; to generate cleaner source maps.

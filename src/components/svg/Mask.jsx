@@ -6,25 +6,15 @@ const Mask = React.createClass({
 
   mixins: [UniqueIdMixin],
 
-  componentDidMount() {
-    this._setMask();
-  },
-
-  componentDidUpdate() {
-    this._setMask();
-  },
-
-  _setMask() {
-    this.refs.group.getDOMNode().setAttribute('mask', `url(#${this._getId('mask')})`)
-  },
-
   render() {
+    let { mask, children, style, ...otherProps } = this.props;
+
     return (
       <g>
         <mask id={this._getId('mask')}>
           {this.props.mask}
         </mask>
-        <g ref="group" {..._.omit(this.props, 'children', 'mask')}>
+        <g {...otherProps} style={{ ...style, mask: `url(#${this._getId('mask')})` }}>
           {this.props.children}
         </g>
       </g>

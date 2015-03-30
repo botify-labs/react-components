@@ -32,10 +32,10 @@ const VennCanvas = React.createClass({
    * Recalculate the venn diagram so that it fits into the canvas
    */
   _scale() {
-    let {offsetWidth, offsetHeight} = this.getDOMNode();
+    let {width, height} = React.findDOMNode(this).getBoundingClientRect();
 
-    if (offsetWidth !== this.state.width || offsetHeight !== this.state.height) {
-      this.setState({width: offsetWidth, height: offsetHeight});
+    if (width !== this.state.width || height !== this.state.height) {
+      this.setState({width, height});
     }
   },
 
@@ -64,7 +64,6 @@ const VennCanvas = React.createClass({
         };
       })
       .toJS();
-
 
     let circles = venn.venn(sets.concat(intersections));
     circles = venn.scaleSolution(circles, width, height, padding);
