@@ -6,26 +6,16 @@ const ClipPath = React.createClass({
 
   mixins: [UniqueIdMixin],
 
-  componentDidMount() {
-    this._setClipPath();
-  },
-
-  componentDidUpdate() {
-    this._setClipPath();
-  },
-
-  _setClipPath() {
-    this.refs.group.getDOMNode().setAttribute('clip-path', `url(#${this._getId('clipPath')})`)
-  },
-
   render() {
+    let { path, children, style, ...otherProps } = this.props;
+
     return (
       <g>
         <clipPath id={this._getId('clipPath')}>
-          {this.props.path}
+          {path}
         </clipPath>
-        <g ref="group" {..._.omit(this.props, 'children', 'path')}>
-          {this.props.children}
+        <g {...otherProps} style={{...style, clipPath: `url(#${this._getId('clipPath')})`}} >
+          {children}
         </g>
       </g>
     );
