@@ -12,30 +12,15 @@ const fullShape = [
 
 const Path = React.createClass({
 
-  componentDidMount() {
-    if (this.props.inverse) {
-      this._setFillRule();
-    }
-  },
-
-  componentDidUpdate() {
-    if (this.props.inverse) {
-      this._setFillRule();
-    }
-  },
-
-  _setFillRule() {
-    this.getDOMNode().setAttribute('fill-rule', 'evenodd');
-  },
-
   render() {
-    let {d, inverse} = this.props;
+    let { d, inverse, style = {}, ...otherProps } = this.props;
 
     if (inverse) {
       d = fullShape + d;
+      style.fillRule = 'evenodd';
     }
 
-    return <path d={d} {..._.omit(this.props, 'd', 'inverse')}/>;
+    return <path {...otherProps} d={d} style={style}/>;
   }
 
 });
