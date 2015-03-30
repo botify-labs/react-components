@@ -2,6 +2,8 @@
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+var _objectWithoutProperties = function (obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; };
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var React = _interopRequire(require("react"));
@@ -15,19 +17,14 @@ var Mask = React.createClass({
 
   mixins: [UniqueIdMixin],
 
-  componentDidMount: function componentDidMount() {
-    this._setMask();
-  },
-
-  componentDidUpdate: function componentDidUpdate() {
-    this._setMask();
-  },
-
-  _setMask: function _setMask() {
-    this.refs.group.getDOMNode().setAttribute("mask", "url(#" + this._getId("mask") + ")");
-  },
-
   render: function render() {
+    var _props = this.props;
+    var mask = _props.mask;
+    var children = _props.children;
+    var style = _props.style;
+
+    var otherProps = _objectWithoutProperties(_props, ["mask", "children", "style"]);
+
     return React.createElement(
       "g",
       null,
@@ -38,7 +35,7 @@ var Mask = React.createClass({
       ),
       React.createElement(
         "g",
-        _extends({ ref: "group" }, _.omit(this.props, "children", "mask")),
+        _extends({}, otherProps, { style: _extends({}, style, { mask: "url(#" + this._getId("mask") + ")" }) }),
         this.props.children
       )
     );

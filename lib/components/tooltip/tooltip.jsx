@@ -2,9 +2,11 @@
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var React = _interopRequire(require("react/addons"));
+var _objectWithoutProperties = function (obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; };
 
-var Map = require("immutable").Map;
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var React = _interopRequire(require("react/addons"));
 
 require("./Tooltip.scss");
 
@@ -16,7 +18,13 @@ var Tooltip = React.createClass({
     position: React.PropTypes.shape({
       top: React.PropTypes.number.isRequired,
       left: React.PropTypes.number.isRequired
-    })
+    }),
+    margin: React.PropTypes.number
+  },
+
+  getDefaultProps: function getDefaultProps() {
+    return {
+      margin: 10 };
   },
 
   getInitialState: function getInitialState() {
@@ -26,36 +34,54 @@ var Tooltip = React.createClass({
   },
 
   componentDidMount: function componentDidMount() {
-    var node = this.getDOMNode();
+    var node = React.findDOMNode(this);
 
     this.setState({
       width: node.offsetWidth,
       height: node.offsetHeight });
   },
 
+  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+    var node = React.findDOMNode(this);
+    var width = node.offsetWidth;
+    var height = node.offsetHeight;
+
+    if (width != prevState.width || height != prevState.height) {
+      this.setState({
+        width: node.offsetWidth,
+        height: node.offsetHeight });
+    }
+  },
+
   render: function render() {
-    var style;
+    var _props = this.props;
+    var style = _props.style;
+    var children = _props.children;
+
+    var otherProps = _objectWithoutProperties(_props, ["style", "children"]);
+
     var _state = this.state;
     var width = _state.width;
     var height = _state.height;
 
     if (width === null) {
-      style = { position: "absolute", top: -9999, left: -9999 };
+      style = _extends({}, style, { position: "fixed", top: -9999, left: -9999 });
     } else {
-      style = this._getStyle();
+      style = _extends({}, style, this._getStyle());
     }
 
     return React.createElement(
       "div",
-      { className: "Tooltip", style: style },
-      this.props.children
+      _extends({}, otherProps, { className: "Tooltip", style: style }),
+      children
     );
   },
 
   _getStyle: function _getStyle() {
-    var style = { position: "absolute" };
-    var margin = 10; // x and y margin between the mouse and the tooltip
-    var position = this.props.position;
+    var style = { position: "fixed" };
+    var _props = this.props;
+    var position = _props.position;
+    var margin = _props.margin;
     var _state = this.state;
     var width = _state.width;
     var height = _state.height;
@@ -86,3 +112,4 @@ var Tooltip = React.createClass({
 });
 
 module.exports = Tooltip;
+// x and y margin between the mouse and the tooltip

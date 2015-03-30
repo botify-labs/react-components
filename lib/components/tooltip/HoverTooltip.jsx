@@ -8,8 +8,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var React = _interopRequire(require("react/addons"));
 
-var Map = require("immutable").Map;
-
 var Tooltip = _interopRequire(require("./Tooltip"));
 
 var HoverTooltip = React.createClass({
@@ -32,12 +30,13 @@ var HoverTooltip = React.createClass({
     var hasTooltip = _props.hasTooltip;
     var renderTooltip = _props.renderTooltip;
     var children = _props.children;
+    var style = _props.style;
 
-    var otherProps = _objectWithoutProperties(_props, ["hasTooltip", "renderTooltip", "children"]);
+    var otherProps = _objectWithoutProperties(_props, ["hasTooltip", "renderTooltip", "children", "style"]);
 
     return React.createElement(
       "div",
-      _extends({}, otherProps, { style: { position: "relative" }, onMouseMove: this._handleMouseMove }),
+      _extends({}, otherProps, { style: _extends({}, style, { position: "relative" }), onMouseMove: this._handleMouseMove }),
       hasTooltip && React.createElement(Tooltip, {
         key: "__tooltip",
         position: this.state.mousePosition,
@@ -48,14 +47,13 @@ var HoverTooltip = React.createClass({
   },
 
   _handleMouseMove: function _handleMouseMove(e) {
-    var rect = this.getDOMNode().getBoundingClientRect();
     // Keep track of the mouse position so that we can have the tooltip
     // follow the cursor
     this.setState({
       mousePosition: {
-        // TODO: replace this with actual values
-        top: e.pageY - rect.top,
-        left: e.pageX - rect.left }
+        top: e.pageY,
+        left: e.pageX
+      }
     });
   } });
 

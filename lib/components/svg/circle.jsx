@@ -4,6 +4,10 @@ var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["defau
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var React = _interopRequire(require("react"));
 
 var _ = _interopRequire(require("lodash"));
@@ -247,6 +251,3 @@ exports.CircleIntersectionStroke = CircleIntersectionStroke;
 exports.CircleDifferenceStroke = CircleDifferenceStroke;
 exports.CircleIntersectionInterior = CircleIntersectionInterior;
 exports.CircleDifferenceInterior = CircleDifferenceInterior;
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});

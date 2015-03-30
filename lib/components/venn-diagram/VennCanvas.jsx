@@ -43,13 +43,13 @@ var VennCanvas = React.createClass({
    * Recalculate the venn diagram so that it fits into the canvas
    */
   _scale: function _scale() {
-    var _getDOMNode = this.getDOMNode();
+    var _React$findDOMNode$getBoundingClientRect = React.findDOMNode(this).getBoundingClientRect();
 
-    var offsetWidth = _getDOMNode.offsetWidth;
-    var offsetHeight = _getDOMNode.offsetHeight;
+    var width = _React$findDOMNode$getBoundingClientRect.width;
+    var height = _React$findDOMNode$getBoundingClientRect.height;
 
-    if (offsetWidth !== this.state.width || offsetHeight !== this.state.height) {
-      this.setState({ width: offsetWidth, height: offsetHeight });
+    if (width !== this.state.width || height !== this.state.height) {
+      this.setState({ width: width, height: height });
     }
   },
 

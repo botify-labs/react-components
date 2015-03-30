@@ -2,17 +2,18 @@
   table {
     // Otherwise tr borders won't show correctly
     border-collapse: collapse;
+    table-layout: auto;
   }
 
 
   tbody {
-    border-bottom: 2px solid #CCC;
+    border-bottom: 2px solid #CCC !important;
 
     &.TooltipTable-groups {
       background: #EEE;
     }
     &:last-child {
-      border-bottom: none;
+      border-bottom: none !important;
     }
   }
 
