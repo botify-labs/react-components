@@ -39,11 +39,13 @@ describe('VennCanvas', () => {
     let vennCanvas = render(<VennCanvas vennData={vennData} />);
 
     let circleDiffs = TestUtils.scryRenderedComponentsWithType(vennCanvas, CircleDifference);
+    expect(circleDiffs.length).toBe(sets.length);
     circleDiffs.forEach((circleDiff, idx) => {
       expect(circleDiff.props.fill).toBe(sets[idx].get('color'));
     });
 
     let circleInters = TestUtils.scryRenderedComponentsWithType(vennCanvas, CircleIntersection);
+    expect(circleInters.length).toBe(inters.length);
     circleInters.forEach((circleInter, idx) => {
       expect(circleInter.props.fill).toBe(inters[idx].intersection.get('color'));
     });

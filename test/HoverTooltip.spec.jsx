@@ -1,20 +1,20 @@
 import React, { addons } from 'react/addons';
 const { TestUtils } = addons;
 
+import { renderEach } from './utils';
 import Tooltip from '../src/components/tooltip/Tooltip';
 import HoverTooltip from '../src/components/tooltip/HoverTooltip';
 
 describe('HoverTooltip', () => {
 
   let hoverTooltip;
-  beforeEach(() => {
-    hoverTooltip = TestUtils.renderIntoDocument(
-      <HoverTooltip
-        hasTooltip={false}
-        renderTooltip={() => null}
-      />
-    );
-  })
+  renderEach(
+    <HoverTooltip
+      hasTooltip={false}
+      renderTooltip={() => null}
+    />,
+    (component) => hoverTooltip = component
+  );
 
   it('should not render its tooltip when `hasTooltip` prop is false', () => {
     let content = TestUtils.scryRenderedComponentsWithType(hoverTooltip, Tooltip);
