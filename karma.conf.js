@@ -4,8 +4,7 @@ var argv = require('yargs').argv;
 
 module.exports = function(config) {
   config.set({
-    browsers: ['ChromeWithExtension'],
-    // singleRun: true,
+    browsers: argv.chrome ? ['ChromeWithExtension'] : ['PhantomJS'],
     frameworks: ['mocha'],
     files: [
       'test/entry.js'
