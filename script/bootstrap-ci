@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
+
+cd "$(dirname $0)/.."
+
+echo -e "Bootstrapping..."
+
+echo -e "\nInstalling Bower"
+npm install -g bower
+
+echo -e "\nInstalling Gulp"
+npm install -g gulp
+
+echo -e "\nInstalling repository depencies"
+bower install
+
+echo "SUCCESS"
+exit 0

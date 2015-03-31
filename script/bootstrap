@@ -1,0 +1,27 @@
+#!/bin/bash
+set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
+
+cd "$(dirname $0)/.."
+
+echo -e "Bootstrapping..."
+
+if [ "$OSTYPE" != "linux-gnu" ]
+then
+    echo "Unsupported OS. Only works on Ubuntu. Sry, kiss"
+    exit 1
+fi
+
+echo -e "\nInstalling NodeJS 0.10.25, npm, git..."
+sudo apt-get update
+sudo apt-get install -y 'nodejs=0.10.25*' npm git libfreetype6 libfontconfig
+which node >/dev/null || sudo ln -s /usr/bin/nodejs /usr/bin/node
+
+echo -e "\nInstalling Bower"
+sudo npm install -g bower
+
+echo -e "\nInstalling repository depencies"
+npm install
+bower --allow-root install
+
+echo "SUCCESS"
+exit 0
