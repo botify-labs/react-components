@@ -14,3 +14,5 @@ The gulp cli can be accessed via `npm run gulp` or simply `gulp` if you have ins
 * `deps-tree`: builds bundle and prints dependency tree
 
 * `stats`: builds bundle and writes webpack stats to `stats.json`
+
+* `lint`: lints source files and tests (`lint-sources`, `lint-tests`)
