@@ -113,7 +113,7 @@ module.exports = function(build, grep) {
     );
     config.module.loaders.push({
       test: /\.jsx?$/,
-      loaders: ['eslint-loader', 'babel-loader?experimental', 'eslint-loader'],
+      loaders: ['babel-loader?experimental'],
       exclude: jsx_excludes
     });
     break;
