@@ -52,7 +52,7 @@ module.exports = function(build, grep) {
     };
     config.module.loaders.push({
       test: /\.jsx?$/,
-      loaders: ['babel-loader?experimental', 'eslint-loader'],
+      loaders: ['babel-loader?experimental'],
       exclude: jsx_excludes
     });
     config.plugins.push(

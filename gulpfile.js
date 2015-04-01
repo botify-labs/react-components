@@ -4,6 +4,7 @@ var babel = require('gulp-babel');
 var sourcemaps = require('gulp-sourcemaps');
 var shell = require('gulp-shell');
 var bump = require('gulp-bump');
+var eslint = require('gulp-eslint');
 
 var fs = require('fs');
 var chalk = require('chalk');
@@ -126,3 +127,19 @@ gulp.task('server', function() {
     console.log('Listening at localhost:3000');
   });
 });
+
+gulp.task('lint-sources', function() {
+  return gulp.src(['./src/**/*.js', './src/**/*.jsx'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failOnError());
+});
+
+gulp.task('lint-tests', function() {
+  return gulp.src(['./test/**/*.js', './test/**/*.jsx'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failOnError());
+});
+
+gulp.task('lint', ['lint-sources', 'lint-tests']);
