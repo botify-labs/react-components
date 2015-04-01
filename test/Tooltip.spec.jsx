@@ -1,5 +1,4 @@
 import React, { addons } from 'react/addons';
-const { TestUtils } = addons;
 
 import { renderEach } from './utils';
 import Tooltip from '../src/components/tooltip/Tooltip';

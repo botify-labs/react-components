@@ -132,9 +132,9 @@ describe('VennData', () => {
       vennData.addIntersection(Set.of(set100, set300), inter50);
       vennData.addIntersection(Set.of(set200, set300), inter100);
       vennData.addIntersection(Set.of(set100, set200, set300), inter10);
-      expect(vennData.getSizeOf(inter25, false)).toBe(15)
-      expect(vennData.getSizeOf(inter50, false)).toBe(40)
-      expect(vennData.getSizeOf(inter100, false)).toBe(90)
+      expect(vennData.getSizeOf(inter25, false)).toBe(15);
+      expect(vennData.getSizeOf(inter50, false)).toBe(40);
+      expect(vennData.getSizeOf(inter100, false)).toBe(90);
       expect(vennData.getSizeOf(set100, false)).toBe(35);
       expect(vennData.getSizeOf(set200, false)).toBe(85);
       expect(vennData.getSizeOf(set300, false)).toBe(160);

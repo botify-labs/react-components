@@ -1,7 +1,11 @@
-module.exports = function(build, grep) {
-  var webpack = require('webpack');
-  var path = require('path');
+var webpack = require('webpack');
+var path = require('path');
 
+function resolve(filePath) {
+  return path.resolve(__dirname, filePath);
+}
+
+module.exports = function(build, grep) {
   var bower_path = path.resolve(__dirname, 'bower_components');
   var npm_path = path.resolve(__dirname, 'node_modules');
 
@@ -30,13 +34,13 @@ module.exports = function(build, grep) {
           test: /\.css$/,
           loader: 'style!css!autoprefixer?' + autoprefixer_config
         },
-        { test: /\.png$/,                         loader: 'file' },
-        { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,    loader: 'url?limit=10000&minetype=application/font-woff' },
-        { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,   loader: 'url?limit=10000&minetype=application/font-woff' },
-        { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,     loader: 'url?limit=10000&minetype=application/octet-stream' },
-        { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,     loader: 'file' },
-        { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,     loader: 'url?limit=10000&minetype=image/svg+xml' },
-        { test: /\.json$/,                        loader: 'json' }
+        { test: /\.png$/, loader: 'file' },
+        { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
+        { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
+        { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/octet-stream' },
+        { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
+        { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=image/svg+xml' },
+        { test: /\.json$/, loader: 'json' }
       ]
     }
   };
@@ -46,7 +50,7 @@ module.exports = function(build, grep) {
     config.devtool = 'inline-source-map';
     config.cache = true;
     config.output = {
-      path: __dirname + '/dist/',
+      path: resolve('./dist/'),
       filename: 'test.js',
       publicPath: '/dist/'
     };
@@ -78,7 +82,7 @@ module.exports = function(build, grep) {
       './src/tests/index.jsx'
     ];
     config.output = {
-      path: __dirname + '/dist/',
+      path: resolve('./dist/'),
       filename: 'test.js',
       publicPath: '/dist/'
     };
@@ -99,7 +103,7 @@ module.exports = function(build, grep) {
   case 'optimize':
     config.entry = './src/index';
     config.output = {
-      path: __dirname + '/dist/',
+      path: resolve('./dist/'),
       filename: 'index.js',
       publicPath: '/dist/',
       libraryTarget: 'amd'

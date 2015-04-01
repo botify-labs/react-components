@@ -90,7 +90,6 @@ describe('ChartData', () => {
     });
 
     it('should add a group to the groups of a dimension', () => {
-      let dimMetadata = Map({ label: 'speed' });
       let groupMetadata = Map({ label: 'fast' });
       chartData.addDimension('speed', Map({ label: 'speed' }));
       chartData.addDimensionGroup('speed', 'fast', groupMetadata);

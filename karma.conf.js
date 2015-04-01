@@ -1,4 +1,3 @@
-var webpack = require('webpack');
 var makeWebpackConfig = require('./make-webpack-config');
 var argv = require('yargs').argv;
 

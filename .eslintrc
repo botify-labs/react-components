@@ -44,7 +44,7 @@
         "no-extend-native":         2,
         "wrap-iife":                2,
         "indent":                   [2, 2],
-        "no-use-before-define":     2,
+        "no-use-before-define":     [2, "nofunc"],
         "new-cap":                  0, // we're using Immutable which doesn't play by that rule
         "no-caller":                2,
         "no-empty":                 2,
