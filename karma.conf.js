@@ -8,7 +8,8 @@ module.exports = function(config) {
     files: [
       'test/entry.js'
     ],
-    autoWatch: true,
+    singleRun: !argv.watch,
+    autoWatch: argv.watch,
     preprocessors: {
       'test/entry.js': ['webpack', 'sourcemap']
     },

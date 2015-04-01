@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
+
+#help information
+usage() {
+  echo "$(basename $0) <type>" >&2
+  echo "  type: release type, among 'patch', 'minor', 'major' ; default is 'minor'" >&2
+  exit 1
+}
+
+cd "$(dirname $0)/.."
+
+if [ "$1" == "-h" ]; then
+    usage
+fi
+
+echo -e "Releasing..."
+gulp release --type $1
+
+echo "SUCCESS"
+exit 0

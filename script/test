@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
+
+cd "$(dirname $0)/.."
+
+echo -e "Testing..."
+npm test
+
+echo "SUCCESS"
+exit 0
