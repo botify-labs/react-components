@@ -19,6 +19,7 @@ const VennDiagram = React.createClass({
     vennData: PropTypes.instanceOf(VennData).isRequired,
     setLabel: PropTypes.string,
     sizeLabel: PropTypes.string,
+    formatSize: PropTypes.func,
     inclusive: PropTypes.bool,
   },
 
@@ -26,6 +27,7 @@ const VennDiagram = React.createClass({
     return {
       setLabel: 'Set',
       sizeLabel: 'Size',
+      formatSize: (v) => `${v}`,
       inclusive: false,
     };
   },
@@ -38,9 +40,10 @@ const VennDiagram = React.createClass({
 
   render() {
     let {vennData, inclusive, onClick, ...otherProps} = this.props;
+    let {activeSet} = this.state;
     return (
       <HoverTooltip
-        hasTooltip={!!this.state.activeSet}
+        hasTooltip={!!activeSet}
         renderTooltip={this._renderTooltip}
       >
         <div {...otherProps} className="VennChart">
@@ -48,7 +51,7 @@ const VennDiagram = React.createClass({
             ref="canvas"
             vennData={vennData}
             inclusive={inclusive}
-            activeSet={this.state.activeSet}
+            activeSet={activeSet}
             onClick={onClick}
             onMouseOver={this._handleMouseOver}
             onMouseOut={this._handleMouseOut}
@@ -73,13 +76,15 @@ const VennDiagram = React.createClass({
   },
 
   _renderTooltip() {
+    let {setLabel, sizeLabel, formatSize, vennData, inclusive} = this.props;
+    let {activeSet} = this.state;
     return (
       <TooltipData
         groups={[
-          [this.props.setLabel, this.state.activeSet.get('label')]
+          [setLabel, activeSet.get('label')]
         ]}
         metrics={[
-          [this.props.sizeLabel, this.props.vennData.getSizeOf(this.state.activeSet, this.props.inclusive)]
+          [sizeLabel, formatSize(vennData.getSizeOf(activeSet, inclusive))]
         ]}
       />
     );
