@@ -12,9 +12,15 @@ var HoverTooltip = _interopRequire(require("../tooltip/HoverTooltip"));
 
 var TooltipTable = _interopRequire(require("../tooltip/TooltipTable"));
 
+var ChartData = _interopRequire(require("../../models/ChartData"));
+
 var Chart = React.createClass({
 
   displayName: "Chart",
+
+  propTypes: {
+    chartData: React.PropTypes.instanceOf(ChartData)
+  },
 
   getInitialState: function getInitialState() {
     return {

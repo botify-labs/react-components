@@ -16,6 +16,8 @@ var PanelMenu = React.createClass({
   displayName: "PanelMenu",
 
   propTypes: {
+    className: React.PropTypes.string,
+
     // Called when a display mode is selected
     onDisplayMode: React.PropTypes.func,
 
@@ -46,8 +48,8 @@ var PanelMenu = React.createClass({
    * @param  {Object} displayMode
    */
   _handleDisplayModeSelect: function _handleDisplayModeSelect(displayMode) {
-    if (this.props.onDiplayMode) {
-      this.props.onDiplayMode(displayMode);
+    if (this.props.onDisplayMode) {
+      this.props.onDisplayMode(displayMode);
     }
   },
 

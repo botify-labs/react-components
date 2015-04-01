@@ -13,9 +13,15 @@ var _ = _interopRequire(require("lodash"));
 var UniqueIdMixin = _interopRequire(require("./UniqueIdMixin"));
 
 var ClipPath = React.createClass({
+
   displayName: "ClipPath",
 
   mixins: [UniqueIdMixin],
+
+  propTypes: {
+    // Shape used to clip the ClipPath's children
+    path: React.PropTypes.element
+  },
 
   render: function render() {
     var _props = this.props;

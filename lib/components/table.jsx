@@ -8,6 +8,10 @@ var React = _interopRequire(require("react"));
 
 var DataTable = _interopRequire(require("datatables"));
 
+var $ = _interopRequire(require("jquery"));
+
+var ChartData = _interopRequire(require("../models/ChartData"));
+
 require("datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css");
 
 require("datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js");
@@ -15,6 +19,10 @@ require("datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js");
 var Table = React.createClass({
 
   displayName: "Table",
+
+  propTypes: {
+    chartData: React.PropTypes.instanceOf(ChartData)
+  },
 
   statics: {
     getDefaultDisplayModeId: function getDefaultDisplayModeId() {

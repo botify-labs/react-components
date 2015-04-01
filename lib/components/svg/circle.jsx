@@ -4,10 +4,6 @@ var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["defau
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var React = _interopRequire(require("react"));
 
 var _ = _interopRequire(require("lodash"));
@@ -37,6 +33,7 @@ var Circle = React.createClass({
     var y = _props.y;
     var radius = _props.radius;
 
+    // `\,` are a @WORKAROUND: See https://github.com/babel/babel-eslint/issues/31
     return ["M " + x + " " + y, "m " + -radius + ", 0", "a " + radius + "," + radius + " 0 1,0 " + radius * 2 + ",0", "a " + radius + "," + radius + " 0 1,0 " + -radius * 2 + ",0", "Z"].join(" ");
   } });
 
@@ -244,10 +241,10 @@ var CircleIntersectionInterior = React.createClass({
 
 });
 
-exports["default"] = Circle;
-exports.CircleIntersection = CircleIntersection;
-exports.CircleDifference = CircleDifference;
-exports.CircleIntersectionStroke = CircleIntersectionStroke;
-exports.CircleDifferenceStroke = CircleDifferenceStroke;
-exports.CircleIntersectionInterior = CircleIntersectionInterior;
-exports.CircleDifferenceInterior = CircleDifferenceInterior;
+// @WORKAROUND: See https://github.com/babel/babel-eslint/issues/8
+_.assign(Circle, {
+  CircleIntersection: CircleIntersection, CircleDifference: CircleDifference,
+  CircleIntersectionStroke: CircleIntersectionStroke, CircleDifferenceStroke: CircleDifferenceStroke,
+  CircleIntersectionInterior: CircleIntersectionInterior, CircleDifferenceInterior: CircleDifferenceInterior
+});
+module.exports = Circle;

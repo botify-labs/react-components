@@ -19,6 +19,8 @@ var Panel = React.createClass({
   displayName: "Panel",
 
   propTypes: {
+    className: React.PropTypes.string,
+    defaultDisplayModeId: React.PropTypes.string,
     title: React.PropTypes.string, // Panel title
     displayModes: React.PropTypes.array,
     actions: React.PropTypes.array

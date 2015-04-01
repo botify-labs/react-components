@@ -8,8 +8,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var React = _interopRequire(require("react/addons"));
 
-require("./Tooltip.scss");
-
 var Tooltip = React.createClass({
 
   displayName: "Tooltip",
@@ -46,7 +44,7 @@ var Tooltip = React.createClass({
     var width = node.offsetWidth;
     var height = node.offsetHeight;
 
-    if (width != prevState.width || height != prevState.height) {
+    if (width !== prevState.width || height !== prevState.height) {
       this.setState({
         width: node.offsetWidth,
         height: node.offsetHeight });
@@ -60,15 +58,7 @@ var Tooltip = React.createClass({
 
     var otherProps = _objectWithoutProperties(_props, ["style", "children"]);
 
-    var _state = this.state;
-    var width = _state.width;
-    var height = _state.height;
-
-    if (width === null) {
-      style = _extends({}, style, { position: "fixed", top: -9999, left: -9999 });
-    } else {
-      style = _extends({}, style, this._getStyle());
-    }
+    style = _extends({}, this._getCommonStyle(), this._getPositionStyle(), style);
 
     return React.createElement(
       "div",
@@ -77,14 +67,24 @@ var Tooltip = React.createClass({
     );
   },
 
-  _getStyle: function _getStyle() {
-    var style = { position: "fixed" };
-    var _props = this.props;
-    var position = _props.position;
-    var margin = _props.margin;
+  _getCommonStyle: function _getCommonStyle() {
+    return { position: "fixed", pointerEvents: "none" };
+  },
+
+  _getPositionStyle: function _getPositionStyle() {
     var _state = this.state;
     var width = _state.width;
     var height = _state.height;
+
+    if (width === null) {
+      // The tooltip hasn't rendered yet
+      return { top: -9999, left: -9999 };
+    }
+
+    var positionStyle = {};
+    var _props = this.props;
+    var position = _props.position;
+    var margin = _props.margin;
 
     var containerWidth = document.body.offsetWidth;
 
@@ -93,20 +93,20 @@ var Tooltip = React.createClass({
     //  * it won't cross its container's boundaries
 
     if (position.top - height - margin > 0) {
-      style.top = position.top - height - margin;
+      positionStyle.top = position.top - height - margin;
     } else {
-      style.top = position.top + margin;
+      positionStyle.top = position.top + margin;
     }
 
     if (position.left - width / 2 > 0 && position.left + width / 2 < containerWidth) {
-      style.left = position.left - width / 2;
+      positionStyle.left = position.left - width / 2;
     } else if (position.left - width - margin > 0) {
-      style.left = position.left - width - margin;
+      positionStyle.left = position.left - width - margin;
     } else {
-      style.left = position.left + margin;
+      positionStyle.left = position.left + margin;
     }
 
-    return style;
+    return positionStyle;
   }
 
 });

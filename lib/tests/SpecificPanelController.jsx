@@ -104,11 +104,8 @@ var set3 = Immutable.Map({
 vennData.addIntersection(Immutable.Set.of(set1, set2), set3);
 
 var ChartRenderer = React.createClass({
-  displayName: "ChartRenderer",
 
-  getImageURI: function getImageURI() {
-    return this.refs.chart.getImageURI();
-  },
+  displayName: "ChartRenderer",
 
   render: function render() {
     var style = {
@@ -119,7 +116,7 @@ var ChartRenderer = React.createClass({
     return React.createElement(
       "div",
       { style: style },
-      this.props.render()
+      this.props.children
     );
   }
 
@@ -190,6 +187,8 @@ var SpecificPanelController = React.createClass({
   },
 
   _exportChart: function _exportChart() {
+    var _this = this;
+
     var div = document.createElement("div");
     document.body.appendChild(div);
 
@@ -198,7 +197,16 @@ var SpecificPanelController = React.createClass({
       height: 500
     };
 
-    var chart = React.render(React.createElement(ChartRenderer, { render: this._renderChart }), div);
+    var chart = React.render(React.createElement(
+      ChartRenderer,
+      {
+        style: style,
+        getImageURI: function () {
+          return _this.refs.chart.getImageURI();
+        }
+      },
+      this._renderChart()
+    ), div);
 
     var imageURI = chart.getImageURI();
     window.open(imageURI);

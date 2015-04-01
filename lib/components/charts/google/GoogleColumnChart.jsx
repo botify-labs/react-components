@@ -30,10 +30,8 @@ var GoogleColumnChart = React.createClass({
         position: "right",
         alignment: "center" },
       chartArea: {
-        width: "90%",
-        height: "80%",
-        top: this.props.subInfo ? 35 : "auto"
-      },
+        width: "60%",
+        height: "80%" },
       fontSize: 14
     };
   },

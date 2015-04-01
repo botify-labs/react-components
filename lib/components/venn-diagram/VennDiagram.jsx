@@ -37,12 +37,16 @@ var VennDiagram = React.createClass({
     vennData: PropTypes.instanceOf(VennData).isRequired,
     setLabel: PropTypes.string,
     sizeLabel: PropTypes.string,
+    formatSize: PropTypes.func,
     inclusive: PropTypes.bool },
 
   getDefaultProps: function getDefaultProps() {
     return {
       setLabel: "Set",
       sizeLabel: "Size",
+      formatSize: function (v) {
+        return "" + v;
+      },
       inclusive: false };
   },
 
@@ -60,10 +64,12 @@ var VennDiagram = React.createClass({
 
     var otherProps = _objectWithoutProperties(_props, ["vennData", "inclusive", "onClick"]);
 
+    var activeSet = this.state.activeSet;
+
     return React.createElement(
       HoverTooltip,
       {
-        hasTooltip: !!this.state.activeSet,
+        hasTooltip: !!activeSet,
         renderTooltip: this._renderTooltip
       },
       React.createElement(
@@ -73,7 +79,7 @@ var VennDiagram = React.createClass({
           ref: "canvas",
           vennData: vennData,
           inclusive: inclusive,
-          activeSet: this.state.activeSet,
+          activeSet: activeSet,
           onClick: onClick,
           onMouseOver: this._handleMouseOver,
           onMouseOut: this._handleMouseOut
@@ -97,9 +103,17 @@ var VennDiagram = React.createClass({
   },
 
   _renderTooltip: function _renderTooltip() {
+    var _props = this.props;
+    var setLabel = _props.setLabel;
+    var sizeLabel = _props.sizeLabel;
+    var formatSize = _props.formatSize;
+    var vennData = _props.vennData;
+    var inclusive = _props.inclusive;
+    var activeSet = this.state.activeSet;
+
     return React.createElement(TooltipData, {
-      groups: [[this.props.setLabel, this.state.activeSet.get("label")]],
-      metrics: [[this.props.sizeLabel, this.props.vennData.getSizeOf(this.state.activeSet, this.props.inclusive)]]
+      groups: [[setLabel, activeSet.get("label")]],
+      metrics: [[sizeLabel, formatSize(vennData.getSizeOf(activeSet, inclusive))]]
     });
   } });
 

@@ -8,6 +8,8 @@ var React = _interopRequire(require("react"));
 
 var venn = _interopRequire(require("venn.js"));
 
+var Immutable = _interopRequire(require("immutable"));
+
 var _svgCircle = require("../svg/Circle");
 
 var Circle = _interopRequire(_svgCircle);
@@ -20,6 +22,10 @@ var CircleIntersectionInterior = _svgCircle.CircleIntersectionInterior;
 var VennCanvas = React.createClass({
 
   displayName: "VennCanvas",
+
+  propTypes: {
+    activeSet: React.PropTypes.instanceOf(Immutable.Map)
+  },
 
   getInitialState: function getInitialState() {
     return {
@@ -58,7 +64,6 @@ var VennCanvas = React.createClass({
 
     var _props = this.props;
     var vennData = _props.vennData;
-    var inclusive = _props.inclusive;
     var onClick = _props.onClick;
     var onMouseOver = _props.onMouseOver;
     var onMouseOut = _props.onMouseOut;

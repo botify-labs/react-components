@@ -13,7 +13,6 @@ var VennLegend = React.createClass({
   render: function render() {
     var _props = this.props;
     var vennData = _props.vennData;
-    var activeSet = _props.activeSet;
     var onClick = _props.onClick;
     var onMouseOver = _props.onMouseOver;
     var onMouseOut = _props.onMouseOut;

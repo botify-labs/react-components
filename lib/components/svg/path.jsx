@@ -14,7 +14,13 @@ var dim = 10000;
 var fullShape = ["M " + -dim + " " + -dim, "L " + dim + " " + -dim, "L " + dim + " " + dim, "L " + -dim + " " + dim, "Z"].join(" ");
 
 var Path = React.createClass({
+
   displayName: "Path",
+
+  propTypes: {
+    // Is this an inversed shape?
+    inverse: React.PropTypes.bool
+  },
 
   render: function render() {
     var _props = this.props;

@@ -4,8 +4,6 @@ var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["defau
 
 var React = _interopRequire(require("react/addons"));
 
-require("./TooltipTable.scss");
-
 /**
  * Renders a 2xN table from its props
  * Primary purpose is to represent chart data in tooltips

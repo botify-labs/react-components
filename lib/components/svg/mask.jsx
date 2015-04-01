@@ -13,9 +13,15 @@ var _ = _interopRequire(require("lodash"));
 var UniqueIdMixin = _interopRequire(require("./UniqueIdMixin"));
 
 var Mask = React.createClass({
+
   displayName: "Mask",
 
   mixins: [UniqueIdMixin],
+
+  propTypes: {
+    // Shape used to clip the Mask's children
+    mask: React.PropTypes.node
+  },
 
   render: function render() {
     var _props = this.props;
@@ -31,12 +37,12 @@ var Mask = React.createClass({
       React.createElement(
         "mask",
         { id: this._getId("mask") },
-        this.props.mask
+        mask
       ),
       React.createElement(
         "g",
         _extends({}, otherProps, { style: _extends({}, style, { mask: "url(#" + this._getId("mask") + ")" }) }),
-        this.props.children
+        children
       )
     );
   }
