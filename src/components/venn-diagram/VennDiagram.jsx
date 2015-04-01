@@ -19,6 +19,7 @@ const VennDiagram = React.createClass({
     vennData: PropTypes.instanceOf(VennData).isRequired,
     setLabel: PropTypes.string,
     sizeLabel: PropTypes.string,
+    formatSize: PropTypes.func,
     inclusive: PropTypes.bool,
   },
 
@@ -26,6 +27,7 @@ const VennDiagram = React.createClass({
     return {
       setLabel: 'Set',
       sizeLabel: 'Size',
+      formatSize: (v) => `${v}`,
       inclusive: false,
     };
   },
@@ -79,7 +81,7 @@ const VennDiagram = React.createClass({
           [this.props.setLabel, this.state.activeSet.get('label')]
         ]}
         metrics={[
-          [this.props.sizeLabel, this.props.vennData.getSizeOf(this.state.activeSet, this.props.inclusive)]
+          [this.props.sizeLabel, this.props.formatSize(this.props.vennData.getSizeOf(this.state.activeSet, this.props.inclusive))]
         ]}
       />
     );
