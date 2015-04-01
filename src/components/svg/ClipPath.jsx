@@ -4,7 +4,14 @@ import UniqueIdMixin from './UniqueIdMixin';
 
 const ClipPath = React.createClass({
 
+  displayName: 'ClipPath',
+
   mixins: [UniqueIdMixin],
+
+  propTypes: {
+    // Shape used to clip the ClipPath's children
+    path: React.PropTypes.element
+  },
 
   render() {
     let { path, children, style, ...otherProps } = this.props;

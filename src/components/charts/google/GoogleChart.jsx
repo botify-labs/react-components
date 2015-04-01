@@ -16,6 +16,12 @@ var GoogleChart = React.createClass({
   displayName: 'GoogleChart',
 
   propTypes: {
+    // Called when chart data is selected
+    onChartSelect: React.PropTypes.func,
+    // Called when chart data is hovered
+    onChartMouseOver: React.PropTypes.func,
+    // Called when chart data is not hovered anymore
+    onChartMouseOut: React.PropTypes.func,
     // Subclass of google.visualization.CoreChart
     googleChart: React.PropTypes.func,
     // Chart data

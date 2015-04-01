@@ -9,16 +9,16 @@ export function renderEach(element, callback) {
   afterEach(() => {
     unmount(component);
   });
-};
+}
 
 export function render(element) {
   let node = document.createElement('div');
   document.body.appendChild(node);
   return React.render(element, node);
-};
+}
 
 export function unmount(component) {
   let node = React.findDOMNode(component).parentNode;
   React.unmountComponentAtNode(node);
   document.body.removeChild(node);
-};
+}

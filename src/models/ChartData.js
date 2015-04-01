@@ -37,7 +37,7 @@ import {List, Map, OrderedMap} from 'immutable';
  */
 class ChartData{
 
-  constructor(){
+  constructor() {
     this.rawData = Map();
     this.dimensions = OrderedMap();
     this.metrics = List();
@@ -47,7 +47,7 @@ class ChartData{
    * @param {DataKeys} keys
    * @param {DataValues} values
    */
-  setData(keys, values){
+  setData(keys, values) {
     this._testDataKeys(keys);
     this._testDataValues(values);
 
@@ -56,19 +56,19 @@ class ChartData{
 
     //Add dimensions or/and groups if not exist
     keys.forEach((groupKey, dimKey) => {
-      if(!this.hasDimensionGroup(dimKey, groupKey)){
+      if (!this.hasDimensionGroup(dimKey, groupKey)) {
         this.addDimensionGroup(dimKey, groupKey);
       }
     });
   }
 
-  _testDataKeys(keys){
-    if(!Map.isMap(keys)){
+  _testDataKeys(keys) {
+    if (!Map.isMap(keys)) {
       throw new TypeError("DataKeys is not an Map");
     }
   }
-  _testDataValues(values){
-    if(!List.isList(values)){
+  _testDataValues(values) {
+    if (!List.isList(values)) {
       throw new TypeError("DataValues is not a List");
     }
   }
@@ -76,7 +76,7 @@ class ChartData{
   /**
    * @param {DataKeys} keys
    */
-  getData(keys){
+  getData(keys) {
     return this.rawData.get(keys);
   }
 
@@ -84,8 +84,8 @@ class ChartData{
    * Filter RawData according to given filters
    * @param  {DataKeys} filters
    */
-  filterData(filters){
-    if(!filters){
+  filterData(filters) {
+    if (!filters) {
       return this.rawData;
     }
     return this.rawData.filter((value, key) => filters.isSubset(key));
@@ -94,8 +94,8 @@ class ChartData{
   /**
    * @param {Map} metricMetadata
    */
-  addMetric(metricMetadata = Map()){
-    if(!Map.isMap(metricMetadata)){
+  addMetric(metricMetadata = Map()) {
+    if (!Map.isMap(metricMetadata)) {
       throw new TypeError("metricMetadata is not a Map");
     }
     this.metrics = this.metrics.push(metricMetadata);
@@ -105,7 +105,7 @@ class ChartData{
    * @param   {Number} index
    * @return  {Map}
    */
-  getMetric(index){
+  getMetric(index) {
     return this.metrics.get(index);
   }
 
@@ -113,7 +113,7 @@ class ChartData{
    * @param   {Number} index
    * @return  {Boolean}
    */
-  hasMetric(index){
+  hasMetric(index) {
     return this.metrics.has(index);
   }
 
@@ -121,8 +121,8 @@ class ChartData{
    * @param {Any} dimKey
    * @param {Map<String,Any>} dimMetadata {label: <String>, color: <String>, ...}
    */
-  addDimension(dimKey, dimMetadata = Map()){
-    if(!Map.isMap(dimMetadata)){
+  addDimension(dimKey, dimMetadata = Map()) {
+    if (!Map.isMap(dimMetadata)) {
       throw new TypeError("dimMetadata is not a Map");
     }
     var dimensionValue = dimMetadata.set('groups', OrderedMap());
@@ -130,7 +130,7 @@ class ChartData{
     this.dimensions = this.dimensions.set(dimKey, dimensionValue);
   }
 
-  getDimensionKeyByIndex(index, fromEnd){
+  getDimensionKeyByIndex(index, fromEnd) {
     index = fromEnd ? (this.dimensions.count() - 1) - index : index;
     return this.dimensions.keySeq().get(index);
   }
@@ -138,13 +138,13 @@ class ChartData{
   /**
    * @param {Any} dimKey
    */
-  getDimension(dimKey){
+  getDimension(dimKey) {
     return this.dimensions.get(dimKey);
   }
   /**
    * @param {Any} dimKey
    */
-  hasDimension(dimKey){
+  hasDimension(dimKey) {
     return this.dimensions.has(dimKey);
   }
 
@@ -153,11 +153,11 @@ class ChartData{
    * @param {Any} groupKey
    * @param {Map<String,Any>} groupMetadata {label: <String>, color: <String>, ...}
    */
-  addDimensionGroup(dimKey, groupKey, groupMetadata = Map()){
-    if(!this.hasDimension(dimKey)){
+  addDimensionGroup(dimKey, groupKey, groupMetadata = Map()) {
+    if (!this.hasDimension(dimKey)) {
       throw new Error("you can't add a dimension group to a dimension that doesn't exist");
     }
-    if(!Map.isMap(groupMetadata)){
+    if (!Map.isMap(groupMetadata)) {
       throw new TypeError("groupMetadata is not a Map");
     }
     this.dimensions = this.dimensions.setIn([dimKey, 'groups', groupKey], groupMetadata);
@@ -166,14 +166,14 @@ class ChartData{
    * @param {Any} dimKey
    * @param {Any} groupKey
    */
-  getDimensionGroup(dimKey, groupKey){
+  getDimensionGroup(dimKey, groupKey) {
     return this.dimensions.getIn([dimKey, 'groups', groupKey]);
   }
   /**
    * @param {Any} dimKey
    * @param {Any} groupKey
    */
-  hasDimensionGroup(dimKey, groupKey){
+  hasDimensionGroup(dimKey, groupKey) {
     return this.dimensions.hasIn([dimKey, 'groups', groupKey]);
   }
 }

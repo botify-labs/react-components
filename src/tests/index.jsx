@@ -29,8 +29,8 @@ import React from 'react';
 
 import SpecificPanelController from './SpecificPanelController';
 
-google.load('visualization', '1.0', {'packages':['corechart']});
+google.load('visualization', '1.0', {'packages': ['corechart']});
 
 google.setOnLoadCallback(() => {
-  React.render(<SpecificPanelController />, document.getElementById('container'))
+  React.render(<SpecificPanelController />, document.getElementById('container'));
 });

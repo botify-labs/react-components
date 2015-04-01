@@ -1,5 +1,6 @@
 import React from 'react';
 import venn from 'venn.js';
+import Immutable from 'immutable';
 
 import Circle, {
   CircleDifference, CircleIntersection,
@@ -9,6 +10,10 @@ import Circle, {
 const VennCanvas = React.createClass({
 
   displayName: 'VennCanvas',
+
+  propTypes: {
+    activeSet: React.PropTypes.instanceOf(Immutable.Map)
+  },
 
   getInitialState() {
     return {
@@ -40,7 +45,7 @@ const VennCanvas = React.createClass({
   },
 
   render() {
-    let {vennData, inclusive, onClick, onMouseOver, onMouseOut} = this.props;
+    let {vennData, onClick, onMouseOver, onMouseOut} = this.props;
     let {width, height} = this.state;
     let padding = 30;
 

@@ -4,6 +4,7 @@ var babel = require('gulp-babel');
 var sourcemaps = require('gulp-sourcemaps');
 var shell = require('gulp-shell');
 var bump = require('gulp-bump');
+var eslint = require('gulp-eslint');
 
 var fs = require('fs');
 var chalk = require('chalk');
@@ -18,10 +19,7 @@ var dependencyTree = require('webpack-dependency-tree');
 var makeConfig = require('./make-webpack-config');
 var devConfig = makeConfig('dev');
 var optiConfig = makeConfig('optimize');
-var testConfig = makeConfig('test');
 var config = makeConfig('dist');
-
-var DEBUG = process.env.NODE_ENV !== 'production';
 
 gulp.task('lib', ['clean:lib'], function(done) {
   return gulp.src(['src/**/*.js', 'src/**/*.jsx'])
@@ -126,3 +124,19 @@ gulp.task('server', function() {
     console.log('Listening at localhost:3000');
   });
 });
+
+gulp.task('lint-sources', function() {
+  return gulp.src(['./src/**/*.js', './src/**/*.jsx'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failOnError());
+});
+
+gulp.task('lint-tests', function() {
+  return gulp.src(['./test/**/*.js', './test/**/*.jsx'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failOnError());
+});
+
+gulp.task('lint', ['lint-sources', 'lint-tests']);

@@ -21,7 +21,7 @@ describe('VennCanvas', () => {
     size: 200,
     color: 'blue',
     label: 'Set 2',
-  }))
+  }));
   sets.forEach((set) => vennData.addSet(set));
 
   var inters = [];

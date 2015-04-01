@@ -41,7 +41,7 @@ var Tooltip = React.createClass({
     let width = node.offsetWidth;
     let height = node.offsetHeight;
 
-    if (width != prevState.width || height != prevState.height) {
+    if (width !== prevState.width || height !== prevState.height) {
       this.setState({
         width: node.offsetWidth,
         height: node.offsetHeight,
@@ -51,7 +51,7 @@ var Tooltip = React.createClass({
 
   render() {
     let { style, children, ...otherProps } = this.props;
-    let { width, height } = this.state;
+    let { width } = this.state;
     if (width === null) {
       style = { ...style, position: 'fixed', top: -9999, left: -9999 };
     } else {

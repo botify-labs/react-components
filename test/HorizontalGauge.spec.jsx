@@ -54,6 +54,6 @@ describe('HorizontalGauge', () => {
       expect(observedWidth).toBe(expectedWidth);
     });
     unmount(gauge);
-  })
+  });
 
 });

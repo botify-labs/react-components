@@ -2,7 +2,7 @@ import {OrderedSet, OrderedMap, Set, Map} from 'immutable';
 
 class VennData {
 
-  constructor(){
+  constructor() {
     this.sets = OrderedSet();
     this.intersections = OrderedMap();
   }
@@ -22,7 +22,7 @@ class VennData {
    * @param {VennIntersection}  intersection  Intersection of `sets`
    */
   addIntersection(sets, intersection) {
-    if(!Set.isSet(sets)){
+    if (!Set.isSet(sets)) {
       throw new TypeError('sets argument is not a Set');
     }
     sets.forEach((set) => {
@@ -89,8 +89,8 @@ class VennData {
     return this.intersections.get(Set.of(...sets));
   }
 
-  _testSet(set){
-    if(!Map.isMap(set)){
+  _testSet(set) {
+    if (!Map.isMap(set)) {
       throw new TypeError('Set is not an Map');
     }
   }

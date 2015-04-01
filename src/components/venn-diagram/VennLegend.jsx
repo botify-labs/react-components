@@ -5,7 +5,7 @@ const VennLegend = React.createClass({
   displayName: 'VennLegend',
 
   render() {
-    let {vennData, activeSet, onClick, onMouseOver, onMouseOut} = this.props;
+    let {vennData, onClick, onMouseOver, onMouseOut} = this.props;
 
     let sets = vennData.getSets();
     let intersections = vennData.getIntersections().map(([sets, intersection]) => intersection);

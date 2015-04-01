@@ -1,0 +1,80 @@
+{
+    "parser": "babel-eslint",
+
+    "plugins": [
+        "react"
+    ],
+
+    "env": {
+        "browser": true,
+        "node": true,
+    },
+
+    "globals": {
+        // google APIs are not CommonJS
+        "google": true,
+    },
+
+    "rules": {
+        "react/display-name":               2,
+        "react/jsx-quotes":                 1,
+        "react/jsx-no-undef":               1,
+        "react/jsx-uses-react":             1,
+        "react/jsx-uses-vars":              2,
+        "react/no-did-mount-set-state":     1,
+        "react/no-did-update-set-state":    1,
+        "react/no-multi-comp":              0,
+        "react/prop-types":                 2,
+        "react/react-in-jsx-scope":         1,
+        "react/self-closing-comp":          2,
+        "react/wrap-multilines":            1,
+
+        "eol-last":                 2,
+        "quotes":                   0,
+        "comma-dangle":             0,
+        "no-underscore-dangle":     0, // allow private naming with _
+        "no-console":               1, // warn about console use
+        "space-infix-ops":          2,
+        "space-before-blocks":      [2, "always"],
+        "space-after-keywords":     [2, "always"],
+        "no-bitwise":               2, // why though, it's a feature of the laguage
+        "camelcase":                2,
+        "eqeqeq":                   2,
+        "guard-for-in":             2,
+        "no-extend-native":         2,
+        "wrap-iife":                2,
+        "indent":                   [2, 2],
+        "no-use-before-define":     [2, "nofunc"],
+        "new-cap":                  0, // we're using Immutable which doesn't play by that rule
+        "no-caller":                2,
+        "no-empty":                 2,
+        "no-irregular-whitespace":  2,
+        "no-new":                   0,
+        "no-plusplus":              0,
+        "no-undef":                 2,
+        "no-unused-vars":           [2, {"vars": "all", "args": "none"}],
+        "strict":                   0,
+        "max-params":               0,
+        "max-depth":                0,
+        "max-statements":           0,
+        "complexity":               0,
+        "max-len":                  0,
+        "semi":                     [2, "always"],
+        "no-cond-assign":           0,
+        "no-debugger":              2,
+        "no-eq-null":               2,
+        "no-eval":                  2,
+        "block-scoped-var":         0,
+        "no-iterator":              0,
+        "comma-style":              [2, "last"],
+        "no-loop-func":             2,
+        "no-multi-str":             2,
+        "valid-typeof":             2,
+        "no-proto":                 2,
+        "no-script-url":            2,
+        "dot-notation":             [2, {"allowKeywords": true}],
+        "no-new-object":            2,
+        "no-new-func":              2,
+        "no-new-wrappers":          2,
+    }
+}
