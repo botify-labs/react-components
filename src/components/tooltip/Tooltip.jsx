@@ -1,7 +1,5 @@
 import React from 'react/addons';
 
-import './Tooltip.scss';
-
 var Tooltip = React.createClass({
 
   displayName: 'Tooltip',
@@ -51,12 +49,7 @@ var Tooltip = React.createClass({
 
   render() {
     let { style, children, ...otherProps } = this.props;
-    let { width } = this.state;
-    if (width === null) {
-      style = { ...style, position: 'fixed', top: -9999, left: -9999 };
-    } else {
-      style = { ...style, ...this._getStyle() };
-    }
+    style = { ...this._getCommonStyle(), ...this._getPositionStyle(), ...style };
 
     return (
       <div {...otherProps} className="Tooltip" style={style}>
@@ -65,10 +58,19 @@ var Tooltip = React.createClass({
     );
   },
 
-  _getStyle() {
-    var style = { position: 'fixed' };
-    var { position, margin } = this.props;
+  _getCommonStyle() {
+    return { position: 'fixed', pointerEvents: 'none' };
+  },
+
+  _getPositionStyle() {
     var { width, height } = this.state;
+    if (width === null) {
+      // The tooltip hasn't rendered yet
+      return { top: -9999, left: -9999 };
+    }
+
+    var positionStyle = {};
+    var { position, margin } = this.props;
     var containerWidth = document.body.offsetWidth;
 
     // Calculate the best position for the tooltip so that
@@ -76,20 +78,20 @@ var Tooltip = React.createClass({
     //  * it won't cross its container's boundaries
 
     if (position.top - height - margin > 0) {
-      style.top = position.top - height - margin;
+      positionStyle.top = position.top - height - margin;
     } else {
-      style.top = position.top + margin;
+      positionStyle.top = position.top + margin;
     }
 
     if (position.left - width / 2 > 0 && position.left + width / 2 < containerWidth) {
-      style.left = position.left - width / 2;
+      positionStyle.left = position.left - width / 2;
     } else if (position.left - width - margin > 0) {
-      style.left = position.left - width - margin;
+      positionStyle.left = position.left - width - margin;
     } else {
-      style.left = position.left + margin;
+      positionStyle.left = position.left + margin;
     }
 
-    return style;
+    return positionStyle;
   }
 
 });

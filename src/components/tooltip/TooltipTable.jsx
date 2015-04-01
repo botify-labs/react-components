@@ -1,7 +1,5 @@
 import React from 'react/addons';
 
-import './TooltipTable.scss';
-
 /**
  * Renders a 2xN table from its props
  * Primary purpose is to represent chart data in tooltips
