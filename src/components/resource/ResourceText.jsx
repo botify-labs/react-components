@@ -1,26 +1,24 @@
 'use strict';
 
-import React from 'react/addons';
+import React, {PropTypes} from 'react';
 import HelpTooltip from './HelpTooltip';
 import AdminMenu from './AdminMenu';
 import classNames from 'classnames';
 
-import 'font-awesome/css/font-awesome.css';
-import './ResourceText.scss'
-
+import './ResourceText.scss';
 
 const ResourceText = React.createClass({
 
   displayName: 'ResourceText',
 
   propTypes: {
-    className: React.PropTypes.string,
-    resourceText: React.PropTypes.shape({
-      text: React.PropTypes.string,
-      description: React.PropTypes.string,
-      editUrl: React.PropTypes.string,
+    className: PropTypes.string,
+    resourceText: PropTypes.shape({
+      text: PropTypes.string,
+      description: PropTypes.string,
+      editUrl: PropTypes.string,
     }).isRequired,
-    isAdmin: React.PropTypes.bool,
+    isAdmin: PropTypes.bool,
   },
 
   render() {
@@ -48,6 +46,5 @@ const ResourceText = React.createClass({
     );
   }
 });
-
 
 export default ResourceText;

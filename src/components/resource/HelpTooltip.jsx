@@ -1,18 +1,15 @@
 'use strict';
 
-import React from 'react/addons';
+import React, {PropTypes} from 'react';
 import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 import classNames from 'classnames';
-
-import 'font-awesome/css/font-awesome.css';
-
 
 const HelpTooltip = React.createClass({
 
   displayName: 'HelpTooltip',
 
   propTypes: {
-    className: React.PropTypes.string,
+    className: PropTypes.string,
   },
 
   render() {
@@ -20,7 +17,7 @@ const HelpTooltip = React.createClass({
 
     return (
       //@TODO tooltip trigger should be hover and should stayed visible when user mouse is over the tooltip.
-      <OverlayTrigger trigger='click' placement='top' overlay={tooltip} delayShow={0} delayHide={1000}>
+      <OverlayTrigger trigger="click" placement="top" overlay={tooltip} delayShow={0} delayHide={1000}>
         <i className={classNames(this.props.className, 'fa fa-question-circle')}></i>
       </OverlayTrigger>
     );
