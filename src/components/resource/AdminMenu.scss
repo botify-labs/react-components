@@ -1,21 +1,21 @@
 .AdminMenu{
-    ul.dropdown-menu{
-        li{
-            .MenuItem-icon{
-                margin-right: 3px;
-            }
-        }
+  ul.dropdown-menu{
+    li{
+      .MenuItem-icon{
+        margin-right: 3px;
+      }
     }
+  }
 
-    &.transparent{
-        button.dropdown-toggle{
-            border: none;
-            padding: 0px;
-            background-color: transparent;
-            box-shadow: none;
-        }
-        &.open button.dropdown-toggle{
-            color: #555;
-        }
+  &.transparent{
+    button.dropdown-toggle{
+      border: none;
+      padding: 0px;
+      background-color: transparent;
+      box-shadow: none;
     }
+    &.open button.dropdown-toggle{
+      color: #555;
+    }
+  }
 }
