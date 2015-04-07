@@ -6,7 +6,7 @@ import AdminMenu from './AdminMenu';
 import classNames from 'classnames';
 
 import 'font-awesome/css/font-awesome.css';
-
+import './ResourceTextDescription.scss'
 
 
 const ResourceTextDescription = React.createClass({
@@ -34,13 +34,14 @@ const ResourceTextDescription = React.createClass({
         }
 
         {this.props.resourceTextDescription.description &&
-          <HelpTooltip>
+          <HelpTooltip className="ResourceTextDescription-helpTooltip">
             <span dangerouslySetInnerHTML={{__html: this.props.resourceTextDescription.description}} />
           </HelpTooltip>
         }
 
         {this.props.isAdmin &&
-          <AdminMenu resourceTextDescription={this.props.resourceTextDescription}
+          <AdminMenu className="ResourceTextDescription-adminMenu"
+                     resourceTextDescription={this.props.resourceTextDescription}
                      isAdmin={this.props.isAdmin}/>
         }
 
