@@ -41,8 +41,7 @@ const ResourceText = React.createClass({
 
         {this.props.isAdmin &&
           <AdminMenu className="ResourceText-adminMenu"
-                     resourceText={this.props.resourceText}
-                     isAdmin={this.props.isAdmin}/>
+                     resourceText={this.props.resourceText}/>
         }
 
       </div>

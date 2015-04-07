@@ -19,14 +19,13 @@ const AdminMenu = React.createClass({
       description: React.PropTypes.string,
       editUrl: React.PropTypes.string,
     }).isRequired,
-    isAdmin: React.PropTypes.bool,
   },
 
   render() {
     var title = <i className='fa fa fa-puzzle-piece'></i>;
     return (
       <DropdownButton className={classNames(this.props.className, 'AdminMenu', 'transparent')}
-                      title={ title } noCaret="true">
+                      title={ title } noCaret={true}>
         <MenuItem eventKey='1' href={ this.props.resourceText.editUrl }>
           <i className="MenuItem-icon fa fa-pencil-square-o"></i>
           Edit Text
