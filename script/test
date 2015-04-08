@@ -4,7 +4,7 @@ set -e # Any subsequent(*) commands which fail will cause the shell script to ex
 cd "$(dirname $0)/.."
 
 echo -e "Testing..."
-npm test
+npm test -- "$@"
 
 echo "SUCCESS"
 exit 0
