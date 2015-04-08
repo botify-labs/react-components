@@ -11,11 +11,11 @@ then
     exit 1
 fi
 
-echo -e "\nInstalling NodeJS 0.10.25, npm, git..."
+echo -e "\nInstalling NodeJS 0.10.*, npm, git..."
 sudo apt-get update
 sudo apt-get install -y curl
 curl -sL https://deb.nodesource.com/setup | sudo bash - # Install PPA maintained by NodeSource
-sudo apt-get install -y 'nodejs=0.10.25*' git libfreetype6 libfontconfig
+sudo apt-get install -y 'nodejs=0.10.*' git libfreetype6 libfontconfig
 sudo npm install -g npm
 which node >/dev/null || sudo ln -s /usr/bin/nodejs /usr/bin/node
 
