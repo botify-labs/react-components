@@ -15,7 +15,7 @@ echo -e "\nInstalling NodeJS, npm, git..."
 sudo apt-get update
 sudo apt-get install -y curl
 curl -sL https://deb.nodesource.com/setup | sudo bash - # Install PPA maintained by NodeSource
-sudo apt-get install -y 'nodejs=0.10.38' git libfreetype6 libfontconfig
+sudo apt-get install -y 'nodejs=0.10.38*' git libfreetype6 libfontconfig
 sudo npm install -g npm@2.7.3
 which node >/dev/null || sudo ln -s /usr/bin/nodejs /usr/bin/node
 
