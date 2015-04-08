@@ -125,18 +125,10 @@ gulp.task('server', function() {
   });
 });
 
-gulp.task('lint-sources', function() {
-  return gulp.src(['./src/**/*.js', './src/**/*.jsx'])
+gulp.task('lint', function() {
+  var exclude = ['!node_modules/**', '!bower_components/**', '!lib/**', '!dist/**'];
+  return gulp.src(exclude.concat(['**/*.js', '**/*.jsx']))
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failOnError());
 });
-
-gulp.task('lint-tests', function() {
-  return gulp.src(['./test/**/*.js', './test/**/*.jsx'])
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(eslint.failOnError());
-});
-
-gulp.task('lint', ['lint-sources', 'lint-tests']);
