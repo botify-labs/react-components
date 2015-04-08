@@ -1,0 +1,2 @@
+
+import resourceText from './ResourceText';

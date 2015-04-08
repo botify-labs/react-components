@@ -6,12 +6,12 @@ function resolve(filePath) {
 }
 
 module.exports = function(build, grep) {
-  var bower_path = path.resolve(__dirname, 'bower_components');
-  var npm_path = path.resolve(__dirname, 'node_modules');
+  var bowerPath = path.resolve(__dirname, 'bower_components');
+  var npmPath = path.resolve(__dirname, 'node_modules');
 
   var browsers = ['Firefox > 27', 'Chrome > 20', 'Explorer > 9', 'Safari > 6', 'Opera > 11.5', 'iOS > 6.1'];
-  var autoprefixer_config = JSON.stringify({browsers: browsers});
-  var jsx_excludes = [/node_modules/, /bower_components/];
+  var autoprefixerConfig = JSON.stringify({browsers: browsers});
+  var jsxExcludes = [/node_modules/, /bower_components/];
 
   var config = {
     resolve: {
@@ -27,12 +27,12 @@ module.exports = function(build, grep) {
       loaders: [
         {
           test: /\.scss$/,
-          loader: 'style!css!autoprefixer?' + autoprefixer_config + '!sass?outputStyle=expanded&' +
-            'includePaths[]=' + bower_path + '&' + 'includePaths[]=' + npm_path
+          loader: 'style!css!autoprefixer?' + autoprefixerConfig + '!sass?outputStyle=expanded&' +
+            'includePaths[]=' + bowerPath + '&' + 'includePaths[]=' + npmPath
         },
         {
           test: /\.css$/,
-          loader: 'style!css!autoprefixer?' + autoprefixer_config
+          loader: 'style!css!autoprefixer?' + autoprefixerConfig
         },
         { test: /\.png$/, loader: 'file' },
         { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
@@ -57,7 +57,7 @@ module.exports = function(build, grep) {
     config.module.loaders.push({
       test: /\.jsx?$/,
       loaders: ['babel-loader?experimental'],
-      exclude: jsx_excludes
+      exclude: jsxExcludes
     });
     config.plugins.push(
       new webpack.DefinePlugin({
@@ -79,7 +79,7 @@ module.exports = function(build, grep) {
     config.entry = [
       'webpack-dev-server/client?http://localhost:3000',
       'webpack/hot/only-dev-server',
-      './src/tests/index.jsx'
+      './example/index.jsx'
     ];
     config.output = {
       path: resolve('./dist/'),
@@ -93,7 +93,7 @@ module.exports = function(build, grep) {
     config.module.loaders.push({
       test: /\.jsx?$/,
       loaders: ['react-hot-loader', 'babel-loader?experimental', 'eslint-loader'],
-      exclude: jsx_excludes
+      exclude: jsxExcludes
     });
     break;
   case 'dist':
@@ -114,7 +114,7 @@ module.exports = function(build, grep) {
     config.module.loaders.push({
       test: /\.jsx?$/,
       loaders: ['babel-loader?experimental'],
-      exclude: jsx_excludes
+      exclude: jsxExcludes
     });
     break;
   }
