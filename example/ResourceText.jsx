@@ -5,15 +5,15 @@ import 'font-awesome/css/font-awesome.css';
 import ResourceText from '../src/components/resource/ResourceText';
 
 React.render(
-	<div>
-		<ResourceText
-			resourceText={{
-				text: "Example Text",
-				description: "Example description",
-				editUrl: "http://google.com"
-			}}
-			isAdmin
-		/>
+  <div>
+    <ResourceText
+      resourceText={{
+        text: "Example Text",
+        description: "Example description",
+        editUrl: "http://google.com"
+      }}
+      isAdmin
+    />
     <ResourceText
       resourceText={{
         text: "Example Text",
@@ -21,5 +21,5 @@ React.render(
         editUrl: "http://google.com"
       }}
     />
-	</div>
+  </div>
 , document.getElementById('container'));
