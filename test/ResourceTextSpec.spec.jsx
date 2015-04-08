@@ -60,9 +60,9 @@ describe('ResourceText', () => {
   });
 
 
-  it('should create a AdminMenu component if a resourceText.description is given', () => {
-    let resourceText = {description: "Example Description"};
-    let rtInstance = render(<ResourceText resourceText={resourceText} isAdmin={true} />);
+  it('should create a AdminMenu component if a resourceText.editUrl is given', () => {
+    let resourceText = {description: "Example Description", editUrl: "url"};
+    let rtInstance = render(<ResourceText resourceText={resourceText} />);
 
     let adminMenuInstance = TestUtils.findRenderedComponentWithType(rtInstance, AdminMenu);
 
@@ -70,7 +70,7 @@ describe('ResourceText', () => {
     expect(adminMenuInstance.props.resourceText).toBe(resourceText);
   });
 
-  it('shouldnt create a AdminMenu component if no isAdmin === false', () => {
+  it('shouldnt create a AdminMenu component if no resourceText.editUrl is given', () => {
     let resourceText = {};
     let rtInstance = render(<ResourceText resourceText={resourceText} />);
 

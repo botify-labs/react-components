@@ -18,11 +18,10 @@ const ResourceText = React.createClass({
       description: PropTypes.string,
       editUrl: PropTypes.string,
     }).isRequired,
-    isAdmin: PropTypes.bool,
   },
 
   render() {
-    let {className, resourceText, isAdmin, ...otherProps} = this.props;
+    let {className, resourceText, ...otherProps} = this.props;
     return (
       <div className={classNames(className, 'ResourceText')} {...otherProps}>
 
@@ -38,7 +37,7 @@ const ResourceText = React.createClass({
           </HelpTooltip>
         }
 
-        {isAdmin &&
+        {resourceText.editUrl &&
           <AdminMenu className="ResourceText-adminMenu"
                      resourceText={resourceText}/>
         }

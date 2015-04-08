@@ -1,7 +1,5 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var babel = require('gulp-babel');
-var sourcemaps = require('gulp-sourcemaps');
 var shell = require('gulp-shell');
 var bump = require('gulp-bump');
 var eslint = require('gulp-eslint');
@@ -21,18 +19,6 @@ var devConfig = makeConfig('dev');
 var optiConfig = makeConfig('optimize');
 var config = makeConfig('dist');
 
-gulp.task('lib', ['clean:lib'], function(done) {
-  return gulp.src(['src/**/*.js', 'src/**/*.jsx'])
-    .pipe(sourcemaps.init())
-    .pipe(babel({experimental: true}))
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('lib'));
-});
-
-gulp.task('styles', ['clean:lib'], function(done) {
-  return gulp.src('src/**/*.scss')
-    .pipe(gulp.dest('lib'));
-});
 
 gulp.task('dist', ['clean:dist'], function(done) {
   webpack(config, function(err, stats) {
@@ -50,10 +36,6 @@ gulp.task('dist', ['clean:dist'], function(done) {
   });
 });
 
-gulp.task('clean:lib', function(done) {
-  del(['lib/'], done);
-});
-
 gulp.task('clean:dist', function(done) {
   del(['dist/'], done);
 });
@@ -64,11 +46,11 @@ gulp.task('bump-version', function() {
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('release', ['lib', 'styles', 'dist', 'bump-version'], function() {
+gulp.task('release', ['dist', 'bump-version'], function() {
   return gulp.src('')
     .pipe(shell([
       'git add -u', // Add modified files (package.json, bower.json, ...)
-      'git add -A lib/ dist/', // Add all changes in lib/ and dist
+      'git add -A dist/', // Add all changes in and dist
       'git commit -a -m "Release <%= pkg.version %>"',
       'git tag -a <%= pkg.version %> -m "Release <%= date %> <%= pkg.version %>"',
       'git push origin HEAD',
@@ -126,7 +108,7 @@ gulp.task('server', function() {
 });
 
 gulp.task('lint', function() {
-  var exclude = ['!node_modules/**', '!bower_components/**', '!lib/**', '!dist/**'];
+  var exclude = ['!node_modules/**', '!bower_components/**', '!dist/**'];
   return gulp.src(exclude.concat(['**/*.js', '**/*.jsx']))
     .pipe(eslint())
     .pipe(eslint.format())

@@ -12,7 +12,6 @@ React.render(
         description: "Example description",
         editUrl: "http://google.com"
       }}
-      isAdmin
     />
     <ResourceText
       resourceText={{
