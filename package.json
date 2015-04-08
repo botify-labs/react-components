@@ -8,7 +8,7 @@
     "start": "gulp webpack-server",
     "test": "karma start"
   },
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/botify-labs/react-components.git"
