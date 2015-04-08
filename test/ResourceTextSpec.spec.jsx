@@ -60,22 +60,22 @@ describe('ResourceText', () => {
   });
 
 
-  it('should create a HelpTooltip component if a resourceText.description is given', () => {
+  it('should create a AdminMenu component if a resourceText.description is given', () => {
     let resourceText = {description: "Example Description"};
     let rtInstance = render(<ResourceText resourceText={resourceText} isAdmin={true} />);
 
-    let helpTooltipInstance = TestUtils.findRenderedComponentWithType(rtInstance, AdminMenu);
+    let adminMenuInstance = TestUtils.findRenderedComponentWithType(rtInstance, AdminMenu);
 
-    expect(helpTooltipInstance.props.className).toBe('ResourceText-adminMenu');
-    expect(helpTooltipInstance.props.resourceText).toBe(resourceText);
+    expect(adminMenuInstance.props.className).toBe('ResourceText-adminMenu');
+    expect(adminMenuInstance.props.resourceText).toBe(resourceText);
   });
 
   it('shouldnt create a AdminMenu component if no isAdmin === false', () => {
     let resourceText = {};
     let rtInstance = render(<ResourceText resourceText={resourceText} />);
 
-    let helpTooltipInstance = TestUtils.scryRenderedComponentsWithType(rtInstance, AdminMenu);
-    expect(helpTooltipInstance.length).toBe(0);
+    let adminMenuInstance = TestUtils.scryRenderedComponentsWithType(rtInstance, AdminMenu);
+    expect(adminMenuInstance.length).toBe(0);
   });
 
 });
