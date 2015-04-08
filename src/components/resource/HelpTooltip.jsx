@@ -18,7 +18,9 @@ const HelpTooltip = React.createClass({
     return (
       //@TODO tooltip trigger should be hover and should stayed visible when user mouse is over the tooltip.
       <OverlayTrigger trigger="click" placement="top" overlay={tooltip} delayShow={0} delayHide={1000}>
-        <i className={classNames(this.props.className, 'fa fa-question-circle')}></i>
+        <span className={classNames(this.props.className, 'HelpTooltip')}>
+          <i className="fa fa-question-circle"></i>
+        </span>
       </OverlayTrigger>
     );
   }
