@@ -26,13 +26,13 @@ const ResourceText = React.createClass({
     return (
       <div className={classNames(className, 'ResourceText')} {...otherProps}>
 
-        {this.props.resourceText.text &&
+        {resourceText.text &&
           <span className="ResourceText-text">
-            {this.props.resourceText.text}
+            {resourceText.text}
           </span>
         }
 
-        {this.props.resourceText.description &&
+        {resourceText.description &&
           <HelpTooltip className="ResourceText-helpTooltip">
             <span dangerouslySetInnerHTML={{__html: resourceText.description}} />
           </HelpTooltip>
