@@ -79,7 +79,7 @@ module.exports = function(build, grep) {
     config.entry = [
       'webpack-dev-server/client?http://localhost:3000',
       'webpack/hot/only-dev-server',
-      './src/tests/index.jsx'
+      './example/index.jsx'
     ];
     config.output = {
       path: resolve('./dist/'),
