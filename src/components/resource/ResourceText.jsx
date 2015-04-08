@@ -46,6 +46,7 @@ const ResourceText = React.createClass({
       </div>
     );
   }
+
 });
 
 export default ResourceText;

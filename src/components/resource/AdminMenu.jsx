@@ -31,6 +31,7 @@ const AdminMenu = React.createClass({
       </DropdownButton>
     );
   }
+
 });
 
 export default AdminMenu;

@@ -22,6 +22,7 @@ const HelpTooltip = React.createClass({
       </OverlayTrigger>
     );
   }
+
 });
 
 export default HelpTooltip;
