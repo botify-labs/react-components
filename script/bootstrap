@@ -11,17 +11,22 @@ then
     exit 1
 fi
 
-echo -e "\nInstalling NodeJS 0.10.25, npm, git..."
+echo -e "\nInstalling NodeJS, npm, git..."
 sudo apt-get update
-sudo apt-get install -y 'nodejs=0.10.25*' npm git libfreetype6 libfontconfig
+sudo apt-get install -y curl
+curl -sL https://deb.nodesource.com/setup | sudo bash - # Install PPA maintained by NodeSource
+sudo apt-get install -y 'nodejs=0.10.38*' git libfreetype6 libfontconfig
+sudo npm install -g npm@2.7.3
 which node >/dev/null || sudo ln -s /usr/bin/nodejs /usr/bin/node
 
 echo -e "\nInstalling Bower"
-sudo npm install -g bower
+sudo npm install -g bower@1.3.12
 
 echo -e "\nInstalling repository depencies"
 npm install
 bower --allow-root install
+
+echo "\nInstalled node $(node -v), npm v$(npm -v) and bower v$(bower -v)"
 
 echo "SUCCESS"
 exit 0
