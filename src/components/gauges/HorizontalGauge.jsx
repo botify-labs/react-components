@@ -7,6 +7,7 @@ import './HorizontalGauge.scss';
 let stackPropType = PropTypes.shape({
   label: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
+  display: PropTypes.node,
   color: PropTypes.string.isRequired
 });
 
@@ -24,7 +25,7 @@ const HorizontalGauge = React.createClass({
      *  * blank space is the `all` stack
      */
     all: stackPropType.isRequired,
-    stacks: PropTypes.arrayOf(stackPropType).isRequired
+    stacks: PropTypes.arrayOf(stackPropType).isRequired,
   },
 
   getInitialState() {
@@ -49,8 +50,8 @@ const HorizontalGauge = React.createClass({
     let { stacks, all } = this.props;
     return (
       <TooltipTable
-        groups={[[all.label, all.value]]}
-        metrics={stacks.map((stack) => [stack.label, stack.value])}
+        groups={[[all.label, all.display || all.value]]}
+        metrics={stacks.map((stack) => [stack.label, stack.display || stack.value])}
       />
     );
   },

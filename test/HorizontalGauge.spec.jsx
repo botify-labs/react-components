@@ -11,6 +11,7 @@ describe('HorizontalGauge', () => {
     {
       label: 'Stack 1',
       color: 'red',
+      display: <div className="display">25.00</div>,
       value: 25
     },
     {
@@ -37,6 +38,17 @@ describe('HorizontalGauge', () => {
     TestUtils.SimulateNative.mouseOut(gaugeNode);
     tooltips = TestUtils.scryRenderedComponentsWithType(gauge, Tooltip);
     expect(tooltips.length).toBe(0);
+    unmount(gauge);
+  });
+
+  it('should display a stack\'s `display` property, if defined, instead of its `value`', () => {
+    let gauge = render(<HorizontalGauge stacks={stacks} all={all} />);
+    let gaugeNode = React.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge'));
+    TestUtils.SimulateNative.mouseOver(gaugeNode);
+    let display = TestUtils.scryRenderedDOMComponentsWithClass(gauge, 'display');
+    expect(display.length).toBe(1);
+    let displayNode = React.findDOMNode(display[0]);
+    expect(displayNode.innerText).toBe('25.00');
     unmount(gauge);
   });
 
