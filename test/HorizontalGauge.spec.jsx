@@ -11,13 +11,12 @@ describe('HorizontalGauge', () => {
     {
       label: 'Stack 1',
       color: 'red',
-      display: <div className="display">25.00</div>,
       value: 25
     },
     {
       label: 'Stack 2',
       color: 'red',
-      value: 25
+      value: 50
     }
   ];
   let all = {
@@ -41,14 +40,40 @@ describe('HorizontalGauge', () => {
     unmount(gauge);
   });
 
-  it('should display a stack\'s `display` property, if defined, instead of its `value`', () => {
-    let gauge = render(<HorizontalGauge stacks={stacks} all={all} />);
+  it('should pass stacks `value` properties through the `formatStackValue` prop before rendering them', () => {
+    let gauge = render(
+      <HorizontalGauge
+        stacks={stacks}
+        all={all}
+        formatStackValue={v => <div className="formatted">{v.toFixed(2)}</div>}
+        />
+    );
     let gaugeNode = React.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge'));
     TestUtils.SimulateNative.mouseOver(gaugeNode);
-    let display = TestUtils.scryRenderedDOMComponentsWithClass(gauge, 'display');
-    expect(display.length).toBe(1);
-    let displayNode = React.findDOMNode(display[0]);
-    expect(displayNode.innerText).toBe('25.00');
+    let formatted = TestUtils.scryRenderedDOMComponentsWithClass(gauge, 'formatted');
+    expect(formatted.length).toBe(2);
+    let formattedNode1 = React.findDOMNode(formatted[0]);
+    expect(formattedNode1.innerText).toBe('25.00');
+    let formattedNode2 = React.findDOMNode(formatted[1]);
+    expect(formattedNode2.innerText).toBe('50.00');
+    unmount(gauge);
+  });
+
+
+  it('should pass the all stack\'s `value` property through the `formatAllValue` prop before rendering it', () => {
+    let gauge = render(
+      <HorizontalGauge
+        stacks={stacks}
+        all={all}
+        formatAllValue={v => <div className="formatted">{v.toFixed(2)}</div>}
+        />
+    );
+    let gaugeNode = React.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge'));
+    TestUtils.SimulateNative.mouseOver(gaugeNode);
+    let formatted = TestUtils.scryRenderedDOMComponentsWithClass(gauge, 'formatted');
+    expect(formatted.length).toBe(1);
+    let formattedNode = React.findDOMNode(formatted[0]);
+    expect(formattedNode.innerText).toBe('100.00');
     unmount(gauge);
   });
 
