@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React, { PropTypes } from 'react/addons';
 
 import Tooltip from './Tooltip';
 
@@ -7,8 +7,10 @@ var HoverTooltip = React.createClass({
   displayName: 'HoverTooltip',
 
   propTypes: {
-    hasTooltip: React.PropTypes.bool,
-    renderTooltip: React.PropTypes.func.isRequired
+    hasTooltip: PropTypes.bool,
+    renderTooltip: PropTypes.func.isRequired,
+    children: PropTypes.node,
+    style: PropTypes.object,
   },
 
   getInitialState() {

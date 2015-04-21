@@ -1,5 +1,4 @@
-import React from 'react';
-import _ from 'lodash';
+import React, { PropTypes } from 'react';
 import UniqueIdMixin from './UniqueIdMixin';
 
 const Mask = React.createClass({
@@ -10,7 +9,9 @@ const Mask = React.createClass({
 
   propTypes: {
     // Shape used to clip the Mask's children
-    mask: React.PropTypes.node
+    mask: PropTypes.node,
+    style: PropTypes.object,
+    children: PropTypes.node,
   },
 
   render() {

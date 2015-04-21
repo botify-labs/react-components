@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react';
-import _ from 'lodash';
 import HoverTooltip from '../tooltip/HoverTooltip';
 import TooltipData from '../tooltip/TooltipTable';
 import VennCanvas from './VennCanvas';
@@ -21,6 +20,7 @@ const VennDiagram = React.createClass({
     sizeLabel: PropTypes.string,
     formatSize: PropTypes.func,
     inclusive: PropTypes.bool,
+    onClick: PropTypes.func,
   },
 
   getDefaultProps() {

@@ -10,6 +10,7 @@ const HelpTooltip = React.createClass({
 
   propTypes: {
     className: PropTypes.string,
+    children: PropTypes.node,
   },
 
   render() {

@@ -1,5 +1,4 @@
-import React from 'react';
-import _ from 'lodash';
+import React, { PropTypes } from 'react';
 
 const dim = 10000;
 const fullShape = [
@@ -16,7 +15,9 @@ const Path = React.createClass({
 
   propTypes: {
     // Is this an inversed shape?
-    inverse: React.PropTypes.bool
+    inverse: PropTypes.bool,
+    style: PropTypes.object,
+    d: PropTypes.string,
   },
 
   render() {
@@ -24,7 +25,7 @@ const Path = React.createClass({
 
     if (inverse) {
       d = fullShape + d;
-      style.fillRule = 'evenodd';
+      style = { ...style, fillRule: 'evenodd' };
     }
 
     return <path {...otherProps} d={d} style={style}/>;

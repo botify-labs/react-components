@@ -1,5 +1,5 @@
 import React from 'react';
-import DataTable from 'datatables';
+import 'datatables';
 import $ from 'jquery';
 
 import ChartData from '../models/ChartData';

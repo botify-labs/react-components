@@ -1,4 +1,4 @@
-import React, { addons } from 'react/addons';
+import React from 'react';
 
 import { renderEach } from './utils';
 import Tooltip from '../src/components/tooltip/Tooltip';

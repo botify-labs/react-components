@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+
+import VennData from '../../models/VennData';
 
 const VennLegend = React.createClass({
 
   displayName: 'VennLegend',
 
+  propTypes: {
+    vennData: PropTypes.instanceOf(VennData),
+    onClick: PropTypes.func,
+    onMouseOver: PropTypes.func,
+    onMouseOut: PropTypes.func,
+  },
+
   render() {
     let {vennData, onClick, onMouseOver, onMouseOut} = this.props;
 
     let sets = vennData.getSets();
-    let intersections = vennData.getIntersections().map(([sets, intersection]) => intersection);
+    let intersections = vennData.getIntersections().map(([keySets, intersection]) => intersection);
     let elements = sets.concat(intersections).map((set, idx) => {
       return (
         <li

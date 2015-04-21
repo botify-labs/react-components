@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React, { PropTypes } from 'react/addons';
 import Panel from '../src/components/panel/Panel';
 import Table from '../src/components/Table';
 import Chart from '../src/components/charts/Chart';
@@ -94,6 +94,10 @@ vennData.addIntersection(Immutable.Set.of(set1, set2), set3);
 var ChartRenderer = React.createClass({
 
   displayName: 'ChartRenderer',
+
+  propTypes: {
+    children: PropTypes.node,
+  },
 
   render() {
     var style = {

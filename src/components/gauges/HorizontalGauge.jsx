@@ -28,6 +28,7 @@ const HorizontalGauge = React.createClass({
     stacks: PropTypes.arrayOf(stackPropType).isRequired,
     formatAllValue: PropTypes.func,
     formatStackValue: PropTypes.func,
+    style: PropTypes.object,
   },
 
   getDefaultProps() {
