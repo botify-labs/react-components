@@ -1,0 +1,73 @@
+.TopCompoundFilter-filters {
+  margin-bottom: 20px;
+}
+
+.TopCompoundFilter-filter {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 20px;
+
+  > .TopCompoundFilter-filterControls {
+    display: flex;
+    margin-bottom: 20px;
+
+    > .TopCompoundFilter-operatorSelect {
+      margin-right: 10px;
+    }
+  }
+
+}
+
+.CompoundFilter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  > .CompoundFilter-operatorSelect {
+    align-self: stretch;
+
+    display: flex;
+    align-items: stretch;
+
+    margin-right: 10px;
+  }
+
+}
+
+.Filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  margin-bottom: 10px;
+  &:last-child {
+    margin-bottom: 0px;
+  }
+
+  > .Filter-area {
+    margin-right: 10px;
+  }
+
+  > .Filter-filterOptions {
+    margin-right: 10px;
+  }
+}
+
+.PredicateFilterBaseType {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  > .PredicateFilterBaseType-operatorOptions {
+    margin-right: 10px;
+  }
+
+  > .PredicateFilterBaseType-operatorType {
+    margin-right: 10px;
+  }
+}
+
+.Select {
+  font-size: 16px;
+}
