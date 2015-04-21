@@ -56,7 +56,7 @@ module.exports = function(build, grep) {
     };
     config.module.loaders.push({
       test: /\.jsx?$/,
-      loaders: ['babel-loader?experimental'],
+      loaders: ['babel-loader?stage=0'],
       exclude: jsxExcludes
     });
     config.plugins.push(
@@ -92,7 +92,7 @@ module.exports = function(build, grep) {
     );
     config.module.loaders.push({
       test: /\.jsx?$/,
-      loaders: ['react-hot-loader', 'babel-loader?experimental', 'eslint-loader'],
+      loaders: ['react-hot-loader', 'babel-loader?stage=0', 'eslint-loader'],
       exclude: jsxExcludes
     });
     break;
@@ -113,7 +113,7 @@ module.exports = function(build, grep) {
     );
     config.module.loaders.push({
       test: /\.jsx?$/,
-      loaders: ['babel-loader?experimental'],
+      loaders: ['babel-loader?stage=0'],
       exclude: jsxExcludes
     });
     break;
