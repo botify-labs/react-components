@@ -8,7 +8,7 @@ export default {
   getInitialState() {
     return {
       history: [{
-        state: this.getInitialHistoryState(),
+        state: this.getInitialHistoryState && this.getInitialHistoryState(),
         isInitial: true
       }],
       historyIndex: 0,
