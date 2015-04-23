@@ -86,7 +86,7 @@ const TopCompoundFilter = React.createClass({
                     {...this.link(operator, (newOperator) => this.update({ operator: { $set: newOperator } }))}
                     />
                   <button
-                    className="btn btn-danger"
+                    className="TopCompoundFilter-removeCompoundFilter btn btn-default"
                     onClick={this._handleRemoveCompoundFilter.bind(null, idx)}
                     >
                     x
@@ -102,7 +102,7 @@ const TopCompoundFilter = React.createClass({
           ))}
         </div>
         <button
-          className="btn btn-default"
+          className="TopCompoundFilter-addCompoundFilter btn btn-default"
           onClick={this._handleAddCompoundFilter}
           >
           +
