@@ -20,7 +20,7 @@ const VennCanvas = React.createClass({
   getInitialState() {
     return {
       width: 1000,
-      height: 1000
+      height: 1000,
     };
   },
 
@@ -59,7 +59,7 @@ const VennCanvas = React.createClass({
       .map((set, idx) => {
         return {
           sets: [idx],
-          size: set.get('size')
+          size: set.get('size'),
         };
       })
       .toJS();
@@ -67,7 +67,7 @@ const VennCanvas = React.createClass({
       .map(([keySets, intersection]) => {
         return {
           sets: keySets.map((set) => vennSets.indexOf(set)).toJS(),
-          size: intersection.get('size')
+          size: intersection.get('size'),
         };
       })
       .toJS();
@@ -86,7 +86,7 @@ const VennCanvas = React.createClass({
         set: set,
         c1: circles[idx],
         c2: circles[1 - idx],
-        class: CircleDifference
+        class: CircleDifference,
       };
     });
     let interElements = vennIntersections.map(([keySets, intersection]) => {
@@ -94,7 +94,7 @@ const VennCanvas = React.createClass({
         set: intersection,
         c1: circles[vennSets.indexOf(keySets.first())],
         c2: circles[vennSets.indexOf(keySets.last())],
-        class: CircleIntersection
+        class: CircleIntersection,
       };
     });
     let elements = setElements.concat(interElements).map((el, idx) => {
@@ -118,7 +118,7 @@ const VennCanvas = React.createClass({
         {elements}
       </svg>
     );
-  }
+  },
 
 });
 

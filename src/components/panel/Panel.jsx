@@ -16,12 +16,12 @@ var Panel = React.createClass({
     defaultDisplayModeId: React.PropTypes.string,
     title: React.PropTypes.string, // Panel title
     displayModes: React.PropTypes.array,
-    actions: React.PropTypes.array
+    actions: React.PropTypes.array,
   },
 
   getInitialState() {
     return {
-      currentDisplayModeId: this.props.defaultDisplayModeId
+      currentDisplayModeId: this.props.defaultDisplayModeId,
     };
   },
 
@@ -70,7 +70,7 @@ var Panel = React.createClass({
         </div>
       </div>
     );
-  }
+  },
 
 });
 

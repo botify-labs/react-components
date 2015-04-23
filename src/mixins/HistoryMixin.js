@@ -11,10 +11,12 @@ const { update } = addons;
 export default {
   getInitialState() {
     return {
-      history: [{
-        state: this.getInitialHistoryState && this.getInitialHistoryState(),
-        isInitial: true
-      }],
+      history: [
+        {
+          state: this.getInitialHistoryState && this.getInitialHistoryState(),
+          isInitial: true,
+        },
+      ],
       historyIndex: 0,
     };
   },
@@ -51,7 +53,7 @@ export default {
     }
 
     this.setState({
-      historyIndex: this.state.historyIndex - 1
+      historyIndex: this.state.historyIndex - 1,
     });
   },
 
@@ -65,7 +67,7 @@ export default {
     }
 
     this.setState({
-      historyIndex: this.state.historyIndex + 1
+      historyIndex: this.state.historyIndex + 1,
     });
   },
 
@@ -79,5 +81,5 @@ export default {
     }
 
     this._addHistoryEntry(this.getInitialHistoryState(), true);
-  }
+  },
 };

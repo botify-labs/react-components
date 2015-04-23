@@ -55,7 +55,7 @@ export default function InputMixin(valueValidator) {
           [VALUE_KEY]: this.getValue()[key],
           [ONCHANGE_KEY]: (newValue) => {
             this.update({ [key]: { $set: newValue } });
-          }
+          },
         };
       }
 
@@ -63,7 +63,7 @@ export default function InputMixin(valueValidator) {
         [VALUE_KEY]: this.getValue(),
         [ONCHANGE_KEY]: (newValue) => {
           this.update({ $set: newValue });
-        }
+        },
       };
     },
   };

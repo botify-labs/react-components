@@ -13,5 +13,5 @@ export default {
   Panel,
   Table,
   Chart,
-  VennDiagram
+  VennDiagram,
 };

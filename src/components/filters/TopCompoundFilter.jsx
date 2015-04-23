@@ -11,12 +11,12 @@ import './TopCompoundFilter.scss';
 const OPERATOR_OPTIONS = [
   {
     id: 'and',
-    label: 'AND'
+    label: 'AND',
   },
   {
     id: 'or',
     label: 'OR',
-  }
+  },
 ];
 
 const defaultOperator = 'and';
@@ -31,7 +31,7 @@ const TopCompoundFilter = React.createClass({
       operator: PropTypes.oneOf(OPERATOR_OPTIONS.map((operator) => operator.id)),
       // List of the values of the `CompoundFilter` children
       compoundFilters: PropTypes.arrayOf(CompoundFilter.PropTypes.value),
-    }))
+    })),
   ],
 
   propTypes: {
@@ -44,27 +44,29 @@ const TopCompoundFilter = React.createClass({
   _handleCompoundFilterChange(idx, value) {
     this.update({
       compoundFilters: {
-        [idx]: { $set: value }
-      }
+        [idx]: { $set: value },
+      },
     });
   },
 
   _handleAddCompoundFilter() {
     this.update({
       compoundFilters: {
-        $push: [{
-          operator: defaultOperator,
-          filters: []
-        }]
-      }
+        $push: [
+          {
+            operator: defaultOperator,
+            filters: [],
+          },
+        ],
+      },
     });
   },
 
   _handleRemoveCompoundFilter(idx) {
     this.update({
       compoundFilters: {
-        $splice: [[idx, 1]]
-      }
+        $splice: [[idx, 1]],
+      },
     });
   },
 
@@ -109,7 +111,7 @@ const TopCompoundFilter = React.createClass({
         </button>
       </div>
     );
-  }
+  },
 
 });
 

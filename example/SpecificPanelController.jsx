@@ -15,11 +15,11 @@ var chartData = new ChartData();
 
 chartData.addMetric(Immutable.Map({
   label: 'Count',
-  render: v => v
+  render: v => v,
 }));
 
 chartData.addDimension('delay', Immutable.Map({
-  label: 'Delay'
+  label: 'Delay',
 }));
 chartData.addDimensionGroup('delay', 'fast', Immutable.Map({label: "Fast (<500 ms)", color: COLORS.GOOD}));
 chartData.addDimensionGroup('delay', 'medium', Immutable.Map({label: "Medium (500 ms < 1 s)", color: COLORS.MEDIUM}));
@@ -27,7 +27,7 @@ chartData.addDimensionGroup('delay', 'slow', Immutable.Map({label: "Slow (1 s < 
 chartData.addDimensionGroup('delay', 'slowest', Immutable.Map({label: "Slowest (>2 s)", color: COLORS.VERY_BAD}));
 
 chartData.addDimension('content_type', Immutable.Map({
-  label: 'Content Type'
+  label: 'Content Type',
 }));
 chartData.addDimensionGroup('content_type', "text_html", Immutable.Map({color: COLORS.GOOD, label: "text/html"}));
 chartData.addDimensionGroup('content_type', "image_jpeg", Immutable.Map({color: COLORS.YELLOW, label: "image/jpeg"}));
@@ -39,19 +39,19 @@ chartData.addDimensionGroup('content_type', "not_set", Immutable.Map({label: "No
 
 chartData.setData(Immutable.Map({
   'delay': 'fast',
-  'content_type': 'text_html'
+  'content_type': 'text_html',
 }), Immutable.List([1]));
 chartData.setData(Immutable.Map({
   'delay': 'medium',
-  'content_type': 'text_html'
+  'content_type': 'text_html',
 }), Immutable.List([3]));
 chartData.setData(Immutable.Map({
   'delay': 'medium',
-  'content_type': 'text_css'
+  'content_type': 'text_css',
 }), Immutable.List([4]));
 chartData.setData(Immutable.Map({
   'delay': 'slowest',
-  'content_type': 'javascript'
+  'content_type': 'javascript',
 }), Immutable.List([4]));
 
 var newUrls = 100;
@@ -102,7 +102,7 @@ var ChartRenderer = React.createClass({
   render() {
     var style = {
       width: 1000,
-      height: 500
+      height: 500,
     };
 
     return (
@@ -110,7 +110,7 @@ var ChartRenderer = React.createClass({
         {this.props.children}
       </div>
     );
-  }
+  },
 
 });
 
@@ -134,18 +134,18 @@ var SpecificPanelController = React.createClass({
       {
         id: 'vennDiagram',
         label: 'Display Venn Diagram',
-        render: this._renderVennDiagram
+        render: this._renderVennDiagram,
       },
       {
         id: 'chart',
         label: 'Display Chart',
-        render: this._renderChart
+        render: this._renderChart,
       },
       {
         id: 'table',
         label: 'Display Table',
-        render: this._renderTable
-      }
+        render: this._renderTable,
+      },
     ];
   },
 
@@ -154,8 +154,8 @@ var SpecificPanelController = React.createClass({
       {
         id: 'exportChart',
         label: 'Export Chart',
-        callback: this._exportChart
-      }
+        callback: this._exportChart,
+      },
     ];
   },
 
@@ -196,7 +196,7 @@ var SpecificPanelController = React.createClass({
 
     var style = {
       width: 1000,
-      height: 500
+      height: 500,
     };
 
     var chart = React.render(
@@ -212,7 +212,7 @@ var SpecificPanelController = React.createClass({
     window.open(imageURI);
 
     document.body.removeChild(div);
-  }
+  },
 
 });
 

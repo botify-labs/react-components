@@ -10,12 +10,12 @@ import InputMixin from '../../mixins/InputMixin';
 const OPERATOR_OPTIONS = [
   {
     id: 'and',
-    label: 'AND'
+    label: 'AND',
   },
   {
     id: 'or',
     label: 'OR',
-  }
+  },
 ];
 
 const valuePropType = PropTypes.shape({
@@ -29,7 +29,9 @@ const CompoundFilter = React.createClass({
 
   displayName: 'CompoundFilter',
 
-  mixins: [InputMixin(valuePropType)],
+  mixins: [
+    InputMixin(valuePropType),
+  ],
 
   propTypes: {
     className: PropTypes.string,
@@ -43,9 +45,9 @@ const CompoundFilter = React.createClass({
     this.update({
       filters: {
         $splice: [
-          [idx, 1, filter]
-        ]
-      }
+          [idx, 1, filter],
+        ],
+      },
     });
   },
 
@@ -53,9 +55,9 @@ const CompoundFilter = React.createClass({
     this.update({
       filters: {
         $splice: [
-          [idx, 1]
-        ]
-      }
+          [idx, 1],
+        ],
+      },
     });
   },
 
@@ -66,9 +68,11 @@ const CompoundFilter = React.createClass({
     // Append a dummy filter with no `filterId` to the list of filters.
     // When the user selects a `filterId` for the dummy, we consider that a new filter was added to the list.
     if (filters.length === 0 || _.last(filters).filterId) {
-      filters = filters.concat([{
-        areaId: defaultAreaId
-      }]);
+      filters = filters.concat([
+        {
+          areaId: defaultAreaId,
+        },
+      ]);
     }
 
     return (
@@ -92,7 +96,7 @@ const CompoundFilter = React.createClass({
         </div>
       </div>
     );
-  }
+  },
 
 });
 

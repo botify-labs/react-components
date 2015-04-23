@@ -9,7 +9,7 @@ const ButtonSelect = React.createClass({
   displayName: 'ButtonSelect',
 
   mixins: [
-    InputMixin(PropTypes.string)
+    InputMixin(PropTypes.string),
   ],
 
   propTypes: {
@@ -62,7 +62,7 @@ const ButtonSelect = React.createClass({
         })}
       </div>
     );
-  }
+  },
 
 });
 

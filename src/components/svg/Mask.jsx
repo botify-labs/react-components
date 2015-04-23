@@ -27,7 +27,7 @@ const Mask = React.createClass({
         </g>
       </g>
     );
-  }
+  },
 
 });
 

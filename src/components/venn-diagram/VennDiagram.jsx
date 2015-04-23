@@ -34,7 +34,7 @@ const VennDiagram = React.createClass({
 
   getInitialState() {
     return {
-      activeSet: null
+      activeSet: null,
     };
   },
 
@@ -81,10 +81,10 @@ const VennDiagram = React.createClass({
     return (
       <TooltipData
         groups={[
-          [setLabel, activeSet.get('label')]
+          [setLabel, activeSet.get('label')],
         ]}
         metrics={[
-          [sizeLabel, formatSize(vennData.getSizeOf(activeSet, inclusive))]
+          [sizeLabel, formatSize(vennData.getSizeOf(activeSet, inclusive))],
         ]}
       />
     );

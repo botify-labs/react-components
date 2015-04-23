@@ -8,7 +8,7 @@ let stackPropType = PropTypes.shape({
   label: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
   display: PropTypes.node,
-  color: PropTypes.string.isRequired
+  color: PropTypes.string.isRequired,
 });
 
 const HorizontalGauge = React.createClass({
@@ -95,7 +95,7 @@ const HorizontalGauge = React.createClass({
       </HoverTooltip>
     );
 
-  }
+  },
 
 });
 

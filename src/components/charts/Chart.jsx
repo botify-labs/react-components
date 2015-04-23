@@ -9,12 +9,12 @@ var Chart = React.createClass({
   displayName: 'Chart',
 
   propTypes: {
-    chartData: React.PropTypes.instanceOf(ChartData)
+    chartData: React.PropTypes.instanceOf(ChartData),
   },
 
   getInitialState() {
     return {
-      hoveredData: null
+      hoveredData: null,
     };
   },
 
@@ -71,7 +71,7 @@ var Chart = React.createClass({
   _handleChartMouseOut() {
     // Hide the tooltip when a chart element stops being hovered
     this.setState({hoveredData: null});
-  }
+  },
 
 });
 

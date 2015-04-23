@@ -7,7 +7,7 @@ var Tooltip = React.createClass({
   propTypes: {
     position: React.PropTypes.shape({
       top: React.PropTypes.number.isRequired,
-      left: React.PropTypes.number.isRequired
+      left: React.PropTypes.number.isRequired,
     }),
     margin: React.PropTypes.number,
     children: PropTypes.node,
@@ -94,7 +94,7 @@ var Tooltip = React.createClass({
     }
 
     return positionStyle;
-  }
+  },
 
 });
 

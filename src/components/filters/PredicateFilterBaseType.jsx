@@ -23,8 +23,8 @@ const PredicateFilterBaseType = React.createClass({
       // Id of the selected operator in `props.operatorOptions`
       operatorId: PropTypes.string,
       // Value of the selected operator, its format depends entirely on the operator type
-      operatorValue: PropTypes.any
-    }))
+      operatorValue: PropTypes.any,
+    })),
   ],
 
   propTypes: {
@@ -51,7 +51,7 @@ const PredicateFilterBaseType = React.createClass({
         operatorId: newOperatorId,
         // Similar to filter types, operator types can also define a `getInitialValue(prevType, prevValue)`.
         operatorValue: newOperator.type.getInitialValue(operator.type, operatorValue),
-      }
+      },
     });
   },
 
@@ -79,12 +79,12 @@ const PredicateFilterBaseType = React.createClass({
           />
       </div>
     );
-  }
+  },
 
 });
 
 PredicateFilterBaseType.PropTypes = {
-  operatorOptions: operatorOptionsPropType
+  operatorOptions: operatorOptionsPropType,
 };
 
 export default PredicateFilterBaseType;

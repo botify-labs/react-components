@@ -29,7 +29,7 @@ const Circle = React.createClass({
       `m ${-radius}\, 0`,
       `a ${radius}\,${radius} 0 1,0 ${radius * 2}\,0`,
       `a ${radius}\,${radius} 0 1,0 ${-radius * 2}\,0`,
-      `Z`
+      `Z`,
     ].join(' ');
   },
 
@@ -55,7 +55,7 @@ const CircleIntersection = React.createClass({
         <Circle fill={fill} {...c1} />
       </ClipPath>
     );
-  }
+  },
 
 });
 
@@ -79,7 +79,7 @@ const CircleDifference = React.createClass({
         <Circle fill={fill} {...c1} />
       </ClipPath>
     );
-  }
+  },
 
 });
 
@@ -106,10 +106,10 @@ const CircleIntersectionStroke = React.createClass({
         />
         <CircleIntersection
           c1={_.assign({}, c1, {
-            radius: c1.radius - width
+            radius: c1.radius - width,
           })}
           c2={_.assign({}, c2, {
-            radius: c2.radius - width
+            radius: c2.radius - width,
           })}
           fill="black"
         />
@@ -121,7 +121,7 @@ const CircleIntersectionStroke = React.createClass({
         <rect width="100%" height="100%" fill={fill} />
       </Mask>
     );
-  }
+  },
 
 });
 
@@ -148,10 +148,10 @@ const CircleDifferenceStroke = React.createClass({
         />
         <CircleDifference
           c1={_.assign({}, c1, {
-            radius: c1.radius - width
+            radius: c1.radius - width,
           })}
           c2={_.assign({}, c2, {
-            radius: c2.radius + width
+            radius: c2.radius + width,
           })}
           fill="black"
         />
@@ -163,7 +163,7 @@ const CircleDifferenceStroke = React.createClass({
         <rect width="100%" height="100%" fill={fill} />
       </Mask>
     );
-  }
+  },
 
 });
 
@@ -184,17 +184,17 @@ const CircleDifferenceInterior = React.createClass({
     return (
       <CircleDifference
         c1={_.assign({}, c1, {
-          radius: c1.radius - width
+          radius: c1.radius - width,
         })}
         c2={_.assign({}, c2, {
-          radius: c2.radius + width
+          radius: c2.radius + width,
         })}
         fill={fill}
         style={{pointerEvents: 'none'}}
         {..._.omit(this.props, 'fill', 'width', 'c1', 'c2')}
       />
     );
-  }
+  },
 
 });
 
@@ -215,17 +215,17 @@ const CircleIntersectionInterior = React.createClass({
     return (
       <CircleIntersection
         c1={_.assign({}, c1, {
-          radius: c1.radius - width
+          radius: c1.radius - width,
         })}
         c2={_.assign({}, c2, {
-          radius: c2.radius - width
+          radius: c2.radius - width,
         })}
         fill={fill}
         style={{pointerEvents: 'none'}}
         {..._.omit(this.props, 'fill', 'width', 'c1', 'c2')}
       />
     );
-  }
+  },
 
 });
 
@@ -233,6 +233,6 @@ const CircleIntersectionInterior = React.createClass({
 _.assign(Circle, {
   CircleIntersection, CircleDifference,
   CircleIntersectionStroke, CircleDifferenceStroke,
-  CircleIntersectionInterior, CircleDifferenceInterior
+  CircleIntersectionInterior, CircleDifferenceInterior,
 });
 export default Circle;

@@ -15,7 +15,7 @@ var HoverTooltip = React.createClass({
 
   getInitialState() {
     return {
-      mousePosition: {top: -9999, left: -9999}
+      mousePosition: {top: -9999, left: -9999},
     };
   },
 
@@ -42,8 +42,8 @@ var HoverTooltip = React.createClass({
     this.setState({
       mousePosition: {
         top: e.pageY,
-        left: e.pageX
-      }
+        left: e.pageX,
+      },
     });
   },
 

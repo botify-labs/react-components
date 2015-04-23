@@ -31,7 +31,7 @@ export function createPredicateFilterType(displayName, { operatorOptions, defaul
           operatorOptions={operatorOptions}
           />
       );
-    }
+    },
 
   });
 

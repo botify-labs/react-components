@@ -16,7 +16,7 @@ const optionGroupOf = propType => PropTypes.oneOfType([
     label: PropTypes.string.isRequired,
     options: PropTypes.arrayOf(propType).isRequired,
   }),
-  propType
+  propType,
 ]);
 
 const Select = React.createClass({
@@ -24,7 +24,7 @@ const Select = React.createClass({
   displayName: 'Select',
 
   mixins: [
-    InputMixin(PropTypes.string)
+    InputMixin(PropTypes.string),
   ],
 
   propTypes: {
@@ -73,7 +73,7 @@ const Select = React.createClass({
         })}
       </select>
     );
-  }
+  },
 
 });
 

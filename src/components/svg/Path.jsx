@@ -6,7 +6,7 @@ const fullShape = [
   `L ${dim} ${-dim}`,
   `L ${dim} ${dim}`,
   `L ${-dim} ${dim}`,
-  `Z`
+  `Z`,
 ].join(' ');
 
 const Path = React.createClass({
@@ -30,7 +30,7 @@ const Path = React.createClass({
     }
 
     return <path {...otherProps} d={d} style={style}/>;
-  }
+  },
 
 });
 

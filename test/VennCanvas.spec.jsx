@@ -30,7 +30,7 @@ describe('VennCanvas', () => {
       size: 50,
       color: 'green',
       label: 'Intersection',
-    })
+    }),
   });
   testIntersections.forEach(({ sets, intersection }) => vennData.addIntersection(sets, intersection));
 
@@ -55,7 +55,7 @@ describe('VennCanvas', () => {
   it('should call its `onClick` handler prop when a set is clicked on', () => {
     let props = {
       vennData,
-      onClick(set, idx) { }
+      onClick(set, idx) { },
     };
     let spy = expect.spyOn(props, 'onClick');
     let vennCanvas = render(<VennCanvas {...props} />);

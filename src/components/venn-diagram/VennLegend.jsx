@@ -41,7 +41,7 @@ const VennLegend = React.createClass({
         {elements}
       </ul>
     );
-  }
+  },
 
 });
 

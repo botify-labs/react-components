@@ -12,7 +12,7 @@ var Table = React.createClass({
   displayName: 'Table',
 
   propTypes: {
-    chartData: React.PropTypes.instanceOf(ChartData)
+    chartData: React.PropTypes.instanceOf(ChartData),
   },
 
   statics: {
@@ -21,19 +21,23 @@ var Table = React.createClass({
     },
 
     getDisplayModes() {
-      return [{
-        id: 'table',
-        label: 'Display Table'
-      }];
+      return [
+        {
+          id: 'table',
+          label: 'Display Table',
+        },
+      ];
     },
 
     getActions() {
-      return [{
-        id: 'export table',
-        methodName: 'exportTable',
-        label: 'Export CSV'
-      }];
-    }
+      return [
+        {
+          id: 'export table',
+          methodName: 'exportTable',
+          label: 'Export CSV',
+        },
+      ];
+    },
   },
 
   exportTable() {
@@ -72,13 +76,13 @@ var Table = React.createClass({
   _getColumns() {
     var dimensions = this.props.chartData.dimensions.entrySeq().map(([dimensionKey, dimensionMetadata]) => {
       return {
-        title: dimensionMetadata.get('label')
+        title: dimensionMetadata.get('label'),
       };
     });
 
     var metrics = this.props.chartData.metrics.map((metric) => {
       return {
-        title: metric.get('label')
+        title: metric.get('label'),
       };
     });
 
@@ -94,9 +98,9 @@ var Table = React.createClass({
       info: false,
       drawCallback: () => {
         this.forceUpdate();
-      }
+      },
     };
-  }
+  },
 
 });
 

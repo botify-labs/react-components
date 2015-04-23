@@ -32,7 +32,7 @@ const Filter = React.createClass({
   displayName: 'Filter',
 
   mixins: [
-    InputMixin(valuePropType)
+    InputMixin(valuePropType),
   ],
 
   propTypes: {
@@ -93,7 +93,7 @@ const Filter = React.createClass({
       // Filter types can define a `getInitialValue(prevType, prevValue)` static method to choose how
       // to transition from a previous filter type and value. The return value of this method will be
       // set as the new value of the filter.
-      filterValue: { $set: newFilter.type.getInitialValue((filter && filter.type), filterValue) }
+      filterValue: { $set: newFilter.type.getInitialValue((filter && filter.type), filterValue) },
     });
   },
 
@@ -156,7 +156,7 @@ const Filter = React.createClass({
         }
       </div>
     );
-  }
+  },
 
 });
 

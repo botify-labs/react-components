@@ -28,7 +28,7 @@ var GoogleColumnChart = React.createClass({
           width: '60%',
           height: '80%',
       },
-      fontSize: 14
+      fontSize: 14,
     };
   },
 
@@ -41,7 +41,7 @@ var GoogleColumnChart = React.createClass({
         options={this._getOptions()}
       />
     );
-  }
+  },
 
 });
 

@@ -27,7 +27,7 @@ const ClipPath = React.createClass({
         </g>
       </g>
     );
-  }
+  },
 
 });
 
