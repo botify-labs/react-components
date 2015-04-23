@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import UniqueIdMixin from './UniqueIdMixin';
+import UniqueIdMixin from '../../mixins/UniqueIdMixin';
 
 const ClipPath = React.createClass({
 
