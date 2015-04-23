@@ -5,7 +5,14 @@ import classNames from 'classnames';
 import Select from '../inputs/Select';
 
 import InputMixin from '../../mixins/InputMixin';
-import { componentOptionShape } from '../../shapes/option';
+
+const operatorOptionPropType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  type: PropTypes.func.isRequired,
+});
+
+const operatorOptionsPropType = PropTypes.arrayOf(operatorOptionPropType);
 
 const PredicateFilterBaseType = React.createClass({
 
@@ -13,14 +20,17 @@ const PredicateFilterBaseType = React.createClass({
 
   mixins: [
     InputMixin(PropTypes.shape({
+      // Id of the selected operator in `props.operatorOptions`
       operatorId: PropTypes.string,
+      // Value of the selected operator, its format depends entirely on the operator type
       operatorValue: PropTypes.any
     }))
   ],
 
   propTypes: {
     className: PropTypes.string,
-    operatorOptions: PropTypes.arrayOf(componentOptionShape).isRequired,
+    // List of operator options `{ id, label, type }`
+    operatorOptions: operatorOptionsPropType.isRequired,
   },
 
   /**
@@ -72,5 +82,9 @@ const PredicateFilterBaseType = React.createClass({
   }
 
 });
+
+PredicateFilterBaseType.PropTypes = {
+  operatorOptions: operatorOptionsPropType
+};
 
 export default PredicateFilterBaseType;

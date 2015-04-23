@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 
 import InputMixin from '../../mixins/InputMixin';
-import { optionShape } from '../../shapes/option';
+import Select from './Select';
 
 const ButtonSelect = React.createClass({
 
@@ -14,7 +14,8 @@ const ButtonSelect = React.createClass({
 
   propTypes: {
     className: PropTypes.string,
-    options: PropTypes.arrayOf(optionShape).isRequired,
+    // List of select options `{ id, label }`
+    options: PropTypes.arrayOf(Select.PropTypes.option).isRequired,
     // Disables all the buttons in the select
     disabled: PropTypes.bool,
     // Once an option is selected, can it be unselected?

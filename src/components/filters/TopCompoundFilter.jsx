@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react/addons';
 
+import Filter from './Filter';
 import CompoundFilter from './CompoundFilter';
 import ButtonSelect from '../inputs/ButtonSelect';
 
@@ -26,13 +27,17 @@ const TopCompoundFilter = React.createClass({
 
   mixins: [
     InputMixin(PropTypes.shape({
-      operator: PropTypes.string,
-      compoundFilters: PropTypes.arrayOf(PropTypes.any),
+      // Id of the selected operator in `OPERATOR_OPTIONS`
+      operator: PropTypes.oneOf(OPERATOR_OPTIONS.map((operator) => operator.id)),
+      // List of the values of the `CompoundFilter` children
+      compoundFilters: PropTypes.arrayOf(CompoundFilter.PropTypes.value),
     }))
   ],
 
   propTypes: {
-    areaOptions: PropTypes.any,
+    // List of area options, see the `Filter` component
+    areaOptions: Filter.PropTypes.areaOptions,
+    // Default area id, see the `Filter` component
     defaultAreaId: PropTypes.string,
   },
 

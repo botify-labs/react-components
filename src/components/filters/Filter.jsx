@@ -6,24 +6,43 @@ import Select from '../inputs/Select';
 import ButtonSelect from '../inputs/ButtonSelect';
 
 import InputMixin from '../../mixins/InputMixin';
-import { areaOptionShape } from '../../shapes/option';
+
+const valuePropType = PropTypes.shape({
+  areaId: PropTypes.string, // Id of the selected area in `props.areaOptions`.
+  filterId: PropTypes.string, // Id of the selected filter in `props.areaOptions[areaId].filterOptions`
+  filterValue: PropTypes.any, // Value of the selected filter, its format depends entirely on the filter type
+});
+
+const filterOptionPropType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  type: PropTypes.func.isRequired,
+});
+
+const areaOptionPropType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  filterOptions: PropTypes.arrayOf(Select.PropTypes.optionGroupOf(filterOptionPropType)).isRequired,
+});
+
+const areaOptionsPropType = PropTypes.arrayOf(areaOptionPropType);
 
 const Filter = React.createClass({
 
   displayName: 'Filter',
 
   mixins: [
-    InputMixin(PropTypes.shape({
-      areaId: PropTypes.string,
-      filterId: PropTypes.string,
-      filterValue: PropTypes.any,
-    }))
+    InputMixin(valuePropType)
   ],
 
   propTypes: {
     className: PropTypes.string,
-    areaOptions: PropTypes.arrayOf(areaOptionShape).isRequired,
+    // List of area options `{ id, label, filterOptions }`
+    // `filterOptions` is a list of filter options `{ id, label, type }` or option group `{ isGroup, label, options }`
+    areaOptions: areaOptionsPropType.isRequired,
+    // Default area id to use when creating dummy filters
     defaultAreaId: PropTypes.string,
+    // Called when a filter is removed
     onRemove: PropTypes.func.isRequired,
   },
 
@@ -140,5 +159,10 @@ const Filter = React.createClass({
   }
 
 });
+
+Filter.PropTypes = {
+  value: valuePropType,
+  areaOptions: areaOptionsPropType,
+};
 
 export default Filter;

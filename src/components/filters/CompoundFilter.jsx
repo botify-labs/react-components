@@ -6,7 +6,6 @@ import Filter from './Filter';
 import ButtonSelect from '../inputs/ButtonSelect';
 
 import InputMixin from '../../mixins/InputMixin';
-import { areaOptionShape } from '../../shapes/option';
 
 const OPERATOR_OPTIONS = [
   {
@@ -19,20 +18,24 @@ const OPERATOR_OPTIONS = [
   }
 ];
 
+const valuePropType = PropTypes.shape({
+  // Id of the selected operator in `OPERATOR_OPTIONS`
+  operator: PropTypes.oneOf(OPERATOR_OPTIONS.map((operator) => operator.id)),
+  // List of the values of the children `Filter` components
+  filters: PropTypes.arrayOf(Filter.PropTypes.value),
+});
+
 const CompoundFilter = React.createClass({
 
   displayName: 'CompoundFilter',
 
-  mixins: [
-    InputMixin(PropTypes.shape({
-      operator: PropTypes.oneOf(OPERATOR_OPTIONS.map((operator) => operator.id)),
-      filters: PropTypes.arrayOf(PropTypes.any),
-    }))
-  ],
+  mixins: [InputMixin(valuePropType)],
 
   propTypes: {
     className: PropTypes.string,
-    areaOptions: PropTypes.arrayOf(areaOptionShape).isRequired,
+    // List of area options, see the `Filter` component
+    areaOptions: Filter.PropTypes.areaOptions,
+    // Default area id, see the `Filter` component
     defaultAreaId: PropTypes.string,
   },
 
@@ -92,5 +95,7 @@ const CompoundFilter = React.createClass({
   }
 
 });
+
+CompoundFilter.PropTypes = { value: valuePropType };
 
 export default CompoundFilter;

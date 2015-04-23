@@ -3,6 +3,10 @@ const { update } = addons;
 
 /**
  * Mixin that provides a layer on top of a component state for storing an history of states.
+ * The history state is a layer on top of the usual state that keeps track of all of the previous states,
+ * and allows going back and forth between them.
+ * Components should implement a `getInitialHistoryState()` much like `getInitialState()`, that will be called
+ * when the component is first instanciated and whenever its `reset` method is called.
  */
 export default {
   getInitialState() {
@@ -76,5 +80,4 @@ export default {
 
     this._addHistoryEntry(this.getInitialHistoryState(), true);
   }
-
 };

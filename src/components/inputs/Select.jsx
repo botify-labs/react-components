@@ -2,9 +2,22 @@ import React, { PropTypes } from 'react/addons';
 import classNames from 'classnames';
 
 import InputMixin from '../../mixins/InputMixin';
-import { optionShape, optionGroupOf } from '../../shapes/option';
 
 const NULL_OPTION = '__null__';
+
+const optionPropType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+});
+
+const optionGroupOf = propType => PropTypes.oneOfType([
+  PropTypes.shape({
+    isGroup: PropTypes.bool.isRequired,
+    label: PropTypes.string.isRequired,
+    options: PropTypes.arrayOf(propType).isRequired,
+  }),
+  propType
+]);
 
 const Select = React.createClass({
 
@@ -16,7 +29,8 @@ const Select = React.createClass({
 
   propTypes: {
     className: PropTypes.string,
-    options: PropTypes.arrayOf(optionGroupOf(optionShape)).isRequired,
+    // List of select options `{ id, label }` or `{ isGroup, label, options }` in the case of an option group
+    options: PropTypes.arrayOf(optionGroupOf(optionPropType)).isRequired,
     // If defined and there is no selected option, a dummy option will be created with this label and selected
     // by default. Once another option is selected, it will disappear.
     nullLabel: PropTypes.string,
@@ -62,5 +76,11 @@ const Select = React.createClass({
   }
 
 });
+
+Select.PropTypes = {
+  option: optionPropType,
+
+  optionGroupOf: optionGroupOf,
+};
 
 export default Select;

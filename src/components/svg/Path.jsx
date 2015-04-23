@@ -17,6 +17,7 @@ const Path = React.createClass({
     // Is this an inversed shape?
     inverse: PropTypes.bool,
     style: PropTypes.object,
+    // Path data, see http://www.w3.org/TR/SVG/paths.html#PathData
     d: PropTypes.string,
   },
 
