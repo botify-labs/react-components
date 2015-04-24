@@ -1,34 +1,34 @@
 import React from 'react';
 
-import PredicateFilterBaseType from './PredicateFilterBaseType';
+import PredicateFilterBaseInput from './PredicateFilterBaseInput';
 
 /**
  * Creates a predicate filter type component class
  * @param  {String}                  displayName
- * @param  {Array<ComponentOption>}  options.operatorOptions
- *                                   List of predicate filter operator options this type accepts
+ * @param  {Array<ComponentOption>}  options.predicateOptions
+ *                                   List of predicate filter predicate options this type accepts
  * @param  {Any}                     options.defaultValue
- *                                   Default value of the operator input
+ *                                   Default value of the predicate input
  * @return {Function}                The new predicate filter type component class
  */
-export function createPredicateFilterType(displayName, { operatorOptions, defaultValue }) {
+export function createPredicateFilterInput(displayName, { predicateOptions, defaultValue }) {
   let PredicateFilterType = React.createClass({
 
     displayName,
 
     statics: {
-      getInitialValue(prevType, prevValue) {
+      getInitialValue(prevInput, prevValue) {
         // Conserve value when transitioning from this type to this type, otherwise set
         // default value
-        return prevType === this ? prevValue : defaultValue;
+        return prevInput === this ? prevValue : defaultValue;
       },
     },
 
     render() {
       return (
-        <PredicateFilterBaseType
+        <PredicateFilterBaseInput
           {...this.props}
-          operatorOptions={operatorOptions}
+          predicateOptions={predicateOptions}
           />
       );
     },

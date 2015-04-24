@@ -10,13 +10,13 @@ import InputMixin from '../../mixins/InputMixin';
 const valuePropType = PropTypes.shape({
   areaId: PropTypes.string, // Id of the selected area in `props.areaOptions`.
   filterId: PropTypes.string, // Id of the selected filter in `props.areaOptions[areaId].filterOptions`
-  filterValue: PropTypes.any, // Value of the selected filter, its format depends entirely on the filter type
+  filterInputValue: PropTypes.any, // Value of the selected filter, its format depends entirely on the filter input
 });
 
 const filterOptionPropType = PropTypes.shape({
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  type: PropTypes.func.isRequired,
+  input: PropTypes.func.isRequired,
 });
 
 const areaOptionPropType = PropTypes.shape({
@@ -38,7 +38,7 @@ const Filter = React.createClass({
   propTypes: {
     className: PropTypes.string,
     // List of area options `{ id, label, filterOptions }`
-    // `filterOptions` is a list of filter options `{ id, label, type }` or option group `{ isGroup, label, options }`
+    // `filterOptions` is a list of filter options `{ id, label, input }` or option group `{ isGroup, label, options }`
     areaOptions: areaOptionsPropType.isRequired,
     // Default area id to use when creating dummy filters
     defaultAreaId: PropTypes.string,
@@ -82,23 +82,23 @@ const Filter = React.createClass({
     return found;
   },
 
-  _handleFilterTypeChange(newFilterId) {
-    let { filterId, filterValue } = this.getValue();
+  _handleFilterChange(newFilterId) {
+    let { filterId, filterInputValue } = this.getValue();
 
     let filter = this._getFilter(filterId);
     let newFilter = this._getFilter(newFilterId);
 
     this.update({
       filterId: { $set: newFilterId },
-      // Filter types can define a `getInitialValue(prevType, prevValue)` static method to choose how
-      // to transition from a previous filter type and value. The return value of this method will be
+      // Filter inputs can define a `getInitialValue(prevInput, prevValue)` static method to choose how
+      // to transition from a previous filter input and value. The return value of this method will be
       // set as the new value of the filter.
-      filterValue: { $set: newFilter.type.getInitialValue((filter && filter.type), filterValue) },
+      filterInputValue: { $set: newFilter.input.getInitialValue((filter && filter.input), filterInputValue) },
     });
   },
 
   _handleAreaChange(newAreaId) {
-    let { filterId, filterValue } = this.getValue();
+    let { filterId, filterInputValue } = this.getValue();
     let area = this._getArea(newAreaId);
     let filter = this._getFilter(filterId, area);
 
@@ -107,13 +107,13 @@ const Filter = React.createClass({
       // @TODO: define a `getInitialValue()` for areas? might be needed since similar area fields will
       // have different ids between areas (ex: `host`, `previous.host`)
       filterId = null;
-      filterValue = null;
+      filterInputValue = null;
     }
 
     this.update({
       areaId: { $set: newAreaId },
       filterId: { $set: filterId },
-      filterValue: { $set: filterValue },
+      filterInputValue: { $set: filterInputValue },
     });
   },
 
@@ -137,13 +137,13 @@ const Filter = React.createClass({
           className="Filter-filterOptions"
           options={area.filterOptions}
           nullLabel="Add a filter"
-          {...this.link(filterId, this._handleFilterTypeChange)}
+          {...this.link(filterId, this._handleFilterChange)}
           />
         {/* When `filterId` isn't defined, the filter is a dummy */}
         {filterId &&
-          <filter.type
-            className="Filter-filterType"
-            {...this.linkValue('filterValue')}
+          <filter.input
+            className="Filter-filterInput"
+            {...this.linkValue('filterInputValue')}
             />
         }
         {filterId &&

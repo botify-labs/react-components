@@ -54,16 +54,16 @@
   }
 }
 
-.PredicateFilterBaseType {
+.PredicateFilterBaseInput {
   display: flex;
   flex-direction: row;
   align-items: center;
 
-  > .PredicateFilterBaseType-operatorOptions {
+  > .PredicateFilterBaseInput-predicateOptions {
     margin-right: 10px;
   }
 
-  > .PredicateFilterBaseType-operatorType {
+  > .PredicateFilterBaseInput-predicateInput {
     margin-right: 10px;
   }
 }
