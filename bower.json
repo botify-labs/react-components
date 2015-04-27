@@ -1,6 +1,6 @@
 {
   "name": "react-components",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "ReactJS components",
   "author": "Alexandre Kirszenberg <alexandre.kirszenberg@gmail.com>",
   "main": "dist/index.js",
