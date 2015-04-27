@@ -20,7 +20,7 @@ const OPERATOR_OPTIONS = [
 
 const valuePropType = PropTypes.shape({
   // Id of the selected operator in `OPERATOR_OPTIONS`
-  operator: PropTypes.oneOf(OPERATOR_OPTIONS.map((operator) => operator.id)),
+  operatorId: PropTypes.oneOf(OPERATOR_OPTIONS.map((operator) => operator.id)),
   // List of the values of the children `Filter` components
   filters: PropTypes.arrayOf(Filter.PropTypes.value),
 });
@@ -82,7 +82,7 @@ const CompoundFilter = React.createClass({
           className="CompoundFilter-operatorSelect"
           options={OPERATOR_OPTIONS}
           disabled={filters.length <= 1}
-          {...this.linkValue('operator')}
+          {...this.linkValue('operatorId')}
           />
         <div className="CompoundFilter-filters">
           {filters.map((filter, idx) => (

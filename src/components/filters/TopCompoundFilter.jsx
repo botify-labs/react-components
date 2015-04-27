@@ -28,7 +28,7 @@ const TopCompoundFilter = React.createClass({
   mixins: [
     InputMixin(PropTypes.shape({
       // Id of the selected operator in `OPERATOR_OPTIONS`
-      operator: PropTypes.oneOf(OPERATOR_OPTIONS.map((operator) => operator.id)),
+      operatorId: PropTypes.oneOf(OPERATOR_OPTIONS.map((operator) => operator.id)),
       // List of the values of the `CompoundFilter` children
       compoundFilters: PropTypes.arrayOf(CompoundFilter.PropTypes.value),
     })),
@@ -54,7 +54,7 @@ const TopCompoundFilter = React.createClass({
       compoundFilters: {
         $push: [
           {
-            operator: defaultOperator,
+            operatorId: defaultOperator,
             filters: [],
           },
         ],
@@ -72,7 +72,7 @@ const TopCompoundFilter = React.createClass({
 
   render() {
     let { areaOptions, defaultAreaId } = this.props;
-    let { compoundFilters, operator } = this.getValue();
+    let { compoundFilters } = this.getValue();
 
     return (
       <div className="TopCompoundFilter">
@@ -85,7 +85,7 @@ const TopCompoundFilter = React.createClass({
                   <ButtonSelect
                     className="TopCompoundFilter-operatorSelect"
                     options={OPERATOR_OPTIONS}
-                    {...this.link(operator, (newOperator) => this.update({ operator: { $set: newOperator } }))}
+                    {...this.linkValue('operatorId')}
                     />
                   <button
                     className="TopCompoundFilter-removeCompoundFilter btn btn-default"
