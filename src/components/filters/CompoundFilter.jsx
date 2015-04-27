@@ -40,7 +40,7 @@ const CompoundFilter = React.createClass({
   },
 
   _handleFilterChange(idx, filter) {
-    this.update({
+    this.requestChange({
       filters: {
         $splice: [
           [idx, 1, filter],
@@ -50,7 +50,7 @@ const CompoundFilter = React.createClass({
   },
 
   _handleFilterRemove(idx) {
-    this.update({
+    this.requestChange({
       filters: {
         $splice: [
           [idx, 1],
@@ -77,7 +77,7 @@ const CompoundFilter = React.createClass({
             className="CompoundFilter-operatorSelect"
             options={OPERATOR_OPTIONS}
             disabled={filters.length <= 1}
-            {...this.linkValue('operatorId')}
+            valueLink={this.linkValue('operatorId')}
             />
           {onRemove &&
             <button
@@ -93,7 +93,7 @@ const CompoundFilter = React.createClass({
             <FilterInput
               key={idx}
               onRemove={idx !== filters.length - 1 ? this._handleFilterRemove.bind(null, idx) : null}
-              {...this.link(filter, this._handleFilterChange.bind(null, idx))}
+              valueLink={this.link(filter, this._handleFilterChange.bind(null, idx))}
               />
           ))}
         </div>

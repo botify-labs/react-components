@@ -38,7 +38,7 @@ const TopCompoundFilter = React.createClass({
   },
 
   _handleCompoundFilterChange(idx, value) {
-    this.update({
+    this.requestChange({
       compoundFilters: {
         [idx]: { $set: value },
       },
@@ -46,7 +46,7 @@ const TopCompoundFilter = React.createClass({
   },
 
   _handleAddCompoundFilter() {
-    this.update({
+    this.requestChange({
       compoundFilters: {
         $push: [
           {
@@ -59,7 +59,7 @@ const TopCompoundFilter = React.createClass({
   },
 
   _handleRemoveCompoundFilter(idx) {
-    this.update({
+    this.requestChange({
       compoundFilters: {
         $splice: [[idx, 1]],
       },
@@ -80,13 +80,13 @@ const TopCompoundFilter = React.createClass({
                 <ButtonSelect
                   className="TopCompoundFilter-operatorSelect"
                   options={OPERATOR_OPTIONS}
-                  {...this.linkValue('operatorId')}
+                  valueLink={this.linkValue('operatorId')}
                   />
               }
               <CompoundFilter
                 filterInput={filterInput}
                 onRemove={compoundFilters.length > 1 ? this._handleRemoveCompoundFilter.bind(null, idx) : null}
-                {...this.link(compoundFilter, this._handleCompoundFilterChange.bind(null, idx))}
+                valueLink={this.link(compoundFilter, this._handleCompoundFilterChange.bind(null, idx))}
                 />
             </div>
           ))}

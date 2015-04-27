@@ -37,8 +37,8 @@ const Select = React.createClass({
     nullLabel: PropTypes.string,
   },
 
-  _handleChange(e) {
-    this.update({ $set: e.target.value });
+  _handleChange(newValue) {
+    this.requestChange({ $set: newValue });
   },
 
   _renderOption(option) {
@@ -56,7 +56,7 @@ const Select = React.createClass({
     return (
       <select
         className={classNames('Select', className)}
-        {...this.link(selectedOptionId || NULL_OPTION, this._handleChange)}
+        valueLink={this.link(selectedOptionId || NULL_OPTION, this._handleChange)}
         >
         {!selectedOptionId && nullLabel &&
           <option value={NULL_OPTION} disabled>{nullLabel}</option>

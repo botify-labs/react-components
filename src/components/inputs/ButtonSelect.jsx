@@ -30,7 +30,7 @@ const ButtonSelect = React.createClass({
   },
 
   _handleChange(selectedOptionId) {
-    this.update({ $set: selectedOptionId });
+    this.requestChange({ $set: selectedOptionId });
   },
 
   render() {

@@ -1,19 +1,15 @@
 # Controlled inputs
 
+Controlled input components **should** receive a `valueLink` prop of the form:
+
 ```
-component ControlledInput {
-  propTypes: {
-    onChange: PropTypes.func,
-    value: PropTypes.any,
-  }
+{
+  value: PropTypes.any,           // The current value of the input
+  requestChange: PropTypes.func,  // Function to call with the new value whenever the input's value should be updated
 }
 ```
 
-Input components **should** receive a `value` prop that contains their current value.
-
-Input components **should** receive a `onChange(newValue)` prop that **should** be called when the component's value is changed by user input. Any change to an input component's value is thus propagated up the tree. The `newValue` argument *should* be in a format acceptable by the `value` prop, as in most cases it will replace it, although that logic is left to the parent component.
-
-This mirrors the way standard React `<input>` components work, with the only difference being that the `onChange()` prop's first argument is not an event but a value.
+This mirrors the way standard React `<input>` components work. See [Two-Way Binding Helpers](https://facebook.github.io/react/docs/two-way-binding-helpers.html).
 
 ```js
 const { update } = React.addons;
@@ -39,8 +35,14 @@ const TopLevelInput = React.createClass({
   render() {
     return (
       <div>
-        <StringInput value={this.state.firstName} onChange={this._handleValueChange.bind(null, 'firstName')} />
-        <StringInput value={this.state.lastName} onChange={this._handleValueChange.bind(null, 'lastName')} />
+        <StringInput valueLink={{
+          value: this.state.firstName,
+          requestChange: this._handleValueChange.bind(null, 'firstName'),
+        }} />
+        <StringInput valueLink={{
+          value: this.state.lastName,
+          onChange: this._handleValueChange.bind(null, 'lastName'),
+        }} />
       </div>
     );
   }
@@ -48,7 +50,7 @@ const TopLevelInput = React.createClass({
 
 const StringInput = React.createClass({
   render() {
-    return <input type="text" value={this.props.value} onChange={(e) => this.props.onChange(e.target.value)} />;
+    return <input type="text" valueLink={this.props.valueLink} />;
   }
 });
 ```
@@ -62,7 +64,7 @@ const TopLevelInput = React.createClass({
   mixins: [InputMixin],
 
   _handleValueChange(key, newValue) {
-    this.update({
+    this.requestChange({
       [key]: { $set: newValue }
     });
   },
@@ -70,21 +72,9 @@ const TopLevelInput = React.createClass({
   render() {
     return (
       <div>
-        <StringInput {...this.linkValue('firstName')} />
-        <StringInput {...this.linkValue('lastName')} />
+        <StringInput valueLink={this.linkValue('firstName')} />
+        <StringInput valueLink={this.linkValue('lastName')} />
       </div>
-    );
-  }
-});
-
-const StringInput = React.createClass({
-  render() {
-    return (
-      <input
-        type="text"
-        value={this.props.value}
-        onChange={(e) => this.props.onChange(e.target.value)}
-        />
     );
   }
 });

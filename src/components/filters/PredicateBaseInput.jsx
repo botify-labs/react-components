@@ -46,7 +46,7 @@ const PredicateBaseInput = React.createClass({
     let predicate = this._getOperator(predicateId);
     let newPredicate = this._getOperator(newPredicateId);
 
-    this.update({
+    this.requestChange({
       $set: {
         predicateId: newPredicateId,
         // Similar to filter inputs, predicate inputs can also define a `getInitialValue(prevInput, prevValue)`.
@@ -56,7 +56,7 @@ const PredicateBaseInput = React.createClass({
   },
 
   _handleOperatorValueChange(value) {
-    this.update({
+    this.requestChange({
       predicateInputValue: { $set: value },
     });
   },
@@ -71,11 +71,11 @@ const PredicateBaseInput = React.createClass({
         <Select
           className="PredicateBaseInput-predicateOptions"
           options={predicateOptions}
-          {...this.link(predicateId, this._handleOperatorTypeChange)}
+          valueLink={this.link(predicateId, this._handleOperatorTypeChange)}
           />
         <predicate.input
           className="PredicateBaseInput-predicateInput"
-          {...this.link(predicateInputValue, this._handleOperatorValueChange)}
+          valueLink={this.link(predicateInputValue, this._handleOperatorValueChange)}
           />
       </div>
     );

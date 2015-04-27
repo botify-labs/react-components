@@ -88,7 +88,7 @@ const FilterBaseInput = React.createClass({
     let filter = this._getFilter(filterId);
     let newFilter = this._getFilter(newFilterId);
 
-    this.update({
+    this.requestChange({
       filterId: { $set: newFilterId },
       // Filter inputs can define a `getInitialValue(prevInput, prevValue)` static method to choose how
       // to transition from a previous filter input and value. The return value of this method will be
@@ -110,7 +110,7 @@ const FilterBaseInput = React.createClass({
       filterInputValue = null;
     }
 
-    this.update({
+    this.requestChange({
       areaId: { $set: newAreaId },
       filterId: { $set: filterId },
       filterInputValue: { $set: filterInputValue },
@@ -130,20 +130,20 @@ const FilterBaseInput = React.createClass({
           <ButtonSelect
             className="Filter-area"
             options={areaOptions}
-            {...this.link(areaId, this._handleAreaChange)}
+            valueLink={this.link(areaId, this._handleAreaChange)}
             />
         }
         <Select
           className="Filter-filterOptions"
           options={area.filterOptions}
           nullLabel="Add a filter"
-          {...this.link(filterId, this._handleFilterChange)}
+          valueLink={this.link(filterId, this._handleFilterChange)}
           />
         {/* When `filterId` isn't defined, the filter is a dummy */}
         {filterId &&
           <filter.input
             className="Filter-filterInput"
-            {...this.linkValue('filterInputValue')}
+            valueLink={this.linkValue('filterInputValue')}
             />
         }
         {onRemove &&
