@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
 
-import Filter from './Filter';
 import ButtonSelect from '../inputs/ButtonSelect';
 
 import InputMixin from '../../mixins/InputMixin';
@@ -21,8 +20,8 @@ const OPERATOR_OPTIONS = [
 const valuePropType = PropTypes.shape({
   // Id of the selected operator in `OPERATOR_OPTIONS`
   operatorId: PropTypes.oneOf(OPERATOR_OPTIONS.map((operator) => operator.id)),
-  // List of the values of the children `Filter` components
-  filters: PropTypes.arrayOf(Filter.PropTypes.value),
+  // List of the values of the children filter input components
+  filters: PropTypes.arrayOf(PropTypes.any),
 });
 
 const CompoundFilter = React.createClass({
@@ -35,10 +34,7 @@ const CompoundFilter = React.createClass({
 
   propTypes: {
     className: PropTypes.string,
-    // List of area options, see the `Filter` component
-    areaOptions: Filter.PropTypes.areaOptions,
-    // Default area id, see the `Filter` component
-    defaultAreaId: PropTypes.string,
+    filterInput: PropTypes.func.isRequired,
     // If defined, call this when the compound filter should be removed
     onRemove: PropTypes.func,
   },
@@ -64,17 +60,13 @@ const CompoundFilter = React.createClass({
   },
 
   render() {
-    let { areaOptions, defaultAreaId, className, onRemove } = this.props;
+    let { filterInput: FilterInput, className, onRemove } = this.props;
     let { filters } = this.getValue();
 
     // Append a dummy filter with no `filterId` to the list of filters.
     // When the user selects a `filterId` for the dummy, we consider that a new filter was added to the list.
     if (filters.length === 0 || _.last(filters).filterId) {
-      filters = filters.concat([
-        {
-          areaId: defaultAreaId,
-        },
-      ]);
+      filters = filters.concat([FilterInput.getInitialValue()]);
     }
 
     return (
@@ -98,10 +90,9 @@ const CompoundFilter = React.createClass({
         </div>
         <div className="CompoundFilter-filters">
           {filters.map((filter, idx) => (
-            <Filter
+            <FilterInput
               key={idx}
-              areaOptions={areaOptions}
-              onRemove={idx !== filters.length - 1 && this._handleFilterRemove.bind(null, idx)}
+              onRemove={idx !== filters.length - 1 ? this._handleFilterRemove.bind(null, idx) : null}
               {...this.link(filter, this._handleFilterChange.bind(null, idx))}
               />
           ))}

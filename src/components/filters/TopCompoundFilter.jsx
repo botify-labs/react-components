@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react/addons';
 
-import Filter from './Filter';
 import CompoundFilter from './CompoundFilter';
 import ButtonSelect from '../inputs/ButtonSelect';
 
@@ -35,10 +34,7 @@ const TopCompoundFilter = React.createClass({
   ],
 
   propTypes: {
-    // List of area options, see the `Filter` component
-    areaOptions: Filter.PropTypes.areaOptions,
-    // Default area id, see the `Filter` component
-    defaultAreaId: PropTypes.string,
+    filterInput: PropTypes.func,
   },
 
   _handleCompoundFilterChange(idx, value) {
@@ -71,7 +67,7 @@ const TopCompoundFilter = React.createClass({
   },
 
   render() {
-    let { areaOptions, defaultAreaId } = this.props;
+    let { filterInput } = this.props;
     let { compoundFilters } = this.getValue();
 
     return (
@@ -88,9 +84,8 @@ const TopCompoundFilter = React.createClass({
                   />
               }
               <CompoundFilter
-                areaOptions={areaOptions}
-                defaultAreaId={defaultAreaId}
-                onRemove={compoundFilters.length > 1 && this._handleRemoveCompoundFilter.bind(null, idx)}
+                filterInput={filterInput}
+                onRemove={compoundFilters.length > 1 ? this._handleRemoveCompoundFilter.bind(null, idx) : null}
                 {...this.link(compoundFilter, this._handleCompoundFilterChange.bind(null, idx))}
                 />
             </div>

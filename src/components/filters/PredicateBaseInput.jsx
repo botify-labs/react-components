@@ -14,9 +14,9 @@ const predicateOptionPropType = PropTypes.shape({
 
 const predicateOptionsPropType = PropTypes.arrayOf(predicateOptionPropType);
 
-const PredicateFilterBaseInput = React.createClass({
+const PredicateBaseInput = React.createClass({
 
-  displayName: 'PredicateFilterBaseInput',
+  displayName: 'PredicateBaseInput',
 
   mixins: [
     InputMixin(PropTypes.shape({
@@ -67,14 +67,14 @@ const PredicateFilterBaseInput = React.createClass({
     let predicate = this._getOperator(predicateId);
 
     return (
-      <div className={classNames('PredicateFilterBaseInput', className)}>
+      <div className={classNames('PredicateBaseInput', className)}>
         <Select
-          className="PredicateFilterBaseInput-predicateOptions"
+          className="PredicateBaseInput-predicateOptions"
           options={predicateOptions}
           {...this.link(predicateId, this._handleOperatorTypeChange)}
           />
         <predicate.input
-          className="PredicateFilterBaseInput-predicateInput"
+          className="PredicateBaseInput-predicateInput"
           {...this.link(predicateInputValue, this._handleOperatorValueChange)}
           />
       </div>
@@ -83,8 +83,8 @@ const PredicateFilterBaseInput = React.createClass({
 
 });
 
-PredicateFilterBaseInput.PropTypes = {
+PredicateBaseInput.PropTypes = {
   predicateOptions: predicateOptionsPropType,
 };
 
-export default PredicateFilterBaseInput;
+export default PredicateBaseInput;

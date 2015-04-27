@@ -27,9 +27,9 @@ const areaOptionPropType = PropTypes.shape({
 
 const areaOptionsPropType = PropTypes.arrayOf(areaOptionPropType);
 
-const Filter = React.createClass({
+const FilterBaseInput = React.createClass({
 
-  displayName: 'Filter',
+  displayName: 'FilterBaseInput',
 
   mixins: [
     InputMixin(valuePropType),
@@ -160,9 +160,9 @@ const Filter = React.createClass({
 
 });
 
-Filter.PropTypes = {
+FilterBaseInput.PropTypes = {
   value: valuePropType,
   areaOptions: areaOptionsPropType,
 };
 
-export default Filter;
+export default FilterBaseInput;

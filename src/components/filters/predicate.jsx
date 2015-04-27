@@ -1,9 +1,9 @@
 import React from 'react';
 
-import PredicateFilterBaseInput from './PredicateFilterBaseInput';
+import PredicateBaseInput from './PredicateBaseInput';
 
 /**
- * Creates a predicate filter type component class
+ * Creates a predicate input component class
  * @param  {String}                  displayName
  * @param  {Array<ComponentOption>}  options.predicateOptions
  *                                   List of predicate filter predicate options this type accepts
@@ -11,7 +11,7 @@ import PredicateFilterBaseInput from './PredicateFilterBaseInput';
  *                                   Default value of the predicate input
  * @return {Function}                The new predicate filter type component class
  */
-export function createPredicateFilterInput(displayName, { predicateOptions, defaultValue }) {
+export function createPredicateInput(displayName, { predicateOptions, defaultValue }) {
   let PredicateFilterType = React.createClass({
 
     displayName,
@@ -26,7 +26,7 @@ export function createPredicateFilterInput(displayName, { predicateOptions, defa
 
     render() {
       return (
-        <PredicateFilterBaseInput
+        <PredicateBaseInput
           {...this.props}
           predicateOptions={predicateOptions}
           />
