@@ -10,6 +10,7 @@ struct Option {
 
 struct OptionGroup {
   isGroup: Boolean, // always true
+  id: String,
   label: String,
   options: Array<Option>,
 }

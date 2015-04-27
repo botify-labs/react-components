@@ -13,6 +13,7 @@ const optionPropType = PropTypes.shape({
 const optionGroupOf = propType => PropTypes.oneOfType([
   PropTypes.shape({
     isGroup: PropTypes.bool.isRequired,
+    id: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     options: PropTypes.arrayOf(propType).isRequired,
   }),
@@ -29,7 +30,7 @@ const Select = React.createClass({
 
   propTypes: {
     className: PropTypes.string,
-    // List of select options `{ id, label }` or `{ isGroup, label, options }` in the case of an option group
+    // List of select options `{ id, label }` or `{ isGroup, id, label, options }` in the case of an option group
     options: PropTypes.arrayOf(optionGroupOf(optionPropType)).isRequired,
     // If defined and there is no selected option, a dummy option will be created with this label and selected
     // by default. Once another option is selected, it will disappear.

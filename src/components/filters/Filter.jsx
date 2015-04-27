@@ -38,7 +38,7 @@ const Filter = React.createClass({
   propTypes: {
     className: PropTypes.string,
     // List of area options `{ id, label, filterOptions }`
-    // `filterOptions` is a list of filter options `{ id, label, input }` or option group `{ isGroup, label, options }`
+    // `filterOptions` is a list of filter options `{ id, label, input }` or option group `{ isGroup, id, label, options }`
     areaOptions: areaOptionsPropType.isRequired,
     // Default area id to use when creating dummy filters
     defaultAreaId: PropTypes.string,
