@@ -124,17 +124,17 @@ const FilterBaseInput = React.createClass({
     let filter = this._getFilter(filterId);
 
     return (
-      <div className={classNames('Filter', className)}>
+      <div className={classNames('FilterBaseInput', className)}>
         {/* Do not display the area select when there is only one area option and it is already selected */}
         {(areaOptions.length > 1 || !area) &&
           <ButtonSelect
-            className="Filter-area"
+            className="FilterBaseInput-area"
             options={areaOptions}
             valueLink={this.link(areaId, this._handleAreaChange)}
             />
         }
         <Select
-          className="Filter-filterOptions"
+          className="FilterBaseInput-filterOptions"
           options={area.filterOptions}
           nullLabel="Add a filter"
           valueLink={this.link(filterId, this._handleFilterChange)}
@@ -142,13 +142,13 @@ const FilterBaseInput = React.createClass({
         {/* When `filterId` isn't defined, the filter is a dummy */}
         {filterId &&
           <filter.input
-            className="Filter-filterInput"
+            className="FilterBaseInput-filterInput"
             valueLink={this.linkValue('filterInputValue')}
             />
         }
         {onRemove &&
           <button
-            className="Filter-remove btn btn-danger"
+            className="FilterBaseInput-remove btn btn-danger"
             onClick={onRemove}
             >
             x

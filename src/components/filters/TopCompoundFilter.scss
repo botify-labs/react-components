@@ -20,18 +20,24 @@
   flex-direction: row;
   align-items: center;
 
-  > .CompoundFilter-operatorSelect {
+  > .CompoundFilter-controls {
+    margin-right: 10px;
     align-self: stretch;
 
     display: flex;
-    align-items: stretch;
+    flex-direction: column;
 
-    margin-right: 10px;
+    > .CompoundFilter-operatorSelect {
+      flex: 1;
+
+      display: flex;
+      align-items: stretch;
+    }
   }
 
 }
 
-.Filter {
+.FilterBaseInput {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -41,25 +47,25 @@
     margin-bottom: 0px;
   }
 
-  > .Filter-area {
+  > .FilterBaseInput-area {
     margin-right: 10px;
   }
 
-  > .Filter-filterOptions {
+  > .FilterBaseInput-filterOptions {
     margin-right: 10px;
   }
 }
 
-.PredicateFilterBaseInput {
+.PredicateBaseInput {
   display: flex;
   flex-direction: row;
   align-items: center;
 
-  > .PredicateFilterBaseInput-predicateOptions {
+  > .PredicateBaseInput-predicateOptions {
     margin-right: 10px;
   }
 
-  > .PredicateFilterBaseInput-predicateInput {
+  > .PredicateBaseInput-predicateInput {
     margin-right: 10px;
   }
 }
