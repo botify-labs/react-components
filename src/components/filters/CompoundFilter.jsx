@@ -39,6 +39,8 @@ const CompoundFilter = React.createClass({
     areaOptions: Filter.PropTypes.areaOptions,
     // Default area id, see the `Filter` component
     defaultAreaId: PropTypes.string,
+    // If defined, call this when the compound filter should be removed
+    onRemove: PropTypes.func,
   },
 
   _handleFilterChange(idx, filter) {
@@ -62,7 +64,7 @@ const CompoundFilter = React.createClass({
   },
 
   render() {
-    let { areaOptions, defaultAreaId, className } = this.props;
+    let { areaOptions, defaultAreaId, className, onRemove } = this.props;
     let { filters } = this.getValue();
 
     // Append a dummy filter with no `filterId` to the list of filters.
@@ -78,12 +80,22 @@ const CompoundFilter = React.createClass({
     return (
       <div className={classNames('CompoundFilter', className)}>
         {/* Only display the operator select when there are more than one filter in the compound filter */}
-        <ButtonSelect
-          className="CompoundFilter-operatorSelect"
-          options={OPERATOR_OPTIONS}
-          disabled={filters.length <= 1}
-          {...this.linkValue('operatorId')}
-          />
+        <div className="CompoundFilter-controls">
+          <ButtonSelect
+            className="CompoundFilter-operatorSelect"
+            options={OPERATOR_OPTIONS}
+            disabled={filters.length <= 1}
+            {...this.linkValue('operatorId')}
+            />
+          {onRemove &&
+            <button
+              className="CompoundFilter-remove"
+              onClick={onRemove}
+              >
+              Remove
+            </button>
+          }
+        </div>
         <div className="CompoundFilter-filters">
           {filters.map((filter, idx) => (
             <Filter

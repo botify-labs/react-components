@@ -81,23 +81,16 @@ const TopCompoundFilter = React.createClass({
             <div key={idx} className="TopCompoundFilter-filter">
               {/* The first compound filter shouldn't display the operator select, and isn't removable */}
               {idx > 0 &&
-                <div className="TopCompoundFilter-filterControls">
-                  <ButtonSelect
-                    className="TopCompoundFilter-operatorSelect"
-                    options={OPERATOR_OPTIONS}
-                    {...this.linkValue('operatorId')}
-                    />
-                  <button
-                    className="TopCompoundFilter-removeCompoundFilter btn btn-default"
-                    onClick={this._handleRemoveCompoundFilter.bind(null, idx)}
-                    >
-                    x
-                  </button>
-                </div>
+                <ButtonSelect
+                  className="TopCompoundFilter-operatorSelect"
+                  options={OPERATOR_OPTIONS}
+                  {...this.linkValue('operatorId')}
+                  />
               }
               <CompoundFilter
                 areaOptions={areaOptions}
                 defaultAreaId={defaultAreaId}
+                onRemove={compoundFilters.length > 1 && this._handleRemoveCompoundFilter.bind(null, idx)}
                 {...this.link(compoundFilter, this._handleCompoundFilterChange.bind(null, idx))}
                 />
             </div>
