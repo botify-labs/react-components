@@ -101,7 +101,7 @@ const CompoundFilter = React.createClass({
             <Filter
               key={idx}
               areaOptions={areaOptions}
-              onRemove={this._handleFilterRemove.bind(null, idx)}
+              onRemove={idx !== filters.length - 1 && this._handleFilterRemove.bind(null, idx)}
               {...this.link(filter, this._handleFilterChange.bind(null, idx))}
               />
           ))}

@@ -42,8 +42,8 @@ const Filter = React.createClass({
     areaOptions: areaOptionsPropType.isRequired,
     // Default area id to use when creating dummy filters
     defaultAreaId: PropTypes.string,
-    // Called when a filter is removed
-    onRemove: PropTypes.func.isRequired,
+    // If defined, call this when the compound filter should be removed
+    onRemove: PropTypes.func,
   },
 
   /**
@@ -146,7 +146,7 @@ const Filter = React.createClass({
             {...this.linkValue('filterInputValue')}
             />
         }
-        {filterId &&
+        {onRemove &&
           <button
             className="Filter-remove btn btn-danger"
             onClick={onRemove}
