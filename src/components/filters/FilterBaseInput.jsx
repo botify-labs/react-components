@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import Select from '../inputs/Select';
 import ButtonSelect from '../inputs/ButtonSelect';
 
-import InputMixin from '../../mixins/InputMixin';
+import InputMixin, { getDefaultValue } from '../../mixins/InputMixin';
 
 const valuePropType = PropTypes.shape({
   areaId: PropTypes.string, // Id of the selected area in `props.areaOptions`.
@@ -90,10 +90,9 @@ const FilterBaseInput = React.createClass({
 
     this.requestChange({
       filterId: { $set: newFilterId },
-      // Filter inputs can define a `getInitialValue(prevInput, prevValue)` static method to choose how
-      // to transition from a previous filter input and value. The return value of this method will be
-      // set as the new value of the filter.
-      filterInputValue: { $set: newFilter.input.getInitialValue((filter && filter.input), filterInputValue) },
+      filterInputValue: {
+        $set: (filter && newFilter.input === filter.input) ? filterInputValue : getDefaultValue(newFilter.input),
+      },
     });
   },
 

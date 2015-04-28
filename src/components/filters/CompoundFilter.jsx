@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import ButtonSelect from '../inputs/ButtonSelect';
 
-import InputMixin from '../../mixins/InputMixin';
+import InputMixin, { getDefaultValue } from '../../mixins/InputMixin';
 
 const OPERATOR_OPTIONS = [
   {
@@ -66,7 +66,7 @@ const CompoundFilter = React.createClass({
     // Append a dummy filter with no `filterId` to the list of filters.
     // When the user selects a `filterId` for the dummy, we consider that a new filter was added to the list.
     if (filters.length === 0 || _.last(filters).filterId) {
-      filters = filters.concat([FilterInput.getInitialValue()]);
+      filters = filters.concat([getDefaultValue(FilterInput)]);
     }
 
     return (

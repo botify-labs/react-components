@@ -70,3 +70,12 @@ export default function InputMixin(valueValidator) {
     },
   };
 }
+
+/**
+ * Utility function to retrieve the default value of a given input type provided it exposes a `getDefaultValue` static.
+ * @param  {Function} input React Component Class
+ * @return {Any}            Default value
+ */
+export function getDefaultValue(input) {
+  return (input && typeof input.getDefaultValue === 'function') ? input.getDefaultValue() : null;
+}

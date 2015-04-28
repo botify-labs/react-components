@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import Select from '../inputs/Select';
 
-import InputMixin from '../../mixins/InputMixin';
+import InputMixin, { getDefaultValue } from '../../mixins/InputMixin';
 
 const predicateOptionPropType = PropTypes.shape({
   id: PropTypes.string.isRequired,
@@ -49,8 +49,7 @@ const PredicateBaseInput = React.createClass({
     this.requestChange({
       $set: {
         predicateId: newPredicateId,
-        // Similar to filter inputs, predicate inputs can also define a `getInitialValue(prevInput, prevValue)`.
-        predicateInputValue: newPredicate.input.getInitialValue(predicate.input, predicateInputValue),
+        predicateInputValue: newPredicate.input === predicate.input ? predicateInputValue : getDefaultValue(newPredicate.input),
       },
     });
   },

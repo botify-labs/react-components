@@ -17,10 +17,8 @@ export function createPredicateInput(displayName, { predicateOptions, defaultVal
     displayName,
 
     statics: {
-      getInitialValue(prevInput, prevValue) {
-        // Conserve value when transitioning from this type to this type, otherwise set
-        // default value
-        return prevInput === this ? prevValue : defaultValue;
+      getDefaultValue() {
+        return defaultValue;
       },
     },
 
