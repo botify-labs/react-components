@@ -37,14 +37,14 @@ const PredicateBaseInput = React.createClass({
    * Returns the predicate option with the given id
    * @param  {String} predicateId
    */
-  _getOperator(predicateId) {
+  _getPredicate(predicateId) {
     return _.find(this.props.predicateOptions, { id: predicateId });
   },
 
-  _handleOperatorTypeChange(newPredicateId) {
+  _handlePredicateTypeChange(newPredicateId) {
     let { predicateId, predicateInputValue } = this.getValue();
-    let predicate = this._getOperator(predicateId);
-    let newPredicate = this._getOperator(newPredicateId);
+    let predicate = this._getPredicate(predicateId);
+    let newPredicate = this._getPredicate(newPredicateId);
 
     this.requestChange({
       $set: {
@@ -55,7 +55,7 @@ const PredicateBaseInput = React.createClass({
     });
   },
 
-  _handleOperatorValueChange(value) {
+  _handlePredicateValueChange(value) {
     this.requestChange({
       predicateInputValue: { $set: value },
     });
@@ -64,18 +64,18 @@ const PredicateBaseInput = React.createClass({
   render() {
     let { predicateOptions, className } = this.props;
     let { predicateId, predicateInputValue } = this.getValue();
-    let predicate = this._getOperator(predicateId);
+    let predicate = this._getPredicate(predicateId);
 
     return (
       <div className={classNames('PredicateBaseInput', className)}>
         <Select
           className="PredicateBaseInput-predicateOptions"
           options={predicateOptions}
-          valueLink={this.link(predicateId, this._handleOperatorTypeChange)}
+          valueLink={this.link(predicateId, this._handlePredicateTypeChange)}
           />
         <predicate.input
           className="PredicateBaseInput-predicateInput"
-          valueLink={this.link(predicateInputValue, this._handleOperatorValueChange)}
+          valueLink={this.link(predicateInputValue, this._handlePredicateValueChange)}
           />
       </div>
     );
