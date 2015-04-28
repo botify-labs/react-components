@@ -49,6 +49,7 @@ const PredicateBaseInput = React.createClass({
     this.requestChange({
       $set: {
         predicateId: newPredicateId,
+        // Conserve the previous value if the two inputs are compatible, otherwise use the default
         predicateInputValue: newPredicate.input === predicate.input ? predicateInputValue : getDefaultValue(newPredicate.input),
       },
     });

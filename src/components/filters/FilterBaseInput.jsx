@@ -91,6 +91,7 @@ const FilterBaseInput = React.createClass({
     this.requestChange({
       filterId: { $set: newFilterId },
       filterInputValue: {
+        // Conserve the previous value if the two inputs are compatible, otherwise use the default
         $set: (filter && newFilter.input === filter.input) ? filterInputValue : getDefaultValue(newFilter.input),
       },
     });
