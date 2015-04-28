@@ -2,57 +2,43 @@
 
 ## Component options
 
-`filterOptions` is an array of `ComponentOption`.
+`filterOptions` is an array of `InputOption`.
 
 ```
-struct ComponentOption extends Option {
-  type: OptionType, // Rendered whenever the ComponentOption is selected
+struct InputOption extends Option {
+  input: InputType, // Rendered whenever the `InputOption` is selected
 }
 
-component OptionType extends ControlledInput {
+component InputType extends ControlledInput {
   statics: {
-    // OptionTypes can define a `getInitialValue(prevType, prevValue)` static
-    // method to choose how to transition from a previous type and value.
-    getInitialValue(prevType, prevValue),
+    // `InputType`s can define a `getDefaultValue()` static method that should return
+    // the default value for the input
+    getDefaultValue(prevType, prevValue),
   },
 }
-```
-
-## Example
-
-```js
-const FilterType = React.createClass({
-  statics: {
-    getInitialValue(prevType, prevValue) {
-      // Conserve value when transitioning from this type to this same type,
-      // otherwise return a default value
-      return prevType === FilterType ? prevValue : defaultValue;
-    }
-  },
-});
 ```
 
 ## PredicateFilterType
 
-A utility method is provided to create filter types that compose PredicateFilterBaseType.
+A utility method is provided to create filter inputs that compose PredicateBaseInput.
 
 ```js
-const StringPFType = createPredicateFilterType('StringPredicateFilterType', {
-  operatorOptions: [
+const StringPredicateInput = createPredicateInput('StringPredicateInput', {
+  predictateOptions: [
     {
       id: 'equals',
       label: 'Equals',
-      type: StringInput,
+      input: StringInput,
     },
     {
       id: 'contains',
       label: 'Contains',
-      type: StringInput,
+      input: StringInput,
     }
   ],
   defaultValue: {
-    operatorId: 'equals',
-    operatorValue: 'default value',
+    predicateId: 'equals',
+    predicateInputValue: 'default value',
   }
 });
 ```

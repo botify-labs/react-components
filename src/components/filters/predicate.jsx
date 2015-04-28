@@ -6,10 +6,10 @@ import PredicateBaseInput from './PredicateBaseInput';
  * Creates a predicate input component class
  * @param  {String}                  displayName
  * @param  {Array<ComponentOption>}  options.predicateOptions
- *                                   List of predicate filter predicate options this type accepts
+ *                                   List of predicate filter predicate options this input accepts
  * @param  {Any}                     options.defaultValue
  *                                   Default value of the predicate input
- * @return {Function}                The new predicate filter type component class
+ * @return {Function}                The new predicate filter input component class
  */
 export function createPredicateInput(displayName, { predicateOptions, defaultValue }) {
   let PredicateFilterType = React.createClass({
