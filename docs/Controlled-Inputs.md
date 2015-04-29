@@ -1,4 +1,4 @@
-# Controlled inputs
+# Controlled Inputs
 
 Controlled input components **should** receive a `valueLink` prop of the form:
 
@@ -57,17 +57,14 @@ const StringInput = React.createClass({
 
 ## InputMixin
 
-An `InputMixin` mixin is provided to make it easier to implement `ControlledInput`s. The previous example could be rewritten as:
+An `InputMixin` mixin is provided to make it easier to implement the Controlled Input prop interface. The previous example could be rewritten as:
 
 ```js
 const TopLevelInput = React.createClass({
-  mixins: [InputMixin],
-
-  _handleValueChange(key, newValue) {
-    this.requestChange({
-      [key]: { $set: newValue }
-    });
-  },
+  mixins: [InputMixin(PropTypes.shape({
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+  }))],
 
   render() {
     return (
@@ -80,6 +77,12 @@ const TopLevelInput = React.createClass({
 });
 ```
 
-The only difference is that `TopLevelInput` is stateless. A higher-level component should render `TopLevelInput` and update its props whenever it calls its `onChange` prop.
+The only difference is that `TopLevelInput` is stateless. A higher-level component should render `TopLevelInput` and update its props it whenever it requests change to its value via its `valueLink.requestChange` prop. In `InputMixin`, the `valueLink.requestChange` prop is abstracted away by a `requestChange` method assigned to component instances.
 
 Using `InputMixin` should always be privileged over implementing the `ControlledInput` interface manually, as it provides implementation-independent helpers to work with nested inputs.
+
+## getDefaultValue()
+
+Sometimes, it makes sense for an input to declare its own default value. Controlled input types can expose a `getDefaultValue()` static method that should return the default value for the input.
+
+A `getDefaultValue(type)` utility method is provided in the `InputMixin` module that will not throw when `type` doesn't expose a `getDefaultValue()` static method.
