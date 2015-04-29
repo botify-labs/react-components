@@ -1,6 +1,7 @@
 import React from 'react';
 
 import PredicateBaseInput from './PredicateBaseInput';
+import { getDefaultValue } from '../../mixins/InputMixin';
 
 /**
  * Creates a predicate input component class
@@ -12,6 +13,13 @@ import PredicateBaseInput from './PredicateBaseInput';
  * @return {Function}                The new predicate filter input component class
  */
 export function createPredicateInput(displayName, { predicateOptions, defaultValue }) {
+  if (!defaultValue) {
+    defaultValue = {
+      predicateId: predicateOptions[0].id,
+      predicateInputValue: getDefaultValue(predicateOptions[0].input),
+    };
+  }
+
   let PredicateFilterType = React.createClass({
 
     displayName,
