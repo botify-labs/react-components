@@ -61,25 +61,7 @@ const FilterBaseInput = React.createClass({
    */
   _getFilter(filterId, area = this._getArea()) {
     let { filterOptions } = area;
-
-    // Filters can be nested in group
-    // The following finds filters with a maximum nesting depth of 1
-    let found;
-    for (let i = 0; i < filterOptions.length; i++) {
-      let option = filterOptions[i];
-      // Option groups are identified by an `isGroup` property set to `true`
-      if (option.isGroup) {
-        found = _.find(option.options, { id: filterId });
-        if (found) {
-          break;
-        }
-      } else if (option.id === filterId) {
-        found = option;
-        break;
-      }
-    }
-
-    return found;
+    return Select.getOption(filterOptions, filterId);
   },
 
   _handleFilterChange(newFilterId) {

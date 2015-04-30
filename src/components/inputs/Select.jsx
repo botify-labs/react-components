@@ -37,6 +37,32 @@ const Select = React.createClass({
     nullLabel: PropTypes.string,
   },
 
+  statics: {
+    /**
+     * Find an option in an array where options can be nested in groups
+     * @param  {Array<Option|OptionGroup>}  options
+     * @param  {String}                     optionId
+     * @return {Option}
+     */
+    getOption(options, optionId) {
+      let found;
+      for (let i = 0; i < options.length; i++) {
+        let option = options[i];
+        // Option groups are identified by an `isGroup` property set to `true`
+        if (option.isGroup) {
+          found = Select.getOption(option.options, optionId);
+          if (found) {
+            break;
+          }
+        } else if (option.id === optionId) {
+          found = option;
+          break;
+        }
+      }
+      return found;
+    },
+  },
+
   _handleChange(newValue) {
     this.requestChange({ $set: newValue });
   },
