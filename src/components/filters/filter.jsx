@@ -8,6 +8,7 @@ export function createFilterInput(displayName, { areaOptions, defaultValue }) {
     displayName,
 
     statics: {
+      areaOptions,
       getDefaultValue() {
         return defaultValue;
       },

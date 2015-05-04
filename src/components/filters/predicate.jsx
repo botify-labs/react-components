@@ -25,6 +25,8 @@ export function createPredicateInput(displayName, { predicateOptions, defaultVal
     displayName,
 
     statics: {
+      __isPredicateInput: true,
+      predicateOptions,
       getDefaultValue() {
         return defaultValue;
       },
@@ -42,4 +44,8 @@ export function createPredicateInput(displayName, { predicateOptions, defaultVal
   });
 
   return PredicateFilterType;
+}
+
+export function isPredicateInput(type) {
+  return type.__isPredicateInput;
 }
