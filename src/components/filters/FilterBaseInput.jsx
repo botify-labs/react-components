@@ -80,21 +80,25 @@ const FilterBaseInput = React.createClass({
   },
 
   _handleAreaChange(newAreaId) {
-    let { filterId, filterInputValue } = this.getValue();
-    let area = this._getArea(newAreaId);
+    let { areaId, filterId, filterInputValue } = this.getValue();
+    let area = this._getArea(areaId);
+    let newArea = this._getArea(newAreaId);
     let filter = this._getFilter(filterId, area);
+    let newFilter = this._getFilter(filterId, newArea);
 
-    if (!filter) {
+    if (!newFilter) {
       // The previously selected filter doesn't exist in this area
       // @TODO: define a `getInitialValue()` for areas? might be needed since similar area fields will
       // have different ids between areas (ex: `host`, `previous.host`)
       filterId = null;
       filterInputValue = null;
+    } else if (filter.input !== newFilter.input) {
+      // Sometimes, input type can change between comparison groups (current => diff, boolean => string)
+      filterInputValue = getDefaultValue(newFilter.input);
     }
 
     this.requestChange({
       areaId: { $set: newAreaId },
-      filterId: { $set: filterId },
       filterInputValue: { $set: filterInputValue },
     });
   },
