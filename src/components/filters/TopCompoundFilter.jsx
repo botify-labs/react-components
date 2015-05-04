@@ -5,8 +5,6 @@ import ButtonSelect from '../inputs/ButtonSelect';
 
 import InputMixin from '../../mixins/InputMixin';
 
-import './TopCompoundFilter.scss';
-
 const OPERATOR_OPTIONS = [
   {
     id: 'and',
