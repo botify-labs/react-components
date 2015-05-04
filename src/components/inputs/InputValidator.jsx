@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
+import _ from 'lodash';
 
+import { cloneStatics } from '../../utils';
 import InputMixin, { getDefaultValue } from '../../mixins/InputMixin';
 
 /**
@@ -22,6 +24,8 @@ const InputValidator = (Input, validator) => React.createClass({
   ],
 
   statics: {
+    ...cloneStatics(Input),
+    __isInputValidator: true,
     getDefaultValue() {
       let defaultValue = getDefaultValue(Input);
       return { isValid: validator(defaultValue), inputValue: defaultValue };
@@ -44,5 +48,9 @@ const InputValidator = (Input, validator) => React.createClass({
   },
 
 });
+
+InputValidator.isInputValidator = function(type) {
+  return type.__isInputValidator;
+};
 
 export default InputValidator;
