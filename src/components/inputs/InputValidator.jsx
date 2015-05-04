@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
+import classNames from 'classnames';
 
 import { cloneStatics } from '../../utils';
 import InputMixin, { getDefaultValue } from '../../mixins/InputMixin';
@@ -38,10 +39,12 @@ const InputValidator = (Input, validator) => React.createClass({
   },
 
   render() {
+    let { className, ...otherProps } = _.omit(this.props, 'valueLink');
     let { isValid, inputValue } = this.getValue();
     return (
       <Input
-        className={isValid ? 'isValid' : 'isInvalid'}
+        {...otherProps}
+        className={classNames(className, isValid ? 'isValid' : 'isInvalid')}
         valueLink={{ value: inputValue, requestChange: this._handleChange }}
         />
     );
