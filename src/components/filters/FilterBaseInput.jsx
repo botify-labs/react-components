@@ -134,7 +134,7 @@ const FilterBaseInput = React.createClass({
         }
         {onRemove &&
           <button
-            className="FilterBaseInput-remove"
+            className="FilterBaseInput-remove btn"
             onClick={onRemove}
             >
             x

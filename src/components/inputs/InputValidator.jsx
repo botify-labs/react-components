@@ -39,14 +39,16 @@ const InputValidator = (Input, validator) => React.createClass({
   },
 
   render() {
-    let { className, ...otherProps } = _.omit(this.props, 'valueLink');
+    let otherProps = _.omit(this.props, 'valueLink');
     let { isValid, inputValue } = this.getValue();
+
     return (
-      <Input
-        {...otherProps}
-        className={classNames(className, isValid ? 'isValid' : 'isInvalid')}
-        valueLink={{ value: inputValue, requestChange: this._handleChange }}
-        />
+      <div className={classNames("form-group", !isValid && 'has-error')}>
+        <Input
+          {...otherProps}
+          valueLink={{ value: inputValue, requestChange: this._handleChange }}
+          />
+      </div>
     );
   },
 

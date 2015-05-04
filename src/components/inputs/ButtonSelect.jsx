@@ -38,7 +38,7 @@ const ButtonSelect = React.createClass({
     let selectedOptionId = this.getValue();
 
     return (
-      <div className={classNames('ButtonSelect', className)}>
+      <div className={classNames('ButtonSelect', className, 'btn-group')}>
         {options.map((option) => {
           let isActive = option.id === selectedOptionId;
           let onClick;
@@ -51,7 +51,7 @@ const ButtonSelect = React.createClass({
           }
           return (
             <button
-              className={classNames('ButtonSelect-option', isActive && 'isActive')}
+              className={classNames('ButtonSelect-option', 'btn', isActive && 'active')}
               key={option.id}
               onClick={onClick}
               disabled={disabled}

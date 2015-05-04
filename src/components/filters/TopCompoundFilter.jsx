@@ -90,7 +90,7 @@ const TopCompoundFilter = React.createClass({
           ))}
         </div>
         <button
-          className="TopCompoundFilter-addCompoundFilter"
+          className="TopCompoundFilter-addCompoundFilter btn"
           onClick={this._handleAddCompoundFilter}
           >
           +
