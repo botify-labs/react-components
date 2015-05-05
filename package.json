@@ -1,6 +1,6 @@
 {
   "name": "react-components",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "ReactJS components",
   "author": "Alexandre Kirszenberg <alexandre.kirszenberg@gmail.com>",
   "scripts": {
