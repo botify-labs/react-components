@@ -34,7 +34,7 @@ const HorizontalGauge = React.createClass({
   getDefaultProps() {
     return {
       formatAllValue: v => `${v}`,
-      formatStackValue: v => `${v}`
+      formatStackValue: v => `${v}`,
     };
   },
 
