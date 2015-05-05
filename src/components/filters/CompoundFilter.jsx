@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import _ from 'lodash';
 import classNames from 'classnames';
 
 import ButtonSelect from '../inputs/ButtonSelect';
