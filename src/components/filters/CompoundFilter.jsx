@@ -65,11 +65,9 @@ const CompoundFilter = React.createClass({
     let { filterInput: FilterInput, className, onRemove } = this.props;
     let { filters } = this.getValue();
 
-    // Append a dummy filter with no `filterId` to the list of filters.
-    // When the user selects a `filterId` for the dummy, we consider that a new filter was added to the list.
-    if (filters.length === 0 || _.last(filters).filterId) {
-      filters = filters.concat([getDefaultValue(FilterInput)]);
-    }
+    // Append a dummy filter with a default value to the list of filters.
+    // Dummy filters can request the creation of a proper filter by calling `requestChange` with a new value.
+    filters = filters.concat([getDefaultValue(FilterInput)]);
 
     return (
       <div className={classNames('CompoundFilter', className)}>
