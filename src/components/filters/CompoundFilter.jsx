@@ -34,6 +34,8 @@ const CompoundFilter = React.createClass({
 
   propTypes: {
     className: PropTypes.string,
+    // Custom filter input component class. Must implement the Controlled Input prop interface.
+    // Will be passed `{ onRemove, valueLink }` as props.
     filterInput: PropTypes.func.isRequired,
     // If defined, call this when the compound filter should be removed
     onRemove: PropTypes.func,
@@ -92,6 +94,8 @@ const CompoundFilter = React.createClass({
           {filters.map((filter, idx) => (
             <FilterInput
               key={idx}
+              // The custom filter input should call its `onRemove` prop to request removal
+              // Dummy filters cannot request removal
               onRemove={idx !== filters.length - 1 ? this._handleFilterRemove.bind(null, idx) : null}
               valueLink={this.link(filter, this._handleFilterChange.bind(null, idx))}
               />

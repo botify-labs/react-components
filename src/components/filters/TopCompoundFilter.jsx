@@ -32,7 +32,7 @@ const TopCompoundFilter = React.createClass({
   ],
 
   propTypes: {
-    filterInput: PropTypes.func,
+    filterInput: CompoundFilter.propTypes.filterInput,
   },
 
   _handleCompoundFilterChange(idx, value) {
