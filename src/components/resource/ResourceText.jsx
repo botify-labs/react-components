@@ -44,7 +44,7 @@ const ResourceText = React.createClass({
 
       </div>
     );
-  }
+  },
 
 });
 

@@ -1,2 +1,2 @@
 
-import resourceText from './ResourceText';
+import './ResourceText';

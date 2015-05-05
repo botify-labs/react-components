@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React, { PropTypes } from 'react/addons';
 
 var Tooltip = React.createClass({
 
@@ -7,9 +7,11 @@ var Tooltip = React.createClass({
   propTypes: {
     position: React.PropTypes.shape({
       top: React.PropTypes.number.isRequired,
-      left: React.PropTypes.number.isRequired
+      left: React.PropTypes.number.isRequired,
     }),
-    margin: React.PropTypes.number
+    margin: React.PropTypes.number,
+    children: PropTypes.node,
+    style: PropTypes.object,
   },
 
   getDefaultProps() {
@@ -92,7 +94,7 @@ var Tooltip = React.createClass({
     }
 
     return positionStyle;
-  }
+  },
 
 });
 

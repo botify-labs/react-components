@@ -1,5 +1,4 @@
-import React from 'react';
-import _ from 'lodash';
+import React, { PropTypes } from 'react';
 
 const dim = 10000;
 const fullShape = [
@@ -7,7 +6,7 @@ const fullShape = [
   `L ${dim} ${-dim}`,
   `L ${dim} ${dim}`,
   `L ${-dim} ${dim}`,
-  `Z`
+  `Z`,
 ].join(' ');
 
 const Path = React.createClass({
@@ -16,7 +15,10 @@ const Path = React.createClass({
 
   propTypes: {
     // Is this an inversed shape?
-    inverse: React.PropTypes.bool
+    inverse: PropTypes.bool,
+    style: PropTypes.object,
+    // Path data, see http://www.w3.org/TR/SVG/paths.html#PathData
+    d: PropTypes.string,
   },
 
   render() {
@@ -24,11 +26,11 @@ const Path = React.createClass({
 
     if (inverse) {
       d = fullShape + d;
-      style.fillRule = 'evenodd';
+      style = { ...style, fillRule: 'evenodd' };
     }
 
     return <path {...otherProps} d={d} style={style}/>;
-  }
+  },
 
 });
 

@@ -144,8 +144,8 @@ var GoogleChart = React.createClass({
   _getOptions() {
     return _.assign({}, this.props.options, {
       tooltip: {
-        trigger: 'none'
-      }
+        trigger: 'none',
+      },
     });
   },
 

@@ -11,18 +11,18 @@ describe('HorizontalGauge', () => {
     {
       label: 'Stack 1',
       color: 'red',
-      value: 25
+      value: 25,
     },
     {
       label: 'Stack 2',
       color: 'red',
-      value: 50
-    }
+      value: 50,
+    },
   ];
   let all = {
     label: 'All',
     color: 'blue',
-    value: 100
+    value: 100,
   };
 
   it('should render a tooltip on hover', () => {

@@ -31,7 +31,7 @@
 
         "eol-last":                 2,
         "quotes":                   0,
-        "comma-dangle":             0,
+        "comma-dangle":             [2, "always-multiline"],
         "no-underscore-dangle":     0, // allow private naming with _
         "no-console":               1, // warn about console use
         "space-infix-ops":          2,

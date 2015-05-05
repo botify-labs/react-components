@@ -89,7 +89,7 @@ var PanelMenu = React.createClass({
         {actions}
       </DropdownButton>
     );
-  }
+  },
 
 });
 

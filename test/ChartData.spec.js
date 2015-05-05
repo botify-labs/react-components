@@ -245,10 +245,10 @@ describe('ChartData', () => {
     it('should return data whose keys are a superset of the given keys', () => {
       let dimensions = [
         ['speed',
-          ['fast', 'slow']
+          ['fast', 'slow'],
         ],
         ['type',
-          ['html', 'json']
+          ['html', 'json'],
         ],
       ];
       chartData.addDimension('speed', Map({ label: 'speed '}));

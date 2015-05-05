@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react';
-import _ from 'lodash';
 import HoverTooltip from '../tooltip/HoverTooltip';
 import TooltipData from '../tooltip/TooltipTable';
 import VennCanvas from './VennCanvas';
@@ -21,6 +20,7 @@ const VennDiagram = React.createClass({
     sizeLabel: PropTypes.string,
     formatSize: PropTypes.func,
     inclusive: PropTypes.bool,
+    onClick: PropTypes.func,
   },
 
   getDefaultProps() {
@@ -34,7 +34,7 @@ const VennDiagram = React.createClass({
 
   getInitialState() {
     return {
-      activeSet: null
+      activeSet: null,
     };
   },
 
@@ -81,10 +81,10 @@ const VennDiagram = React.createClass({
     return (
       <TooltipData
         groups={[
-          [setLabel, activeSet.get('label')]
+          [setLabel, activeSet.get('label')],
         ]}
         metrics={[
-          [sizeLabel, formatSize(vennData.getSizeOf(activeSet, inclusive))]
+          [sizeLabel, formatSize(vennData.getSizeOf(activeSet, inclusive))],
         ]}
       />
     );

@@ -1,6 +1,5 @@
-import React from 'react';
-import _ from 'lodash';
-import UniqueIdMixin from './UniqueIdMixin';
+import React, { PropTypes } from 'react';
+import UniqueIdMixin from '../../mixins/UniqueIdMixin';
 
 const ClipPath = React.createClass({
 
@@ -10,7 +9,9 @@ const ClipPath = React.createClass({
 
   propTypes: {
     // Shape used to clip the ClipPath's children
-    path: React.PropTypes.element
+    path: PropTypes.element,
+    children: PropTypes.node,
+    style: PropTypes.object,
   },
 
   render() {
@@ -26,7 +27,7 @@ const ClipPath = React.createClass({
         </g>
       </g>
     );
-  }
+  },
 
 });
 

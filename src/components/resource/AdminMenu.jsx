@@ -30,7 +30,7 @@ const AdminMenu = React.createClass({
         </MenuItem>
       </DropdownButton>
     );
-  }
+  },
 
 });
 

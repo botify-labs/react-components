@@ -1,5 +1,5 @@
 
-import { List, Map, OrderedMap } from 'immutable';
+import { List, Map } from 'immutable';
 
 /**
  * @property {Map} _axes Map of axes relative dimension key
@@ -166,7 +166,7 @@ class ChartDataGoogleDataAdapter{
   _getAxesLabels() {
     return [
       this._getCategories().get('groups').map((group, key) => group.get('label') || key).toList(),
-      this._getSeries().get('groups').map((group, key) => group.get('label') || key).toList()
+      this._getSeries().get('groups').map((group, key) => group.get('label') || key).toList(),
     ];
   }
 }

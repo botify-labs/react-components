@@ -12,7 +12,7 @@ var TooltipTable = React.createClass({
     // Data rows are separated in two categories: groups and metrics.
     // Their format is the same, they only differ in style.
     groups: React.PropTypes.arrayOf(React.PropTypes.array), // [[label, value], ...]
-    metrics: React.PropTypes.arrayOf(React.PropTypes.array)
+    metrics: React.PropTypes.arrayOf(React.PropTypes.array),
   },
 
   _renderRow(row, idx) {

@@ -16,23 +16,23 @@ module.exports = function(build, grep) {
   var config = {
     resolve: {
       extensions: ['', '.js', '.jsx'],
-      root: [path.resolve(__dirname, 'bower_components')]
+      root: [path.resolve(__dirname, 'bower_components')],
     },
     plugins: [
       new webpack.ResolverPlugin(
         new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
-      )
+      ),
     ],
     module: {
       loaders: [
         {
           test: /\.scss$/,
           loader: 'style!css!autoprefixer?' + autoprefixerConfig + '!sass?outputStyle=expanded&' +
-            'includePaths[]=' + bowerPath + '&' + 'includePaths[]=' + npmPath
+            'includePaths[]=' + bowerPath + '&' + 'includePaths[]=' + npmPath,
         },
         {
           test: /\.css$/,
-          loader: 'style!css!autoprefixer?' + autoprefixerConfig
+          loader: 'style!css!autoprefixer?' + autoprefixerConfig,
         },
         { test: /\.png$/, loader: 'file' },
         { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
@@ -40,9 +40,9 @@ module.exports = function(build, grep) {
         { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/octet-stream' },
         { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
         { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=image/svg+xml' },
-        { test: /\.json$/, loader: 'json' }
-      ]
-    }
+        { test: /\.json$/, loader: 'json' },
+      ],
+    },
   };
 
   switch (build) {
@@ -52,21 +52,21 @@ module.exports = function(build, grep) {
     config.output = {
       path: resolve('./dist/'),
       filename: 'test.js',
-      publicPath: '/dist/'
+      publicPath: '/dist/',
     };
     config.module.loaders.push({
       test: /\.jsx?$/,
-      loaders: ['babel-loader?experimental'],
-      exclude: jsxExcludes
+      loaders: ['babel-loader?stage=0'],
+      exclude: jsxExcludes,
     });
     config.plugins.push(
       new webpack.DefinePlugin({
         // This allows to dynamically define what test files we want to run
         // See karma.conf.js
-        GREP: grep || '/\\.spec\\.jsx?$/'
+        GREP: grep || '/\\.spec\\.jsx?$/',
       }),
       new webpack.ProvidePlugin({
-        expect: 'expect'
+        expect: 'expect',
       })
     );
     break;
@@ -79,12 +79,12 @@ module.exports = function(build, grep) {
     config.entry = [
       'webpack-dev-server/client?http://localhost:3000',
       'webpack/hot/only-dev-server',
-      './example/index.jsx'
+      './example/index.jsx',
     ];
     config.output = {
       path: resolve('./dist/'),
       filename: 'test.js',
-      publicPath: '/dist/'
+      publicPath: '/dist/',
     };
     config.plugins.push(
       new webpack.HotModuleReplacementPlugin(),
@@ -92,8 +92,8 @@ module.exports = function(build, grep) {
     );
     config.module.loaders.push({
       test: /\.jsx?$/,
-      loaders: ['react-hot-loader', 'babel-loader?experimental', 'eslint-loader'],
-      exclude: jsxExcludes
+      loaders: ['react-hot-loader', 'babel-loader?stage=0', 'eslint-loader'],
+      exclude: jsxExcludes,
     });
     break;
   case 'dist':
@@ -106,15 +106,15 @@ module.exports = function(build, grep) {
       path: resolve('./dist/'),
       filename: 'index.js',
       publicPath: '/dist/',
-      libraryTarget: 'amd'
+      libraryTarget: 'amd',
     };
     config.plugins.push(
       new webpack.optimize.DedupePlugin()
     );
     config.module.loaders.push({
       test: /\.jsx?$/,
-      loaders: ['babel-loader?experimental'],
-      exclude: jsxExcludes
+      loaders: ['babel-loader?stage=0'],
+      exclude: jsxExcludes,
     });
     break;
   }

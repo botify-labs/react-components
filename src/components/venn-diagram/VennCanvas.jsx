@@ -1,24 +1,26 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import venn from 'venn.js';
 import Immutable from 'immutable';
 
-import Circle, {
-  CircleDifference, CircleIntersection,
-  CircleDifferenceInterior, CircleIntersectionInterior
-} from '../svg/Circle';
+import VennData from '../../models/VennData';
+import { CircleDifference, CircleIntersection } from '../svg/Circle';
 
 const VennCanvas = React.createClass({
 
   displayName: 'VennCanvas',
 
   propTypes: {
-    activeSet: React.PropTypes.instanceOf(Immutable.Map)
+    activeSet: PropTypes.instanceOf(Immutable.Map),
+    vennData: PropTypes.instanceOf(VennData),
+    onClick: PropTypes.func,
+    onMouseOver: PropTypes.func,
+    onMouseOut: PropTypes.func,
   },
 
   getInitialState() {
     return {
       width: 1000,
-      height: 1000
+      height: 1000,
     };
   },
 
@@ -57,15 +59,15 @@ const VennCanvas = React.createClass({
       .map((set, idx) => {
         return {
           sets: [idx],
-          size: set.get('size')
+          size: set.get('size'),
         };
       })
       .toJS();
     let intersections = vennIntersections
-      .map(([sets, intersection]) => {
+      .map(([keySets, intersection]) => {
         return {
-          sets: sets.map((set) => vennSets.indexOf(set)).toJS(),
-          size: intersection.get('size')
+          sets: keySets.map((set) => vennSets.indexOf(set)).toJS(),
+          size: intersection.get('size'),
         };
       })
       .toJS();
@@ -84,15 +86,15 @@ const VennCanvas = React.createClass({
         set: set,
         c1: circles[idx],
         c2: circles[1 - idx],
-        class: CircleDifference
+        class: CircleDifference,
       };
     });
-    let interElements = vennIntersections.map(([sets, intersection]) => {
+    let interElements = vennIntersections.map(([keySets, intersection]) => {
       return {
         set: intersection,
-        c1: circles[vennSets.indexOf(sets.first())],
-        c2: circles[vennSets.indexOf(sets.last())],
-        class: CircleIntersection
+        c1: circles[vennSets.indexOf(keySets.first())],
+        c2: circles[vennSets.indexOf(keySets.last())],
+        class: CircleIntersection,
       };
     });
     let elements = setElements.concat(interElements).map((el, idx) => {
@@ -116,7 +118,7 @@ const VennCanvas = React.createClass({
         {elements}
       </svg>
     );
-  }
+  },
 
 });
 

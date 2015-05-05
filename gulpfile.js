@@ -54,12 +54,12 @@ gulp.task('release', ['dist', 'bump-version'], function() {
       'git commit -a -m "Release <%= pkg.version %>"',
       'git tag -a <%= pkg.version %> -m "Release <%= date %> <%= pkg.version %>"',
       'git push origin HEAD',
-      'git push origin <%= pkg.version %>'
+      'git push origin <%= pkg.version %>',
     ], {
       templateData: {
         pkg: require('./package.json'),
-        date: strftime('%Y/%m/%d', new Date())
-      }
+        date: strftime('%Y/%m/%d', new Date()),
+      },
     }));
 });
 
@@ -97,7 +97,7 @@ gulp.task('stats', function(done) {
 gulp.task('server', function() {
   new WebpackDevServer(webpack(devConfig), {
     publicPath: devConfig.output.publicPath,
-    hot: true
+    hot: true,
   }).listen(3000, 'localhost', function (err, result) {
     if (err) {
       console.log(err);

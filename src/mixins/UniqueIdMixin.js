@@ -8,7 +8,7 @@ const UniqueIdMixin = {
 
   _getId(id) {
     return `${this._id}.${id}`;
-  }
+  },
 
 };
 
