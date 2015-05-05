@@ -12,39 +12,35 @@ import { createPredicateInput } from '../src/components/filters/predicate';
 // Example validated input: valid when v >= 0
 const PositiveNumberInput = InputValidator(NumberInput, v => v >= 0);
 
-const stringOperatorOptions = [
-  {
-    id: 'equals',
-    label: 'equals',
-    input: StringInput,
-  },
-  {
-    id: 'contains',
-    label: 'contains',
-    input: StringInput,
-  },
-  {
-    id: 'starts_with',
-    label: 'starts with',
-    input: StringInput,
-  },
-];
-
-const numberOperatorOptions = [
-  {
-    id: 'greater_than',
-    label: 'greater than',
-    input: PositiveNumberInput,
-  },
-];
-
 // Predicate inputs take a list of predicate options
 const StringPredicateInput = createPredicateInput('StringPredicateInput', {
-  predicateOptions: stringOperatorOptions,
+  predicateOptions: [
+    {
+      id: 'equals',
+      label: 'equals',
+      input: StringInput,
+    },
+    {
+      id: 'contains',
+      label: 'contains',
+      input: StringInput,
+    },
+    {
+      id: 'starts_with',
+      label: 'starts with',
+      input: StringInput,
+    },
+  ],
 });
 
 const NumberPredicateInput = createPredicateInput('NumberPredicateInput', {
-  predicateOptions: numberOperatorOptions,
+  predicateOptions: [
+    {
+      id: 'greater_than',
+      label: 'greater than',
+      input: PositiveNumberInput,
+    },
+  ],
 });
 
 // Example option input that just wraps a Select
