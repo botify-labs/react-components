@@ -19,32 +19,32 @@ $fa-font-path: "~font-awesome/fonts/";
     position: absolute;
     background-color: white;
 
-    .OptionGroup{
-      .OptionGroup-header{
+    .Select-group{
+      .Select-groupHeader{
         cursor: pointer;
 
-        .OptionGroup-headerIcon{
+        .Select-groupHeaderIcon{
           text-align: center;
           width: 13px;
         }
       }
-      .OptionGroup-options{
+      .Select-groupOptions{
         overflow: hidden;
       }
 
-      &.OptionGroup--opened{
-        .OptionGroup-header .OptionGroup-headerIcon{
+      &.Select-group--opened{
+        .Select-groupHeader .Select-groupHeaderIcon{
           @extend .fa;
           @extend .fa-angle-down;
         }
       }
 
-      &.OptionGroup--closed{
-        .OptionGroup-header .OptionGroup-headerIcon{
+      &.Select-group--closed{
+        .Select-groupHeader .Select-groupHeaderIcon{
           @extend .fa;
           @extend .fa-angle-right;
         }
-        .OptionGroup-options{
+        .Select-groupOptions{
           height: 0px;
         }
       }

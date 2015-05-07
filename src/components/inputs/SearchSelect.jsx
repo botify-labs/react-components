@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react/addons';
+import React, { PropTypes, addons } from 'react/addons';
+const { update } = addons;
 import _ from 'lodash';
 import classNames from 'classnames';
 
@@ -78,14 +79,16 @@ const Select = React.createClass({
     return {
       placeHolder: DEFAULT_PLACEHOLDER,
       optionRender: OptionDefault,
-      filterOption: (filter, option, group) => (new RegExp(filter, 'i').test(option.label)),
       hideGroupsWithNoMatch: true,
+      filterOption: (filter, option, group) => (new RegExp(filter, 'i').test(option.label)),
     };
   },
 
   getInitialState() {
     return {
       isFocused: false,
+      filterValue: '',
+      groupsOpened: [],
     };
   },
 
@@ -112,9 +115,42 @@ const Select = React.createClass({
     this.setState({isFocused: false});
   },
 
+  _isGroupOpened(group) {
+    return _.contains(this.state.groupsOpened, group.id);
+  },
+
+  _toggleGroupOpenState(group) {
+    let isOpened = this._isGroupOpened(group);
+    if (isOpened) {
+      this.setState({groupsOpened: _.remove(this.state.groupsOpened, group.id)});
+    } else {
+      this.setState({groupsOpened: update(this.state.groupsOpened, {$push: [group.id]})});
+    }
+  },
+
+  _openAllGroups() {
+    let {options} = this.props;
+    let allGroupsIds = _.pluck(_.filter(options, 'isGroup'), 'id');
+    this.setState({
+      groupsOpened: allGroupsIds,
+    });
+  },
+
+  _closeAllGroups() {
+    this.setState({
+      groupsOpened: [],
+    });
+  },
+
+  _closeList() {
+    this._blurInput();
+    this.setState({isFocused: false});
+    this._closeAllGroups();
+  },
+
   _getFilteredOptions() {
     let {options, filterOption, hideGroupsWithNoMatch} = this.props;
-    let {inputValue} = this.state;
+    let {filterValue} = this.state;
 
     //Filter grouped options
     options = _.map(options, (group) => {
@@ -123,7 +159,7 @@ const Select = React.createClass({
       }
       return {
         ...group,
-        options: _.filter(group.options, (option) => !inputValue || filterOption(inputValue, option, group)),
+        options: _.filter(group.options, (option) => !filterValue || filterOption(filterValue, option, group)),
       };
     });
 
@@ -131,7 +167,7 @@ const Select = React.createClass({
     options = _.filter(options, (option) => !(option.isGroup && option.options.length === 0 && hideGroupsWithNoMatch));
 
     //Filter non grouped options
-    options = _.filter(options, (option) => option.isGroup || (!inputValue || filterOption(inputValue, option)));
+    options = _.filter(options, (option) => option.isGroup || (!filterValue || filterOption(filterValue, option)));
 
     return options;
   },
@@ -146,21 +182,23 @@ const Select = React.createClass({
   _onBlur() {
     this._cancelBlurInterval();
     this._blurInterval = setTimeout(() => {
-      this._blurInput();
-      this.setState({isFocused: false});
+      this._closeList();
     }, 500);
   },
 
   _onInputChange(e) {
     this._removeSelection();
     let newValue = e.target.value;
-    this.setState({inputValue: newValue});
+    this.setState({filterValue: newValue});
+    if (newValue.length > 0) {
+      this._openAllGroups();
+    }
   },
 
   _onInputBlur(e) {
     this._blurInterval = setTimeout(() => {
       if (!this.props.valueLink.value) {
-        this.setState({inputValue: ''});
+        this.setState({filterValue: ''});
       }
     }, 50);
   },
@@ -169,11 +207,10 @@ const Select = React.createClass({
     let {
       className,
       placeHolder,
-      optionRender: OptionRender,
       valueLink: {value},
     } = this.props;
     let options = this._getFilteredOptions();
-    let { isFocused, inputValue } = this.state;
+    let { isFocused, filterValue } = this.state;
 
     return (
       <div
@@ -186,7 +223,7 @@ const Select = React.createClass({
             type="text"
             ref="searchInput"
             placeholder={placeHolder}
-            value={inputValue}
+            value={filterValue}
             onFocus={this._onFocus}
             onBlur={this._onInputBlur}
             onChange={this._onInputChange}
@@ -198,93 +235,48 @@ const Select = React.createClass({
           onMouseEnter={this._onFocus}
         >
           {_.map(options, (option, i) => {
-            if (option.isGroup) {
-              return (
-                <OptionGroup
-                  key={i}
-                  optionGroup={option}
-                  optionRender={OptionRender}
-                  filter={inputValue}
-                  onOptionClick={this._selectOption}
-                />
-              );
-            } else {
-              return (
-                <OptionRender
-                  key={i}
-                  option={option}
-                  filter={inputValue}
-                  onClick={this._selectOption.bind(null, option)}
-                />
-              );
-            }
+            let render = option.isGroup ? this._renderGroup : this._renderOption;
+            return render(option, i);
           })}
         </div>
       </div>
     );
   },
 
-});
-
-
-let OptionGroup = React.createClass({
-
-  displayName: 'OptionGroup',
-
-  propTypes: {
-    optionGroup: optionGroupOf(optionPropType).isRequired,
-    optionRender: PropTypes.func.isRequired,
-    filter: PropTypes.string.isRequired,
-    onOptionClick: PropTypes.func,
-  },
-
-  getInitialState() {
-    return {
-      isOpened: false,
-    };
-  },
-
-  _toggleOpen() {
-    this.setState((previousState) => {
-      return {
-        isOpened: !previousState.isOpened,
-      };
-    });
-  },
-
-  render() {
-    let {
-      optionGroup: {label, options},
-      optionRender: OptionRender,
-      filter,
-      onOptionClick,
-      ...otherProps,
-    } = this.props;
-    let {isOpened} = this.state;
-
+  _renderGroup(group, key) {
+    let isOpened = this._isGroupOpened(group);
     return (
       <div
-        className={classNames("OptionGroup", `OptionGroup--${isOpened ? 'opened' : 'closed'}`)}
-        {...otherProps}
+        className={classNames("Select-group", `Select-group--${isOpened ? 'opened' : 'closed'}`)}
+        key={key}
       >
         <div
-          className="OptionGroup-header"
-          onClick={this._toggleOpen}
+          className="Select-groupHeader"
+          onClick={this._toggleGroupOpenState.bind(null, group)}
         >
-          <i className="OptionGroup-headerIcon" />
-          <span className="OptionGroup-headerLabel">{label}</span>
+          <i className="Select-groupHeaderIcon" />
+          <span className="Select-groupheaderLabel">{group.label}</span>
         </div>
-        <div className="OptionGroup-options">
-          {_.map(options, (option, i) => (
-            <OptionRender
-              key={i}
-              option={option}
-              filter={filter}
-              onClick={onOptionClick.bind(null, option)}
-            />
-          ))}
+        <div className="Select-groupOptions">
+          {_.map(group.options, this._renderOption)}
         </div>
       </div>
+    );
+  },
+
+  _renderOption(option, key) {
+    let {
+      optionRender: OptionRender,
+    } = this.props;
+    let { filterValue } = this.state;
+
+    return (
+      <OptionRender
+        key={key}
+        option={option}
+        filter={filterValue}
+        onClick={this._selectOption.bind(null, option)}
+      />
     );
   },
 
