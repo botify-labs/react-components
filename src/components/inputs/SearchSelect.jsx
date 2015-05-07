@@ -8,7 +8,12 @@ import InputMixin from '../../mixins/InputMixin';
 import './SearchSelect.scss';
 
 
-//const ENTER_KEY = 15;
+const KEY_CODES = {
+  TAB: 9,
+  ENTER: 13,
+  ARROW_UP: 38,
+  ARROW_DOWN: 40,
+};
 const DEFAULT_PLACEHOLDER = 'Search option';
 
 const optionPropType = PropTypes.shape({
@@ -90,7 +95,7 @@ const Select = React.createClass({
       filterValue: '',
       filteredOptions: this.props.options,
       openedGroupsId: [],
-      suggestedOptionId: null,
+      suggestedOption: null,
     };
   },
 
@@ -143,7 +148,6 @@ const Select = React.createClass({
   },
 
   _clearFilterValue() {
-    console.log('_clearFilterValue');
     let newFilterValue = '';
     this.setState({filterValue: newFilterValue});
     this._updateFilteredOptions(newFilterValue);
@@ -154,19 +158,15 @@ const Select = React.createClass({
 
   _suggestFirstOption(options) {
     let newSuggestion = options[0] && options[0].isGroup ? options[0].options[0] : options[0];
-    if (newSuggestion) {
-      this._setSuggestedOption(newSuggestion);
-    } else {
-      this._clearSuggestionOption();
-    }
+    this._setSuggestedOption(newSuggestion);
   },
 
   _setSuggestedOption(option) {
-    this.setState({suggestedOptionId: option.id});
+    this.setState({suggestedOption: option});
   },
 
   _clearSuggestionOption() {
-    this.setState({suggestedOptionId: null});
+    this._setSuggestedOption(null);
   },
 
   //State Helpers: filteredOptions
@@ -258,6 +258,19 @@ const Select = React.createClass({
     }, 100);
   },
 
+  _onFilterInputKeyDown(e) {
+    switch (e.which) {
+    case KEY_CODES.TAB:
+    case KEY_CODES.ENTER:
+      this._selectOption(this.state.suggestedOption);
+      break;
+    case KEY_CODES.ARROW_UP:
+      break;
+    case KEY_CODES.ARROW_DOWN:
+      break;
+    }
+  },
+
   //Renders
 
   render() {
@@ -283,6 +296,7 @@ const Select = React.createClass({
             onFocus={this._onFocus}
             onBlur={this._onFilterInputBlur}
             onChange={this._onFilterInputChange}
+            onKeyDown={this._onFilterInputKeyDown}
           />
           <span className="Select-valueSpan">{value ? value.label : ''}</span>
         </div>
@@ -324,9 +338,9 @@ const Select = React.createClass({
     let {
       optionRender: OptionRender,
     } = this.props;
-    let { filterValue, suggestedOptionId } = this.state;
+    let { filterValue, suggestedOption } = this.state;
 
-    let isSuggested = suggestedOptionId === option.id;
+    let isSuggested = suggestedOption && suggestedOption.id === option.id;
 
     return (
       <OptionRender
