@@ -8,8 +8,7 @@ import './SearchSelect.scss';
 
 
 //const ENTER_KEY = 15;
-//const NULL_OPTION = '__null__';
-const DEFAULT_NULL_LABEL = 'Search option';
+const DEFAULT_PLACEHOLDER = 'Search option';
 
 const optionPropType = PropTypes.shape({
   id: PropTypes.string.isRequired,
@@ -63,12 +62,10 @@ const Select = React.createClass({
   propTypes: {
     className: PropTypes.string,
     placeHolder: PropTypes.string,
-    // List of select options `{ id, label }` or `{ isGroup, id, label, options }` in the case of an option group
     options: PropTypes.arrayOf(optionGroupOf(optionPropType)).isRequired,
-    // If defined and there is no selected option, a dummy option will be created with this label and selected
-    // by default. Once another option is selected, it will disappear.
     optionRender: PropTypes.func,
     filterOption: PropTypes.func, //By default filter option by their label.
+    hideGroupsWithNoMatch: PropTypes.bool,
     valueLink: PropTypes.shape({
       value: optionPropType,
       requestChange: PropTypes.func.isRequired,
@@ -79,9 +76,10 @@ const Select = React.createClass({
 
   getDefaultProps() {
     return {
-      placeHolder: DEFAULT_NULL_LABEL,
+      placeHolder: DEFAULT_PLACEHOLDER,
       optionRender: OptionDefault,
       filterOption: (filter, option, group) => (new RegExp(filter, 'i').test(option.label)),
+      hideGroupsWithNoMatch: true,
     };
   },
 
@@ -115,7 +113,7 @@ const Select = React.createClass({
   },
 
   _getFilteredOptions() {
-    let {options, filterOption} = this.props;
+    let {options, filterOption, hideGroupsWithNoMatch} = this.props;
     let {inputValue} = this.state;
 
     //Filter grouped options
@@ -128,6 +126,9 @@ const Select = React.createClass({
         options: _.filter(group.options, (option) => !inputValue || filterOption(inputValue, option, group)),
       };
     });
+
+    //Remove empty groups if hideGroupsWithNoMatch == true
+    options = _.filter(options, (option) => !(option.isGroup && option.options.length === 0 && hideGroupsWithNoMatch));
 
     //Filter non grouped options
     options = _.filter(options, (option) => option.isGroup || (!inputValue || filterOption(inputValue, option)));
