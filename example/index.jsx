@@ -1,2 +1,2 @@
 
-import './ResourceText';
+import './SearchSelect';

@@ -1,0 +1,53 @@
+$fa-font-path: "~font-awesome/fonts/";
+@import "node_modules/font-awesome/scss/font-awesome";
+
+.Select{
+  .Select-optionsList{
+    overflow: hidden;
+  }
+
+  &.Select--opened{
+  }
+
+  &.Select--closed{
+    .Select-optionsList{
+      height: 0px;
+    }
+  }
+
+  .Select-optionsList{
+    position: absolute;
+    background-color: white;
+
+    .OptionGroup{
+      .OptionGroup-header{
+        cursor: pointer;
+
+        .OptionGroup-headerIcon{
+          text-align: center;
+          width: 13px;
+        }
+      }
+      .OptionGroup-options{
+        overflow: hidden;
+      }
+
+      &.OptionGroup--opened{
+        .OptionGroup-header .OptionGroup-headerIcon{
+          @extend .fa;
+          @extend .fa-angle-down;
+        }
+      }
+
+      &.OptionGroup--closed{
+        .OptionGroup-header .OptionGroup-headerIcon{
+          @extend .fa;
+          @extend .fa-angle-right;
+        }
+        .OptionGroup-options{
+          height: 0px;
+        }
+      }
+    }
+  }
+}

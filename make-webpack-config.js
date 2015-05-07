@@ -9,8 +9,13 @@ module.exports = function(build, grep) {
   var bowerPath = path.resolve(__dirname, 'bower_components');
   var npmPath = path.resolve(__dirname, 'node_modules');
 
-  var browsers = ['Firefox > 27', 'Chrome > 20', 'Explorer > 9', 'Safari > 6', 'Opera > 11.5', 'iOS > 6.1'];
-  var autoprefixerConfig = JSON.stringify({browsers: browsers});
+  var autoprefixerConfig = {
+    browsers: ['Firefox > 27', 'Chrome > 20', 'Explorer > 9', 'Safari > 6', 'Opera > 11.5', 'iOS > 6.1'],
+  };
+  var sassConfig = {
+    outputStyle: 'compressed',
+    includePaths: [bowerPath, npmPath],
+  };
   var jsxExcludes = [/node_modules/, /bower_components/];
 
   var config = {
@@ -27,12 +32,11 @@ module.exports = function(build, grep) {
       loaders: [
         {
           test: /\.scss$/,
-          loader: 'style!css!autoprefixer?' + autoprefixerConfig + '!sass?outputStyle=expanded&' +
-            'includePaths[]=' + bowerPath + '&' + 'includePaths[]=' + npmPath,
+          loader: 'style!css!autoprefixer?' + JSON.stringify(autoprefixerConfig) + '!sass?' + JSON.stringify(sassConfig),
         },
         {
           test: /\.css$/,
-          loader: 'style!css!autoprefixer?' + autoprefixerConfig,
+          loader: 'style!css!autoprefixer?' + JSON.stringify(autoprefixerConfig),
         },
         { test: /\.png$/, loader: 'file' },
         { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
