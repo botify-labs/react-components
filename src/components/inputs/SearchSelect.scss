@@ -49,5 +49,17 @@ $fa-font-path: "~font-awesome/fonts/";
         }
       }
     }
+
+    .Select-option{
+
+      &:hover{
+        background-color: grey;
+        cursor: pointer;
+      }
+
+      &.Select-option--suggested {
+        background-color: orange;
+      }
+    }
   }
 }

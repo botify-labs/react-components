@@ -88,23 +88,13 @@ const Select = React.createClass({
     return {
       isFocused: false,
       filterValue: '',
-      groupsOpened: [],
+      filteredOptions: this.props.options,
+      openedGroupsId: [],
+      suggestedOptionId: null,
     };
   },
 
-  //Helpers
-
-  _cancelBlurInterval() {
-    if (this._blurInterval) {
-      clearTimeout(this._blurInterval);
-      this._blurInterval = null;
-    }
-  },
-
-  _blurInput() {
-    let node = this.refs.searchInput.getDOMNode();
-    node.blur();
-  },
+  //Prop Helpers: value
 
   _removeSelection() {
     this.requestChange({ $set: null });
@@ -112,19 +102,21 @@ const Select = React.createClass({
 
   _selectOption(option) {
     this.requestChange({ $set: option });
-    this.setState({isFocused: false});
+    this._closeList();
   },
 
+  //State Helpers: openedGroupsId
+
   _isGroupOpened(group) {
-    return _.contains(this.state.groupsOpened, group.id);
+    return _.contains(this.state.openedGroupsId, group.id);
   },
 
   _toggleGroupOpenState(group) {
     let isOpened = this._isGroupOpened(group);
     if (isOpened) {
-      this.setState({groupsOpened: _.remove(this.state.groupsOpened, group.id)});
+      this.setState({openedGroupsId: _.remove(this.state.openedGroupsId, group.id)});
     } else {
-      this.setState({groupsOpened: update(this.state.groupsOpened, {$push: [group.id]})});
+      this.setState({openedGroupsId: update(this.state.openedGroupsId, {$push: [group.id]})});
     }
   },
 
@@ -132,25 +124,55 @@ const Select = React.createClass({
     let {options} = this.props;
     let allGroupsIds = _.pluck(_.filter(options, 'isGroup'), 'id');
     this.setState({
-      groupsOpened: allGroupsIds,
+      openedGroupsId: allGroupsIds,
     });
   },
 
   _closeAllGroups() {
     this.setState({
-      groupsOpened: [],
+      openedGroupsId: [],
     });
   },
 
-  _closeList() {
-    this._blurInput();
-    this.setState({isFocused: false});
-    this._closeAllGroups();
+  //State Helpers: filterValue
+
+  updateFilterValue(newFilterValue) {
+    this.setState({filterValue: newFilterValue});
+    let filteredOptions = this._updateFilteredOptions(newFilterValue);
+    this._suggestFirstOption(filteredOptions);
   },
 
-  _getFilteredOptions() {
+  _clearFilterValue() {
+    console.log('_clearFilterValue');
+    let newFilterValue = '';
+    this.setState({filterValue: newFilterValue});
+    this._updateFilteredOptions(newFilterValue);
+    this._clearSuggestionOption();
+  },
+
+  //State Helpers: suggestedOption
+
+  _suggestFirstOption(options) {
+    let newSuggestion = options[0] && options[0].isGroup ? options[0].options[0] : options[0];
+    if (newSuggestion) {
+      this._setSuggestedOption(newSuggestion);
+    } else {
+      this._clearSuggestionOption();
+    }
+  },
+
+  _setSuggestedOption(option) {
+    this.setState({suggestedOptionId: option.id});
+  },
+
+  _clearSuggestionOption() {
+    this.setState({suggestedOptionId: null});
+  },
+
+  //State Helpers: filteredOptions
+
+  _updateFilteredOptions(filterValue) {
     let {options, filterOption, hideGroupsWithNoMatch} = this.props;
-    let {filterValue} = this.state;
 
     //Filter grouped options
     options = _.map(options, (group) => {
@@ -169,39 +191,74 @@ const Select = React.createClass({
     //Filter non grouped options
     options = _.filter(options, (option) => option.isGroup || (!filterValue || filterOption(filterValue, option)));
 
+    this.setState({filteredOptions: options});
+
     return options;
+  },
+
+  //Element Helpers
+
+  _openList() {
+    this.setState({isFocused: true});
+  },
+
+  _closeList() {
+    this._blurInput();
+    this.setState({isFocused: false});
+    this._closeAllGroups();
+  },
+
+  _blurInput() {
+    let node = this.refs.searchInput.getDOMNode();
+    node.blur();
   },
 
   //Elements Listeners
 
-  _onFocus() {
-    this._cancelBlurInterval();
-    this.setState({isFocused: true});
+  _cancelBlurInterval() {
+    if (this._blurInterval) {
+      clearTimeout(this._blurInterval);
+      this._blurInterval = null;
+    }
   },
 
-  _onBlur() {
+  _onFocus(e) {
+    this._cancelBlurInterval();
+    this._openList();
+  },
+
+  _onBlur(e) {
     this._cancelBlurInterval();
     this._blurInterval = setTimeout(() => {
       this._closeList();
-    }, 500);
+    }, 400);
   },
 
-  _onInputChange(e) {
-    this._removeSelection();
+  _onFilterInputChange(e) {
     let newValue = e.target.value;
-    this.setState({filterValue: newValue});
-    if (newValue.length > 0) {
+    if (newValue === '') {
+      this._onFilterInputBlur(e);
+      return;
+    }
+    this._removeSelection();
+    this.updateFilterValue(newValue);
+
+    let previousValue = this.state.filterValue;
+    let wasEmpty = previousValue.length === 0 && newValue.length > 0;
+    if (wasEmpty) {
       this._openAllGroups();
     }
   },
 
-  _onInputBlur(e) {
+  _onFilterInputBlur(e) {
+    this._cancelBlurInterval();
     this._blurInterval = setTimeout(() => {
-      if (!this.props.valueLink.value) {
-        this.setState({filterValue: ''});
-      }
-    }, 50);
+      this._clearFilterValue();
+      this._closeList();
+    }, 100);
   },
+
+  //Renders
 
   render() {
     let {
@@ -209,8 +266,7 @@ const Select = React.createClass({
       placeHolder,
       valueLink: {value},
     } = this.props;
-    let options = this._getFilteredOptions();
-    let { isFocused, filterValue } = this.state;
+    let { isFocused, filterValue, filteredOptions } = this.state;
 
     return (
       <div
@@ -219,14 +275,14 @@ const Select = React.createClass({
       >
         <div className="Select-value">
           <input
-            className="Select-searchInput"
+            className="Select-filterInput"
             type="text"
             ref="searchInput"
             placeholder={placeHolder}
             value={filterValue}
             onFocus={this._onFocus}
-            onBlur={this._onInputBlur}
-            onChange={this._onInputChange}
+            onBlur={this._onFilterInputBlur}
+            onChange={this._onFilterInputChange}
           />
           <span className="Select-valueSpan">{value ? value.label : ''}</span>
         </div>
@@ -234,7 +290,7 @@ const Select = React.createClass({
           className="Select-optionsList"
           onMouseEnter={this._onFocus}
         >
-          {_.map(options, (option, i) => {
+          {_.map(filteredOptions, (option, i) => {
             let render = option.isGroup ? this._renderGroup : this._renderOption;
             return render(option, i);
           })}
@@ -268,10 +324,13 @@ const Select = React.createClass({
     let {
       optionRender: OptionRender,
     } = this.props;
-    let { filterValue } = this.state;
+    let { filterValue, suggestedOptionId } = this.state;
+
+    let isSuggested = suggestedOptionId === option.id;
 
     return (
       <OptionRender
+        className={classNames('Select-option', isSuggested && 'Select-option--suggested')}
         key={key}
         option={option}
         filter={filterValue}

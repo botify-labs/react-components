@@ -35,6 +35,7 @@ let OptionExample = React.createClass({
   displayName: 'OptionExample',
 
   propTypes: {
+    className: PropTypes.string.isRequired,
     option: PropTypes.shape({
       ...SearchSelect.optionPropType,
       label: PropTypes.string.isRequired,
@@ -46,12 +47,13 @@ let OptionExample = React.createClass({
 
   render() {
     let {
+      className,
       option: {label, type, description},
       ...otherProps,
     } = this.props;
 
     return (
-      <div className="OptionExample" {...otherProps}>
+      <div className={className} {...otherProps}>
         <span>{label}</span>
         <div className="OptionExample-info">
           <span className="OptionExample-type">{type}</span>
