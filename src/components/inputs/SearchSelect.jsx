@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react/addons';
 import _ from 'lodash';
 import classNames from 'classnames';
 
-import StringInput from './StringInput';
 import InputMixin from '../../mixins/InputMixin';
 
 import './SearchSelect.scss';
@@ -27,6 +26,32 @@ const optionGroupOf = (_optionPropType) => PropTypes.oneOfType([
   optionPropType,
 ]);
 
+const OptionDefault = React.createClass({
+
+  displayName: 'Option',
+
+  propTypes: {
+    option: PropTypes.shape({
+      ...optionPropType,
+      label: PropTypes.string.isRequired,
+    }).isRequired,
+  },
+
+  render() {
+    let {
+      option: {label},
+      ...otherProps,
+    } = this.props;
+
+    return (
+      <div className="Option" {...otherProps}>
+        <span>{label}</span>
+      </div>
+    );
+  },
+
+});
+
 const Select = React.createClass({
 
   displayName: 'Select',
@@ -37,20 +62,26 @@ const Select = React.createClass({
 
   propTypes: {
     className: PropTypes.string,
+    placeHolder: PropTypes.string,
     // List of select options `{ id, label }` or `{ isGroup, id, label, options }` in the case of an option group
     options: PropTypes.arrayOf(optionGroupOf(optionPropType)).isRequired,
     // If defined and there is no selected option, a dummy option will be created with this label and selected
     // by default. Once another option is selected, it will disappear.
-    placeHolder: PropTypes.string,
     optionRender: PropTypes.func,
+    filterOption: PropTypes.func, //By default filter option by their label.
+    valueLink: PropTypes.shape({
+      value: optionPropType,
+      requestChange: PropTypes.func.isRequired,
+    }).isRequired,
   },
+
+  //Life Cycle methods
 
   getDefaultProps() {
     return {
       placeHolder: DEFAULT_NULL_LABEL,
-      valueLink: {
-        value: {},
-      },
+      optionRender: OptionDefault,
+      filterOption: (filter, option, group) => (new RegExp(filter, 'i').test(option.label)),
     };
   },
 
@@ -59,6 +90,52 @@ const Select = React.createClass({
       isFocused: false,
     };
   },
+
+  //Helpers
+
+  _cancelBlurInterval() {
+    if (this._blurInterval) {
+      clearTimeout(this._blurInterval);
+      this._blurInterval = null;
+    }
+  },
+
+  _blurInput() {
+    let node = this.refs.searchInput.getDOMNode();
+    node.blur();
+  },
+
+  _removeSelection() {
+    this.requestChange({ $set: null });
+  },
+
+  _selectOption(option) {
+    this.requestChange({ $set: option });
+    this.setState({isFocused: false});
+  },
+
+  _getFilteredOptions() {
+    let {options, filterOption} = this.props;
+    let {inputValue} = this.state;
+
+    //Filter grouped options
+    options = _.map(options, (group) => {
+      if (!group.isGroup) {
+        return group;
+      }
+      return {
+        ...group,
+        options: _.filter(group.options, (option) => !inputValue || filterOption(inputValue, option, group)),
+      };
+    });
+
+    //Filter non grouped options
+    options = _.filter(options, (option) => option.isGroup || (!inputValue || filterOption(inputValue, option)));
+
+    return options;
+  },
+
+  //Elements Listeners
 
   _onFocus() {
     this._cancelBlurInterval();
@@ -73,44 +150,48 @@ const Select = React.createClass({
     }, 500);
   },
 
-  _cancelBlurInterval() {
-    if (this._blurInterval) {
-      clearTimeout(this._blurInterval);
-      this._blurInterval = null;
-    }
+  _onInputChange(e) {
+    this._removeSelection();
+    let newValue = e.target.value;
+    this.setState({inputValue: newValue});
   },
 
-  _blurInput() {
-    let node = this.refs.searchInput.getDOMNode();
-    node.blur();
-  },
-
-  _selectOption(option) {
-    this.requestChange({ $set: option });
-  },
-
-  _onChangeInput(e) {
-
+  _onInputBlur(e) {
+    this._blurInterval = setTimeout(() => {
+      if (!this.props.valueLink.value) {
+        this.setState({inputValue: ''});
+      }
+    }, 50);
   },
 
   render() {
-    let { options, optionRender: OptionRender, className, placeHolder } = this.props;
-    let selectedOption = this.getValue();
-    let { isFocused } = this.state;
+    let {
+      className,
+      placeHolder,
+      optionRender: OptionRender,
+      valueLink: {value},
+    } = this.props;
+    let options = this._getFilteredOptions();
+    let { isFocused, inputValue } = this.state;
 
     return (
       <div
         className={classNames('Select', `Select--${isFocused ? 'opened' : 'closed'}`, className)}
         onMouseLeave={this._onBlur}
       >
-        <StringInput
-          className="Select-searchInput"
-          placeholder={placeHolder}
-          onFocus={this._onFocus}
-          ref="searchInput"
-          value={selectedOption ? selectedOption.label : ''}
-          onChange={this._onChangeInput}
-        />
+        <div className="Select-value">
+          <input
+            className="Select-searchInput"
+            type="text"
+            ref="searchInput"
+            placeholder={placeHolder}
+            value={inputValue}
+            onFocus={this._onFocus}
+            onBlur={this._onInputBlur}
+            onChange={this._onInputChange}
+          />
+          <span className="Select-valueSpan">{value ? value.label : ''}</span>
+        </div>
         <div
           className="Select-optionsList"
           onMouseEnter={this._onFocus}
@@ -119,10 +200,20 @@ const Select = React.createClass({
             if (option.isGroup) {
               return (
                 <OptionGroup
+                  key={i}
                   optionGroup={option}
                   optionRender={OptionRender}
+                  filter={inputValue}
                   onOptionClick={this._selectOption}
+                />
+              );
+            } else {
+              return (
+                <OptionRender
                   key={i}
+                  option={option}
+                  filter={inputValue}
+                  onClick={this._selectOption.bind(null, option)}
                 />
               );
             }
@@ -142,6 +233,7 @@ let OptionGroup = React.createClass({
   propTypes: {
     optionGroup: optionGroupOf(optionPropType).isRequired,
     optionRender: PropTypes.func.isRequired,
+    filter: PropTypes.string.isRequired,
     onOptionClick: PropTypes.func,
   },
 
@@ -163,6 +255,7 @@ let OptionGroup = React.createClass({
     let {
       optionGroup: {label, options},
       optionRender: OptionRender,
+      filter,
       onOptionClick,
       ...otherProps,
     } = this.props;
@@ -173,16 +266,20 @@ let OptionGroup = React.createClass({
         className={classNames("OptionGroup", `OptionGroup--${isOpened ? 'opened' : 'closed'}`)}
         {...otherProps}
       >
-        <div className="OptionGroup-header" onClick={this._toggleOpen}>
+        <div
+          className="OptionGroup-header"
+          onClick={this._toggleOpen}
+        >
           <i className="OptionGroup-headerIcon" />
           <span className="OptionGroup-headerLabel">{label}</span>
         </div>
         <div className="OptionGroup-options">
           {_.map(options, (option, i) => (
             <OptionRender
-              onClick={onOptionClick.bind(null, option)}
-              option={option}
               key={i}
+              option={option}
+              filter={filter}
+              onClick={onOptionClick.bind(null, option)}
             />
           ))}
         </div>
@@ -191,7 +288,6 @@ let OptionGroup = React.createClass({
   },
 
 });
-
 
 
 Select.PropTypes = {

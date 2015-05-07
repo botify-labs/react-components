@@ -1,10 +1,8 @@
 import React, {PropTypes} from 'react';
-import _ from 'lodash';
 
 import 'font-awesome/css/font-awesome.css';
 import SearchSelect from '../src/components/inputs/SearchSelect';
 
-import './SearchSelect.scss';
 
 let options = [
   {
@@ -29,14 +27,8 @@ let options = [
       {id: 'bar4', label: 'bar 4', type: 'string', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'},
     ],
   },
-  {id: 'bar1', label: 'bar1', type: 'string', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'},
+  {id: 'boo', label: 'boo', type: 'string', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'},
 ];
-
-let match = (query, optionGroups) => {
-  let _options = _.flatten(_.pluck(optionGroups, 'options')),
-      queryRegex = new RegExp(query, 'i');
-  return _.filter(_options, queryRegex.test(options.label));
-};
 
 let OptionExample = React.createClass({
 
@@ -49,7 +41,7 @@ let OptionExample = React.createClass({
       type: PropTypes.string.isRequired,
       description: PropTypes.string,
     }).isRequired,
-    query: PropTypes.string.isRequired,
+    filter: PropTypes.string.isRequired,
   },
 
   render() {
@@ -72,7 +64,7 @@ let OptionExample = React.createClass({
 });
 
 
-let defaultValue = options[0].options[2];
+let defaultValue = null;
 
 let render = (value) => {
   React.render(
@@ -81,7 +73,6 @@ let render = (value) => {
         placeHolder="Search a field"
         options={options}
         optionRender={OptionExample}
-        filterOptions={match}
         valueLink={{
           value: value,
           requestChange(newValue) {
