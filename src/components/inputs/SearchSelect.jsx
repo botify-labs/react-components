@@ -244,11 +244,7 @@ const Select = React.createClass({
   },
 
   _focusFilterInput() {
-    this.refs.searchInput.getDOMNode().focus();
-  },
-
-  _blurFilterInput() {
-    this.refs.searchInput.getDOMNode().blur();
+    React.findDOMNode(this.refs.searchInput).focus();
   },
 
   //Elements Listeners
@@ -260,19 +256,14 @@ const Select = React.createClass({
     }
   },
 
-  _onFilterInputFocus(e) {
-    this._cancelBlurInterval();
-    this._openList();
-  },
-
   _onInputClick(e) {
     this._cancelBlurInterval();
     this._focusFilterInput();
   },
 
-  _onFilterInputChange(e) {
+  _onFilterInputFocus(e) {
     this._cancelBlurInterval();
-    this._updateFilterValue(e.target.value);
+    this._openList();
   },
 
   _onFilterInputBlur(e) {
@@ -282,6 +273,11 @@ const Select = React.createClass({
       this._closeAllGroups();
       this._closeList();
     }, 100);
+  },
+
+  _onFilterInputChange(e) {
+    this._cancelBlurInterval();
+    this._updateFilterValue(e.target.value);
   },
 
   _onFilterInputKeyDown(e) {
@@ -380,7 +376,7 @@ const Select = React.createClass({
           onClick={this._onInputClick}
         >
           <input
-            className={classNames('Select-filterInput', !filterValue && 'Select-filterInput-isEmpty')}
+            className={classNames('Select-filterInput', !filterValue && 'Select-filterInput--empty')}
             type="text"
             ref="searchInput"
             value={filterValue}

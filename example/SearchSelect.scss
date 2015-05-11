@@ -18,7 +18,7 @@ $fa-font-path: "~font-awesome/fonts/";
       border: none;
       outline: none;
 
-      &.Select-filterInput-isEmpty{
+      &.Select-filterInput--empty{
         width: 1px;
       }
     }
