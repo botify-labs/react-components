@@ -172,23 +172,26 @@ const Select = React.createClass({
   },
 
   _suggestPreviousOption() {
-    let {suggestedOption} = this.state;
-    let optionsIterator = this._getOptionsIterator();
-
-    let currentSuggestionIndex = suggestedOption ? _.findIndex(optionsIterator, (option) => option.id === suggestedOption.id) : -1;
-    let previousSuggestionIndex = currentSuggestionIndex > 0 ? currentSuggestionIndex - 1 : currentSuggestionIndex;
-
-    this._setSuggestedOption(optionsIterator[previousSuggestionIndex]);
+    this._moveSuggestion(-1);
   },
 
   _suggestNextOption() {
+    this._moveSuggestion(1);
+  },
+
+  /**
+   * @param  {Integer} n
+   */
+  _moveSuggestion(n) {
     let {suggestedOption} = this.state;
     let optionsIterator = this._getOptionsIterator();
 
-    let currentSuggestionIndex = suggestedOption ? _.findIndex(optionsIterator, (option) => option.id === suggestedOption.id) : -1;
-    let nextSuggestionIndex = currentSuggestionIndex < (optionsIterator.length - 1) ? currentSuggestionIndex + 1 : currentSuggestionIndex;
+    let currentSuggestionIndex = suggestedOption ? _.findIndex(optionsIterator, (option) => option.id === suggestedOption.id) : 0;
+    let movedSuggestionIndex = currentSuggestionIndex + n;
 
-    this._setSuggestedOption(optionsIterator[nextSuggestionIndex]);
+    movedSuggestionIndex = Math.min(Math.max(movedSuggestionIndex, 0), optionsIterator.length - 1);
+
+    this._setSuggestedOption(optionsIterator[movedSuggestionIndex]);
   },
 
   _setSuggestedOption(option) {
