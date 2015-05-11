@@ -73,6 +73,7 @@ let defaultValue = null;
 let render = (value) => {
   React.render(
     <div>
+      <input type="text"/>
       <SearchSelect
         placeHolder="Search a field"
         options={options}

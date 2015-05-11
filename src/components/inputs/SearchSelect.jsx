@@ -138,6 +138,9 @@ const Select = React.createClass({
   },
 
   _openSuggestedGroup(suggestionOption) {
+    if (!suggestionOption) {
+      return;
+    }
     let { options } = this.props,
         { openGroupsId } = this.state;
 
