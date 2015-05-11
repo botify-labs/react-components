@@ -106,7 +106,6 @@ const Select = React.createClass({
     this.requestChange({ $set: option });
     this._clearFilterValue();
     this._closeList();
-    this._blurFilterInput();
   },
 
   //State Helpers: openGroupsId
@@ -242,7 +241,6 @@ const Select = React.createClass({
   },
 
   _closeList() {
-    this._blurFilterInput();
     this.setState({isFocused: false});
     this._closeAllGroups();
   },
@@ -264,19 +262,12 @@ const Select = React.createClass({
     }
   },
 
-  _onFocus(e) {
+  _onFilterInputFocus(e) {
     this._cancelBlurInterval();
     this._openList();
   },
 
-  _onBlur(e) {
-    this._cancelBlurInterval();
-    this._blurInterval = setTimeout(() => {
-      this._closeList();
-    }, 400);
-  },
-
-  _onSelectValueClick(e) {
+  _onInputClick(e) {
     this._focusFilterInput();
   },
 
@@ -323,9 +314,11 @@ const Select = React.createClass({
   _onGroupClick(group, e) {
     this._cancelBlurInterval();
     this._toggleGroupOpenState(group);
+    this._focusFilterInput();
   },
 
   _onOptionSelect(option, e) {
+    this._cancelBlurInterval();
     this._selectOption(option);
   },
 
@@ -343,17 +336,16 @@ const Select = React.createClass({
     return (
       <div
         className={classNames('Select', `Select--${isFocused ? 'opened' : 'closed'}`, className)}
-        onMouseLeave={this._onBlur}
       >
         <div className="Select-input"
-          onClick={this._onSelectValueClick}
+          onClick={this._onInputClick}
         >
           <input
             className={classNames('Select-filterInput', !filterValue && 'Select-filterInput-isEmpty')}
             type="text"
             ref="searchInput"
             value={filterValue}
-            onFocus={this._onFocus}
+            onFocus={this._onFilterInputFocus}
             onBlur={this._onFilterInputBlur}
             onChange={this._onFilterInputChange}
             onKeyDown={this._onFilterInputKeyDown}
@@ -365,7 +357,6 @@ const Select = React.createClass({
         </div>
         <div
           className="Select-optionsList"
-          onMouseEnter={this._onFocus}
         >
           {_.map(filteredOptions, (option, i) => {
             let render = option.isGroup ? this._renderGroup : this._renderOption;
