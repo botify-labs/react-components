@@ -349,7 +349,7 @@ const Select = React.createClass({
           onClick={this._onSelectValueClick}
         >
           <input
-            className={classNames('Select-filterInput', filterValue === '' && 'Select-filterInput-isEmpty')}
+            className={classNames('Select-filterInput', !filterValue && 'Select-filterInput-isEmpty')}
             type="text"
             ref="searchInput"
             value={filterValue}
