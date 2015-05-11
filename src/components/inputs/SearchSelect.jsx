@@ -261,20 +261,13 @@ const Select = React.createClass({
   },
 
   _onInputClick(e) {
+    this._cancelBlurInterval();
     this._focusFilterInput();
   },
 
   _onFilterInputChange(e) {
-    let newValue = e.target.value;
-    let previousValue = this.state.filterValue;
-
-    this._removeSelection();
-    this._updateFilterValue(newValue);
-
-    let wasEmpty = previousValue.length === 0 && newValue.length > 0;
-    if (wasEmpty) {
-      this._openAllGroups();
-    }
+    this._cancelBlurInterval();
+    this._updateFilterValue(e.target.value);
   },
 
   _onFilterInputBlur(e) {
@@ -287,13 +280,15 @@ const Select = React.createClass({
   },
 
   _onFilterInputKeyDown(e) {
+    this._cancelBlurInterval();
     switch (e.which) {
-    case KEY_CODES.TAB:
     case KEY_CODES.ENTER:
-      this._selectOption(this.state.suggestedOption);
-      this._clearFilterValue();
-      this._closeAllGroups();
-      this._closeList();
+      if (!this.state.isFocused) {
+        this._openList();
+        break;
+      }
+    case KEY_CODES.TAB:
+      this._onOptionSelect(this.state.suggestedOption);
       break;
     case KEY_CODES.ARROW_UP:
       this._suggestPreviousOption(this.state.filterValue, this.state.suggestedOption);
@@ -313,21 +308,50 @@ const Select = React.createClass({
   _onOptionSelect(option, e) {
     this._cancelBlurInterval();
     this._selectOption(option);
-    this._clearFilterValue();
-    this._closeAllGroups();
-    this._closeList();
   },
 
   componentDidUpdate(prevProps, prevState) {
-    let {suggestedOption, filterValue} = this.state;
+    let {valueLink: {value}} = this.props,
+        {suggestedOption, filterValue} = this.state;
 
-    //Select first option if not setted or no more filterValue
-    if (!suggestedOption || prevState.filterValue && !filterValue) {
-      this._suggestFirstOption(filterValue);
+    console.log('componentDidUpdate');
+
+    //Clear select if new value
+    if (prevProps.valueLink.value !== value) {
+      console.log('1');
+      this._clearFilterValue();
+      this._closeAllGroups();
+      this._closeList();
+    }
+
+    if (prevState.filterValue !== filterValue) {
+      console.log('2');
+      this._removeSelection();
+
+      //Select first option if not setted whereas filterValue is not empty
+      if (filterValue && !suggestedOption) {
+        console.log('2.1');
+        this._suggestFirstOption(filterValue);
+      }
+
+      //Open all groups if filterValue was empty
+      let filterValueWasEmpty = prevState.filterValue.length === 0 && filterValue.length > 0;
+      if (filterValueWasEmpty) {
+        console.log('2.2');
+        this._openAllGroups();
+      }
+
+      //Close all groups if filterValue become empty
+      let filterValueBecomeEmpty = prevState.filterValue.length > 0 && filterValue.length === 0;
+      if (filterValueBecomeEmpty) {
+        console.log('2.2');
+        this._closeAllGroups();
+      }
     }
 
     //Open Suggested Group
     if (suggestedOption) {
+      console.log('3');
       this._openParentGroupIfNot(suggestedOption);
     }
   },
