@@ -128,12 +128,13 @@ const Select = React.createClass({
 
   _openGroup(group) {
     let { openGroupsId } = this.state;
-    this.setState({openGroupsId: update(openGroupsId, {$push: [group.id]})});
+    this.setState({ openGroupsId: update(openGroupsId, {$push: [group.id]}) });
   },
 
   _closeGroup(group) {
     let { openGroupsId } = this.state;
-    this.setState({openGroupsId: _.remove(openGroupsId, group.id)});
+    let index = _.findIndex(openGroupsId, (id) => id === group.id);
+    this.setState({ openGroupsId: update(openGroupsId, {$splice: [[index, 1]]}) });
   },
 
   _openSuggestedGroup(suggestionOption) {
@@ -149,15 +150,11 @@ const Select = React.createClass({
   _openAllGroups() {
     let {options} = this.props;
     let allGroupsIds = _.pluck(_.filter(options, 'isGroup'), 'id');
-    this.setState({
-      openGroupsId: allGroupsIds,
-    });
+    this.setState({ openGroupsId: allGroupsIds });
   },
 
   _closeAllGroups() {
-    this.setState({
-      openGroupsId: [],
-    });
+    this.setState({ openGroupsId: [] });
   },
 
   //State Helpers: filterValue
@@ -300,9 +297,7 @@ const Select = React.createClass({
   _onFilterInputBlur(e) {
     this._cancelBlurInterval();
     this._blurInterval = setTimeout(() => {
-
       this._clearFilterValue();
-
       this._closeList();
     }, 100);
   },
@@ -341,9 +336,6 @@ const Select = React.createClass({
     } = this.props;
     let { isFocused, filterValue } = this.state;
     let filteredOptions = this._getFilteredOptions(filterValue);
-
-
-
 
     return (
       <div
