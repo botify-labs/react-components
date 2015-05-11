@@ -2,63 +2,105 @@ $fa-font-path: "~font-awesome/fonts/";
 @import "node_modules/font-awesome/scss/font-awesome";
 
 .Select{
-  .Select-optionsList{
-    overflow: hidden;
+  position: relative;
+
+  .Select-value{
+    padding: 4px;
+    cursor: text;
+    border: 1px solid #ccc;
+    background-color: #fff;
+
+    .Select-filterInput{
+      border: none;
+      outline: none;
+
+      &.Select-filterInput-isEmpty{
+        width: 1px;
+      }
+    }
   }
 
   &.Select--opened{
+    .Select-value{
+      outline: none;
+      border-color: #66afe9;
+      box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    }
   }
 
   &.Select--closed{
     .Select-optionsList{
       height: 0px;
+      padding: 0px;
     }
   }
 
   .Select-optionsList{
+    overflow: hidden;
     position: absolute;
-    background-color: white;
+    width: 100%;
+    border: 1px solid #ccc;
+    background-color: #fff;
 
     .Select-group{
       .Select-groupHeader{
         cursor: pointer;
+        padding: 1px 5px;
 
         .Select-groupHeaderIcon{
           text-align: center;
-          width: 13px;
+          width: 12px;
         }
       }
+
       .Select-groupOptions{
         overflow: hidden;
+
+        .Select-option{
+          padding-left: 16px;
+        }
       }
 
       &.Select-group--opened{
         .Select-groupHeader .Select-groupHeaderIcon{
           @extend .fa;
-          @extend .fa-angle-down;
+          @extend .fa-caret-down;
         }
       }
 
       &.Select-group--closed{
         .Select-groupHeader .Select-groupHeaderIcon{
           @extend .fa;
-          @extend .fa-angle-right;
+          @extend .fa-caret-right;
         }
         .Select-groupOptions{
           height: 0px;
         }
       }
+
+      &:hover{
+        .Select-groupHeader{
+          cursor: pointer;
+          font-weight: 600;
+          background-color: rgba(204, 204, 204,.2);
+        }
+      }
     }
 
     .Select-option{
-
-      &:hover{
-        background-color: grey;
-        cursor: pointer;
-      }
+      padding: 1px 8px;
 
       &.Select-option--suggested {
-        background-color: orange;
+        background-color: rgba(102, 142, 233,.2) !importantbar;
+      }
+
+      &:hover{
+        cursor: pointer;
+        background-color: rgba(102,175,233,.2);
+
+        .OptionExample-label{
+          font-weight: 600;
+        }
       }
     }
   }

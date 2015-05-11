@@ -54,7 +54,7 @@ let OptionExample = React.createClass({
 
     return (
       <div className={className} {...otherProps}>
-        <span>{label}</span>
+        <span className="OptionExample-label">{label}</span>
         <div className="OptionExample-info">
           <span className="OptionExample-type">{type}</span>
           <span className="OptionExample-description">{description}</span>

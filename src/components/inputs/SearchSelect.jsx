@@ -106,7 +106,9 @@ const Select = React.createClass({
 
   _selectOption(option) {
     this.requestChange({ $set: option });
+    this._clearFilterValue();
     this._closeList();
+    this._blurInput();
   },
 
   //State Helpers: openedGroupsId
@@ -230,6 +232,11 @@ const Select = React.createClass({
     this._closeAllGroups();
   },
 
+  _focusInput() {
+    let node = this.refs.searchInput.getDOMNode();
+    node.focus();
+  },
+
   _blurInput() {
     let node = this.refs.searchInput.getDOMNode();
     node.blur();
@@ -254,6 +261,10 @@ const Select = React.createClass({
     this._blurInterval = setTimeout(() => {
       this._closeList();
     }, 400);
+  },
+
+  _onSelectValueClick(e) {
+    this._focusInput();
   },
 
   _onFilterInputChange(e) {
@@ -311,9 +322,11 @@ const Select = React.createClass({
         className={classNames('Select', `Select--${isFocused ? 'opened' : 'closed'}`, className)}
         onMouseLeave={this._onBlur}
       >
-        <div className="Select-value">
+        <div className="Select-value"
+          onClick={this._onSelectValueClick}
+        >
           <input
-            className="Select-filterInput"
+            className={classNames('Select-filterInput', filterValue === '' && 'Select-filterInput-isEmpty')}
             type="text"
             ref="searchInput"
             placeholder={placeHolder}
