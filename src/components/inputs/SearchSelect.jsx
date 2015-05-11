@@ -225,7 +225,9 @@ const Select = React.createClass({
     });
 
     //Remove empty groups if hideGroupsWithNoMatch == true
-    options = _.filter(options, (option) => !(option.isGroup && option.options.length === 0 && hideGroupsWithNoMatch));
+    if (hideGroupsWithNoMatch) {
+      options = _.reject(options, (option) => option.isGroup && option.options.length === 0);
+    }
 
     //Filter non grouped options
     options = _.filter(options, (option) => option.isGroup || (!filterValue || filterOption(filterValue, option)));
