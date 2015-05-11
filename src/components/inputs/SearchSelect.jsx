@@ -5,8 +5,6 @@ import classNames from 'classnames';
 
 import InputMixin from '../../mixins/InputMixin';
 
-import './SearchSelect.scss';
-
 
 const KEY_CODES = {
   TAB: 9,
