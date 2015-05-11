@@ -104,8 +104,7 @@ const Select = React.createClass({
 
   _selectOption(option) {
     this.requestChange({ $set: option });
-    this._clearFilterValue();
-    this._closeList();
+    this._setSuggestedOption(option);
   },
 
   //State Helpers: openGroupsId
@@ -136,14 +135,11 @@ const Select = React.createClass({
     this.setState({ openGroupsId: update(openGroupsId, {$splice: [[index, 1]]}) });
   },
 
-  _openSuggestedGroup(suggestionOption) {
-    if (!suggestionOption) {
-      return;
-    }
+  _openParentGroupIfNot(option) {
     let { options } = this.props,
         { openGroupsId } = this.state;
 
-    let suggestedGroup = _.find(options, (group) => group.isGroup && _.contains(_.pluck(group.options, 'id'), suggestionOption.id));
+    let suggestedGroup = _.find(options, (group) => group.isGroup && _.contains(_.pluck(group.options, 'id'), option.id));
     if (suggestedGroup && !this._isGroupOpen(openGroupsId, suggestedGroup)) {
       this._openGroup(suggestedGroup);
     }
@@ -163,7 +159,6 @@ const Select = React.createClass({
 
   _updateFilterValue(newFilterValue) {
     this.setState({filterValue: newFilterValue});
-    this._suggestFirstOption(newFilterValue);
   },
 
   _clearFilterValue() {
@@ -197,7 +192,6 @@ const Select = React.createClass({
 
   _setSuggestedOption(option) {
     this.setState({suggestedOption: option});
-    this._openSuggestedGroup(option);
   },
 
   _clearSuggestionOption() {
@@ -242,7 +236,6 @@ const Select = React.createClass({
 
   _closeList() {
     this.setState({isFocused: false});
-    this._closeAllGroups();
   },
 
   _focusFilterInput() {
@@ -278,10 +271,6 @@ const Select = React.createClass({
     this._removeSelection();
     this._updateFilterValue(newValue);
 
-    if (newValue === '') {
-      this._closeAllGroups();
-    }
-
     let wasEmpty = previousValue.length === 0 && newValue.length > 0;
     if (wasEmpty) {
       this._openAllGroups();
@@ -292,6 +281,7 @@ const Select = React.createClass({
     this._cancelBlurInterval();
     this._blurInterval = setTimeout(() => {
       this._clearFilterValue();
+      this._closeAllGroups();
       this._closeList();
     }, 100);
   },
@@ -301,6 +291,9 @@ const Select = React.createClass({
     case KEY_CODES.TAB:
     case KEY_CODES.ENTER:
       this._selectOption(this.state.suggestedOption);
+      this._clearFilterValue();
+      this._closeAllGroups();
+      this._closeList();
       break;
     case KEY_CODES.ARROW_UP:
       this._suggestPreviousOption(this.state.filterValue, this.state.suggestedOption);
@@ -320,6 +313,23 @@ const Select = React.createClass({
   _onOptionSelect(option, e) {
     this._cancelBlurInterval();
     this._selectOption(option);
+    this._clearFilterValue();
+    this._closeAllGroups();
+    this._closeList();
+  },
+
+  componentDidUpdate(prevProps, prevState) {
+    let {suggestedOption, filterValue} = this.state;
+
+    //Select first option if not setted or no more filterValue
+    if (!suggestedOption || prevState.filterValue && !filterValue) {
+      this._suggestFirstOption(filterValue);
+    }
+
+    //Open Suggested Group
+    if (suggestedOption) {
+      this._openParentGroupIfNot(suggestedOption);
+    }
   },
 
   //Renders
