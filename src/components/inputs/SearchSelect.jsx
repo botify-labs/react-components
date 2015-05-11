@@ -91,11 +91,10 @@ const Select = React.createClass({
 
   getInitialState() {
     return {
-      isFocused: false,
       filterValue: '',
-      filteredOptions: this.props.options,
-      openedGroupsId: [],
       suggestedOption: null,
+      isFocused: false,
+      openedGroupsId: [],
     };
   },
 
@@ -143,22 +142,43 @@ const Select = React.createClass({
 
   updateFilterValue(newFilterValue) {
     this.setState({filterValue: newFilterValue});
-    let filteredOptions = this._updateFilteredOptions(newFilterValue);
-    this._suggestFirstOption(filteredOptions);
+    this._suggestFirstOption(newFilterValue);
   },
 
   _clearFilterValue() {
     let newFilterValue = '';
     this.setState({filterValue: newFilterValue});
-    this._updateFilteredOptions(newFilterValue);
     this._clearSuggestionOption();
   },
 
   //State Helpers: suggestedOption
 
-  _suggestFirstOption(options) {
-    let newSuggestion = options[0] && options[0].isGroup ? options[0].options[0] : options[0];
-    this._setSuggestedOption(newSuggestion);
+  _suggestFirstOption(filterValue) {
+    let options = this._getFilteredOptions(filterValue);
+    let suggestion = this._getOptionsIterator(options)[0];
+    this._setSuggestedOption(suggestion);
+  },
+
+  _suggestPreviousOption(filterValue) {
+    let options = this._getFilteredOptions(filterValue),
+        suggestedOption = this.state.suggestedOption,
+        optionsIterator = this._getOptionsIterator(options);
+
+    let currentSuggestionIndex = _.findIndex(optionsIterator, (option) => option.id === suggestedOption.id);
+    let previousSuggestionIndex = currentSuggestionIndex > 0 ? currentSuggestionIndex - 1 : currentSuggestionIndex;
+
+    this._setSuggestedOption(optionsIterator[previousSuggestionIndex]);
+  },
+
+  _suggestNextOption(filterValue) {
+    let options = this._getFilteredOptions(filterValue),
+        suggestedOption = this.state.suggestedOption,
+        optionsIterator = this._getOptionsIterator(options);
+
+    let currentSuggestionIndex = _.findIndex(optionsIterator, (option) => option.id === suggestedOption.id);
+    let nextSuggestionIndex = currentSuggestionIndex < (optionsIterator.length - 1) ? currentSuggestionIndex + 1 : currentSuggestionIndex;
+
+    this._setSuggestedOption(optionsIterator[nextSuggestionIndex]);
   },
 
   _setSuggestedOption(option) {
@@ -171,7 +191,11 @@ const Select = React.createClass({
 
   //State Helpers: filteredOptions
 
-  _updateFilteredOptions(filterValue) {
+  _getOptionsIterator(options) {
+    return _.flatten(_.map(options, (option) => option.isGroup ? option.options : option));
+  },
+
+  _getFilteredOptions(filterValue) {
     let {options, filterOption, hideGroupsWithNoMatch} = this.props;
 
     //Filter grouped options
@@ -190,8 +214,6 @@ const Select = React.createClass({
 
     //Filter non grouped options
     options = _.filter(options, (option) => option.isGroup || (!filterValue || filterOption(filterValue, option)));
-
-    this.setState({filteredOptions: options});
 
     return options;
   },
@@ -265,8 +287,10 @@ const Select = React.createClass({
       this._selectOption(this.state.suggestedOption);
       break;
     case KEY_CODES.ARROW_UP:
+      this._suggestPreviousOption(this.state.filterValue);
       break;
     case KEY_CODES.ARROW_DOWN:
+      this._suggestNextOption(this.state.filterValue);
       break;
     }
   },
@@ -279,7 +303,8 @@ const Select = React.createClass({
       placeHolder,
       valueLink: {value},
     } = this.props;
-    let { isFocused, filterValue, filteredOptions } = this.state;
+    let { isFocused, filterValue } = this.state;
+    let filteredOptions = this._getFilteredOptions(filterValue);
 
     return (
       <div
