@@ -345,14 +345,13 @@ const Select = React.createClass({
         className={classNames('Select', `Select--${isFocused ? 'opened' : 'closed'}`, className)}
         onMouseLeave={this._onBlur}
       >
-        <div className="Select-value"
+        <div className="Select-input"
           onClick={this._onSelectValueClick}
         >
           <input
             className={classNames('Select-filterInput', filterValue === '' && 'Select-filterInput-isEmpty')}
             type="text"
             ref="searchInput"
-            placeholder={placeHolder}
             value={filterValue}
             onFocus={this._onFocus}
             onBlur={this._onFilterInputBlur}
@@ -360,6 +359,9 @@ const Select = React.createClass({
             onKeyDown={this._onFilterInputKeyDown}
           />
           <span className="Select-valueSpan">{value ? value.label : ''}</span>
+          {!filterValue && !value &&
+            <span className="Select-placeholder">{placeHolder}</span>
+          }
         </div>
         <div
           className="Select-optionsList"
