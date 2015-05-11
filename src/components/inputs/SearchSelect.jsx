@@ -109,13 +109,13 @@ const Select = React.createClass({
 
   //State Helpers: openGroupsId
 
-  _isGroupOpen(openGroupsId, group) {
+  _isGroupOpen(group) {
+    let {openGroupsId} = this.state;
     return _.contains(openGroupsId, group.id);
   },
 
   _toggleGroupOpenState(group) {
-    let { openGroupsId } = this.state,
-        isOpened = this._isGroupOpen(openGroupsId, group);
+    let isOpened = this._isGroupOpen(group);
 
     if (isOpened) {
       this._closeGroup(group);
@@ -136,11 +136,10 @@ const Select = React.createClass({
   },
 
   _openParentGroupIfNot(option) {
-    let { options } = this.props,
-        { openGroupsId } = this.state;
+    let { options } = this.props;
 
     let suggestedGroup = _.find(options, (group) => group.isGroup && _.contains(_.pluck(group.options, 'id'), option.id));
-    if (suggestedGroup && !this._isGroupOpen(openGroupsId, suggestedGroup)) {
+    if (suggestedGroup && !this._isGroupOpen(suggestedGroup)) {
       this._openGroup(suggestedGroup);
     }
   },
@@ -167,13 +166,14 @@ const Select = React.createClass({
 
   //State Helpers: suggestedOption
 
-  _suggestFirstOption(filterValue) {
-    let suggestion = this._getOptionsIterator(filterValue)[0];
+  _suggestFirstOption() {
+    let suggestion = this._getOptionsIterator()[0];
     this._setSuggestedOption(suggestion);
   },
 
-  _suggestPreviousOption(filterValue, suggestedOption) {
-    let optionsIterator = this._getOptionsIterator(filterValue);
+  _suggestPreviousOption() {
+    let {suggestedOption} = this.state;
+    let optionsIterator = this._getOptionsIterator();
 
     let currentSuggestionIndex = suggestedOption ? _.findIndex(optionsIterator, (option) => option.id === suggestedOption.id) : -1;
     let previousSuggestionIndex = currentSuggestionIndex > 0 ? currentSuggestionIndex - 1 : currentSuggestionIndex;
@@ -181,8 +181,9 @@ const Select = React.createClass({
     this._setSuggestedOption(optionsIterator[previousSuggestionIndex]);
   },
 
-  _suggestNextOption(filterValue, suggestedOption) {
-    let optionsIterator = this._getOptionsIterator(filterValue);
+  _suggestNextOption() {
+    let {suggestedOption} = this.state;
+    let optionsIterator = this._getOptionsIterator();
 
     let currentSuggestionIndex = suggestedOption ? _.findIndex(optionsIterator, (option) => option.id === suggestedOption.id) : -1;
     let nextSuggestionIndex = currentSuggestionIndex < (optionsIterator.length - 1) ? currentSuggestionIndex + 1 : currentSuggestionIndex;
@@ -200,13 +201,14 @@ const Select = React.createClass({
 
   //State Helpers: filteredOptions
 
-  _getOptionsIterator(filterValue) {
-    let options = this._getFilteredOptions(filterValue);
+  _getOptionsIterator() {
+    let options = this._getFilteredOptions();
     return _.flatten(_.map(options, (option) => option.isGroup ? option.options : option));
   },
 
-  _getFilteredOptions(filterValue) {
+  _getFilteredOptions() {
     let {options, filterOption, hideGroupsWithNoMatch} = this.props;
+    let {filterValue} = this.state;
 
     //Filter grouped options
     options = _.map(options, (group) => {
@@ -288,13 +290,13 @@ const Select = React.createClass({
         break;
       }
     case KEY_CODES.TAB:
-      this._onOptionSelect(this.state.suggestedOption);
+      this._selectOption(this.state.suggestedOption);
       break;
     case KEY_CODES.ARROW_UP:
-      this._suggestPreviousOption(this.state.filterValue, this.state.suggestedOption);
+      this._suggestPreviousOption();
       break;
     case KEY_CODES.ARROW_DOWN:
-      this._suggestNextOption(this.state.filterValue, this.state.suggestedOption);
+      this._suggestNextOption();
       break;
     }
   },
@@ -365,7 +367,7 @@ const Select = React.createClass({
       valueLink: {value},
     } = this.props;
     let { isFocused, filterValue } = this.state;
-    let filteredOptions = this._getFilteredOptions(filterValue);
+    let filteredOptions = this._getFilteredOptions();
 
     return (
       <div
@@ -402,7 +404,7 @@ const Select = React.createClass({
   },
 
   _renderGroup(group, key) {
-    let isOpened = this._isGroupOpen(this.state.openGroupsId, group);
+    let isOpened = this._isGroupOpen(group);
     return (
       <div
         className={classNames("Select-group", `Select-group--${isOpened ? 'opened' : 'closed'}`)}
