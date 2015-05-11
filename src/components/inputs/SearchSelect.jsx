@@ -140,15 +140,13 @@ const Select = React.createClass({
 
   //State Helpers: filterValue
 
-  updateFilterValue(newFilterValue) {
+  _updateFilterValue(newFilterValue) {
     this.setState({filterValue: newFilterValue});
     this._suggestFirstOption(newFilterValue);
   },
 
   _clearFilterValue() {
-    let newFilterValue = '';
-    this.setState({filterValue: newFilterValue});
-    this._clearSuggestionOption();
+    this._updateFilterValue('');
   },
 
   //State Helpers: suggestedOption
@@ -267,14 +265,15 @@ const Select = React.createClass({
 
   _onFilterInputChange(e) {
     let newValue = e.target.value;
-    if (newValue === '') {
-      this._onFilterInputBlur(e);
-      return;
-    }
-    this._removeSelection();
-    this.updateFilterValue(newValue);
-
     let previousValue = this.state.filterValue;
+
+    this._removeSelection();
+    this._updateFilterValue(newValue);
+
+    if (newValue === '') {
+      this._closeAllGroups();
+    }
+
     let wasEmpty = previousValue.length === 0 && newValue.length > 0;
     if (wasEmpty) {
       this._openAllGroups();
