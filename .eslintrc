@@ -84,6 +84,7 @@
         "no-fallthrough":           0,
         "no-irregular-whitespace":  2,
         "no-iterator":              0,
+        "no-labels":                2,
         "no-loop-func":             2,
         "no-multi-str":             2,
         "no-new":                   0,
@@ -96,9 +97,15 @@
         //Strict Mode
 
         //Variables
-        "no-undef":                 2,
-        "no-unused-vars":           [2, {"vars": "all", "args": "none"}],
-        "no-use-before-define":     [2, "nofunc"],
+        "no-catch-shadow":              2,
+        "no-delete-var":                2,
+        "no-label-var":                 2,
+        "no-shadow-restricted-names":   2,
+        "no-shadow":                    2,
+        "no-undef":                     2,
+        "no-undefined":                 2,
+        "no-unused-vars":               [2, {"vars": "all", "args": "none"}], //No arguments checking in order to allow explicit function interfaces even if not completly used
+        "no-use-before-define":         [2, "nofunc"],
 
         //Node.js
 
