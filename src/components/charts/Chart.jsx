@@ -4,7 +4,7 @@ import FollowCursor from '../misc/FollowCursor';
 import TooltipTable from '../tooltip/TooltipTable';
 import ChartData from '../../models/ChartData';
 
-var Chart = React.createClass({
+let Chart = React.createClass({
 
   displayName: 'Chart',
 
@@ -41,15 +41,15 @@ var Chart = React.createClass({
   },
 
   _renderTooltip() {
-    var data = this.state.hoveredData.entrySeq().map(([dataKeys, dataValues]) => {
-      var groups = dataKeys.entrySeq().map(([dimKey, groupKey], idx) => {
-        var dimension = this.props.chartData.getDimension(dimKey);
-        var group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
+    let data = this.state.hoveredData.entrySeq().map(([dataKeys, dataValues]) => {
+      let groups = dataKeys.entrySeq().map(([dimKey, groupKey], idx) => {
+        let dimension = this.props.chartData.getDimension(dimKey);
+        let group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
         return [dimension.get('label'), group.get('label')];
       });
 
-      var metrics = dataValues.map((value, idx) => {
-        var metric = this.props.chartData.getMetric(idx);
+      let metrics = dataValues.map((value, idx) => {
+        let metric = this.props.chartData.getMetric(idx);
         return [metric.get('label'), metric.get('render')(value)];
       });
 

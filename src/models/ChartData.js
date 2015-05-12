@@ -127,7 +127,7 @@ class ChartData{
     if (!Map.isMap(dimMetadata)) {
       throw new TypeError('dimMetadata is not a Map');
     }
-    var dimensionValue = dimMetadata.set('groups', OrderedMap());
+    let dimensionValue = dimMetadata.set('groups', OrderedMap());
 
     this.dimensions = this.dimensions.set(dimKey, dimensionValue);
   }

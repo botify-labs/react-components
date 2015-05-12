@@ -11,7 +11,7 @@ import ChartDataGoogleDataAdapter from '../../../adapters/ChartDataGoogleDataAda
  *   chart: google.visualization.PieChart
  * })
  */
-var GoogleChart = React.createClass({
+let GoogleChart = React.createClass({
 
   displayName: 'GoogleChart',
 
@@ -107,8 +107,8 @@ var GoogleChart = React.createClass({
       return;
     }
 
-    var filter = this.adapter.selectionToDataKeys(e);
-    var data = this.props.chartData.filterData(filter);
+    let filter = this.adapter.selectionToDataKeys(e);
+    let data = this.props.chartData.filterData(filter);
 
     this.props.onChartSelect(data);
   },
@@ -123,8 +123,8 @@ var GoogleChart = React.createClass({
       return;
     }
 
-    var filter = this.adapter.selectionToDataKeys(e);
-    var data = this.props.chartData.filterData(filter);
+    let filter = this.adapter.selectionToDataKeys(e);
+    let data = this.props.chartData.filterData(filter);
 
     this.props.onChartMouseOver(data);
   },
