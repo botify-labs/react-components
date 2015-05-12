@@ -62,10 +62,10 @@
         "no-unreachable":           2,
         "use-isnan":                2,
         "valid-jsdoc":              [1, { //Only warning because for now ESLint doesn't handle correclty ES6 arrow functions
-                                         "prefer": {"returns": "return"},
-                                         "requireParamDescription": false,
-                                         "requireReturn": false,
-                                         "requireReturnDescription": false
+                                      "prefer": {"returns": "return"},
+                                      "requireParamDescription": false,
+                                      "requireReturn": false,
+                                      "requireReturnDescription": false
                                     }],
         "valid-typeof":             2,
 
@@ -133,7 +133,7 @@
         "max-len":                  0,
         "max-params":               0,
         "max-statements":           0,
-        "no-bitwise":               2, // why though, it's a feature of the laguage
+        "no-bitwise":               2, // to prevent mistyped
         "no-plusplus":              0,
 
     }
