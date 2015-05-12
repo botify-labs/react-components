@@ -16,6 +16,8 @@
     },
 
     "rules": {
+
+        //React rules
         "react/display-name":               2,
         "react/jsx-boolean-value":          2,
         "react/jsx-quotes":                 [2, "double"],
@@ -33,53 +35,69 @@
         "react/self-closing-comp":          2,
         "react/wrap-multilines":            2,
 
-        "eol-last":                 2,
-        "quotes":                   0,
+        //Possible Errors
         "comma-dangle":             [2, "always-multiline"],
-        "no-underscore-dangle":     0, // allow private naming with _
+        "no-cond-assign":           0,
         "no-console":               1, // warn about console use
-        "space-infix-ops":          2,
-        "space-before-blocks":      [2, "always"],
-        "space-after-keywords":     [2, "always"],
-        "no-bitwise":               2, // why though, it's a feature of the laguage
-        "camelcase":                2,
+        "no-debugger":              2,
+        "valid-typeof":             2,
+
+        //Best Practices
+        "block-scoped-var":         0,
+        "complexity":               0,
+        "dot-notation":             [2, {"allowKeywords": true}],
         "eqeqeq":                   2,
         "guard-for-in":             2,
-        "no-extend-native":         2,
-        "wrap-iife":                2,
         "indent":                   [2, 2],
-        "no-use-before-define":     [2, "nofunc"],
-        "new-cap":                  0, // we're using Immutable which doesn't play by that rule
         "no-caller":                2,
         "no-empty":                 2,
-        "no-irregular-whitespace":  2,
-        "no-new":                   0,
-        "no-plusplus":              0,
-        "no-undef":                 2,
-        "no-unused-vars":           [2, {"vars": "all", "args": "none"}],
-        "no-fallthrough":           0,
-        "strict":                   0,
-        "max-params":               0,
-        "max-depth":                0,
-        "max-statements":           0,
-        "complexity":               0,
-        "max-len":                  0,
-        "semi":                     [2, "always"],
-        "no-cond-assign":           0,
-        "no-debugger":              2,
         "no-eq-null":               2,
         "no-eval":                  2,
-        "block-scoped-var":         0,
+        "no-extend-native":         2,
+        "no-fallthrough":           0,
+        "no-irregular-whitespace":  2,
         "no-iterator":              0,
-        "comma-style":              [2, "last"],
         "no-loop-func":             2,
         "no-multi-str":             2,
-        "valid-typeof":             2,
-        "no-proto":                 2,
-        "no-script-url":            2,
-        "dot-notation":             [2, {"allowKeywords": true}],
-        "no-new-object":            2,
+        "no-new":                   0,
         "no-new-func":              2,
         "no-new-wrappers":          2,
+        "no-proto":                 2,
+        "no-script-url":            2,
+        "wrap-iife":                2,
+
+        //Strict Mode
+
+        //Variables
+        "no-undef":                 2,
+        "no-unused-vars":           [2, {"vars": "all", "args": "none"}],
+        "no-use-before-define":     [2, "nofunc"],
+
+        //Node.js
+
+        //Stylistic Issues
+        "camelcase":                2,
+        "comma-style":              [2, "last"],
+        "eol-last":                 2,
+        "new-cap":                  0, // we're using Immutable which doesn't play by that rule
+        "no-new-object":            2,
+        "no-underscore-dangle":     0, // allow private naming with _
+        "quotes":                   0,
+        "semi":                     [2, "always"],
+        "space-before-blocks":      [2, "always"],
+        "space-after-keywords":     [2, "always"],
+        "space-infix-ops":          2,
+
+        //ECMAScript 6
+        "strict":                   0, //Made by babel
+
+        //Legacy
+        "max-depth":                0,
+        "max-len":                  0,
+        "max-params":               0,
+        "max-statements":           0,
+        "no-bitwise":               2, // why though, it's a feature of the laguage
+        "no-plusplus":              0,
+
     }
 }
