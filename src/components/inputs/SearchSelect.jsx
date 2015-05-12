@@ -335,11 +335,11 @@ const Select = React.createClass({
     //If new value, Clear select without bluring
     if (prevProps.valueLink.value !== value) {
       console.log('1');
-      this._clearFilterValue();
-      this._closeAllGroups();
-      this._closeList();
 
       if (value) {
+        this._clearFilterValue();
+        this._closeAllGroups();
+        this._closeList();
         this._setSuggestedOption(value);
       }
     }
@@ -348,6 +348,7 @@ const Select = React.createClass({
       console.log('2');
 
       if (!filterValue && !value) {
+        console.log('2.0');
         this._clearSuggestedOption();
       }
 
@@ -369,7 +370,7 @@ const Select = React.createClass({
       //Close all groups if filterValue become empty
       let filterValueBecomeEmpty = prevState.filterValue.length > 0 && filterValue.length === 0;
       if (filterValueBecomeEmpty) {
-        console.log('2.2');
+        console.log('2.3');
         this._closeAllGroups();
       }
     }
