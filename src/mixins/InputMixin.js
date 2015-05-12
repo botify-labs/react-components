@@ -32,8 +32,8 @@ export default function InputMixin(valueValidator) {
      * the mixin to not depend on the implementation of the mixin.
      * @return {Any}
      */
-    getValue() {
-      return this.props.valueLink.value;
+    getValue(props = this.props) {
+      return props.valueLink.value;
     },
 
     /**

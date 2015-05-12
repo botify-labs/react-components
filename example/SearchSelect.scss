@@ -1,0 +1,110 @@
+$fa-font-path: "~font-awesome/fonts/";
+@import "node_modules/font-awesome/scss/font-awesome";
+
+.SearchSelect{
+  position: relative;
+
+  .SearchSelect-inputContainer{
+    padding: 4px;
+    cursor: text;
+    border: 1px solid #ccc;
+    background-color: #fff;
+
+    .SearchSelect-placeholder{
+      color: #777;
+    }
+
+    .SearchSelect-filterInput{
+      border: none;
+      outline: none;
+
+      &.SearchSelect-filterInput--empty{
+        width: 1px;
+      }
+    }
+  }
+
+  &.SearchSelect--focused{
+    .SearchSelect-inputContainer{
+      outline: none;
+      border-color: #66afe9;
+      box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    }
+  }
+
+  .SearchSelect-optionsList{
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    border: 1px solid #ccc;
+    background-color: #fff;
+
+    &.SearchSelect-optionsList--closed{
+      height: 0px;
+      padding: 0px;
+      border: none;
+    }
+
+    .SearchSelectGroup{
+      .SearchSelectGroup-header{
+        cursor: pointer;
+        padding: 1px 5px;
+
+        .SearchSelectGroup-headerIcon{
+          text-align: center;
+          width: 14px;
+        }
+      }
+
+      .SearchSelectGroup-options{
+        overflow: hidden;
+
+        .SearchSelectOption{
+          padding-left: 16px;
+        }
+      }
+
+      &.SearchSelectGroup--open{
+        .SearchSelectGroup-header .SearchSelectGroup-headerIcon{
+          @extend .fa;
+          @extend .fa-caret-down;
+        }
+      }
+
+      &.SearchSelectGroup--closed{
+        .SearchSelectGroup-header .SearchSelectGroup-headerIcon{
+          @extend .fa;
+          @extend .fa-caret-right;
+        }
+        .SearchSelectGroup-options{
+          height: 0px;
+        }
+      }
+
+      &:hover{
+        .SearchSelectGroup-header{
+          cursor: pointer;
+          font-weight: 600;
+          background-color: rgba(204, 204, 204,.2);
+        }
+      }
+    }
+
+    .SearchSelectOption{
+      padding: 1px 8px;
+
+      &.SearchSelectOption--suggested {
+        background-color: rgba(102, 142, 233,.2) !important;
+      }
+
+      &:hover{
+        cursor: pointer;
+        background-color: rgba(102,175,233,.2);
+
+        .OptionExample-label{
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
