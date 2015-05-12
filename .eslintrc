@@ -125,8 +125,8 @@
 
         //ECMAScript 6
         "generator-star-spacing":   [2, "after"],
-        "no-var":                   1,
-        "object-shorthand":         0,
+        "no-var":                   2,
+        "object-shorthand":         [2, "methods"], //"properties" does not work correclty for now with ES6 rest operator
 
         //Legacy
         "max-depth":                0,
