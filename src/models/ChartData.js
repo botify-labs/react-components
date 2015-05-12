@@ -31,7 +31,7 @@ import {List, Map, OrderedMap} from 'immutable';
  */
 
 /**
- * @property {Map<DataKeys, DataValues>}  data
+ * @property {Map<DataKeys, DataValues>}  rawData
  * @property {OrderMap<Any, Dimension>}   dimensions
  * @property {List<Metric>}               metrics
  */
@@ -75,6 +75,7 @@ class ChartData{
 
   /**
    * @param {DataKeys} keys
+   * @return {Any}
    */
   getData(keys) {
     return this.rawData.get(keys);
@@ -83,6 +84,7 @@ class ChartData{
   /**
    * Filter RawData according to given filters
    * @param  {DataKeys} filters
+   * @return {Map}
    */
   filterData(filters) {
     if (!filters) {
@@ -137,12 +139,15 @@ class ChartData{
 
   /**
    * @param {Any} dimKey
+   * @return {Dimension}
    */
   getDimension(dimKey) {
     return this.dimensions.get(dimKey);
   }
+
   /**
    * @param {Any} dimKey
+   * @return {Boolean}
    */
   hasDimension(dimKey) {
     return this.dimensions.has(dimKey);
@@ -162,16 +167,20 @@ class ChartData{
     }
     this.dimensions = this.dimensions.setIn([dimKey, 'groups', groupKey], groupMetadata);
   }
+
   /**
    * @param {Any} dimKey
    * @param {Any} groupKey
+   * @return {DimensionGroup}
    */
   getDimensionGroup(dimKey, groupKey) {
     return this.dimensions.getIn([dimKey, 'groups', groupKey]);
   }
+
   /**
    * @param {Any} dimKey
    * @param {Any} groupKey
+   * @return {Boolean}
    */
   hasDimensionGroup(dimKey, groupKey) {
     return this.dimensions.hasIn([dimKey, 'groups', groupKey]);

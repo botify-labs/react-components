@@ -13,11 +13,12 @@ class ChartDataGoogleDataAdapter{
   }
 
   /**
-   * @param  {Map} options
+   * @param {Map} options
    * {
    *   axes: Map<AxisName, DimensionsKey>  AxisName € ['categories, series']
    *   filters: Map<DimensionsKey, GroupKey>
    * }
+   * @return {Array<Array>}
    * @note
    *  - Data is sum on unviable dimensions unless filters options are provided
    *  - If axes option is not provided, it uses the last two dimensions in the ChartData
@@ -71,7 +72,7 @@ class ChartDataGoogleDataAdapter{
 
   /**
    * Converts Google Chart selection to DataKeys
-   * @param  {Object}   {row, column}
+   * @param  {Object} Object {row, column}
    * @return {DataKeys}
    */
   selectionToDataKeys({row, column}) {
@@ -146,6 +147,7 @@ class ChartDataGoogleDataAdapter{
 
   /**
    * Return ChartData relative dimension and precomute helpers
+   * @param {Any} axisKey
    * @return {Dimension}
    */
   _getAxis(axisKey) {
