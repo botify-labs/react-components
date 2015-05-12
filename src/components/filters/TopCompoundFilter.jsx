@@ -18,6 +18,8 @@ const OPERATOR_OPTIONS = [
 
 const defaultOperator = 'and';
 
+let uniqueCompoundFilterKey = -1;
+
 const TopCompoundFilter = React.createClass({
 
   displayName: 'TopCompoundFilter',
@@ -27,7 +29,12 @@ const TopCompoundFilter = React.createClass({
       // Id of the selected operator in `OPERATOR_OPTIONS`
       operatorId: PropTypes.oneOf(OPERATOR_OPTIONS.map((operator) => operator.id)),
       // List of the values of the `CompoundFilter` children
-      compoundFilters: PropTypes.arrayOf(CompoundFilter.PropTypes.value),
+      compoundFilters: PropTypes.arrayOf(PropTypes.shape({
+        // Each compound filter should have a unique key, so that its component can be correctly
+        // reconciled between renders.
+        key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        value: CompoundFilter.PropTypes.value,
+      })),
     })),
   ],
 
@@ -35,10 +42,10 @@ const TopCompoundFilter = React.createClass({
     filterInput: CompoundFilter.propTypes.filterInput,
   },
 
-  _handleCompoundFilterChange(idx, value) {
+  _handleCompoundFilterValueChange(idx, value) {
     this.requestChange({
       compoundFilters: {
-        [idx]: { $set: value },
+        [idx]: { value: { $set: value } },
       },
     });
   },
@@ -48,8 +55,11 @@ const TopCompoundFilter = React.createClass({
       compoundFilters: {
         $push: [
           {
-            operatorId: defaultOperator,
-            filters: [],
+            key: uniqueCompoundFilterKey--,
+            value: {
+              operatorId: defaultOperator,
+              filters: [],
+            },
           },
         ],
       },
@@ -72,8 +82,8 @@ const TopCompoundFilter = React.createClass({
       <div className="TopCompoundFilter">
         <div className="TopCompoundFilter-filters">
           {compoundFilters.map((compoundFilter, idx) => (
-            <div key={idx} className="TopCompoundFilter-filter">
-              {/* The first compound filter shouldn't display the operator select, and isn't removable */}
+            <div key={compoundFilter.key} className="TopCompoundFilter-filter">
+              {/* The first compound filter shouldn't display an operator select */}
               {idx > 0 &&
                 <ButtonSelect
                   className="TopCompoundFilter-operatorSelect"
@@ -84,7 +94,7 @@ const TopCompoundFilter = React.createClass({
               <CompoundFilter
                 filterInput={filterInput}
                 onRemove={compoundFilters.length > 1 ? this._handleRemoveCompoundFilter.bind(null, idx) : null}
-                valueLink={this.link(compoundFilter, this._handleCompoundFilterChange.bind(null, idx))}
+                valueLink={this.link(compoundFilter.value, this._handleCompoundFilterValueChange.bind(null, idx))}
                 />
             </div>
           ))}
