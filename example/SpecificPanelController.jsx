@@ -171,11 +171,14 @@ var SpecificPanelController = React.createClass({
   },
 
   _renderVennDiagram() {
+    let onClick = () => {
+      console.log('hello'); // eslint-disable-line
+    };
     return (
       <VennDiagram
         key="vennDiagram"
         vennData={vennData}
-        onClick={() => console.log('hello')}
+        onClick={onClick}
         inclusive
       />
     );

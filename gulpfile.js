@@ -100,10 +100,9 @@ gulp.task('server', function() {
     hot: true,
   }).listen(3000, 'localhost', function (err, result) {
     if (err) {
-      console.log(err);
+      console.log(err); // eslint-disable-line
     }
-
-    console.log('Listening at localhost:3000');
+    console.log('Listening at localhost:3000'); // eslint-disable-line
   });
 });
 

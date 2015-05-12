@@ -41,7 +41,6 @@ var Table = React.createClass({
   },
 
   exportTable() {
-    console.log('Exporting table!');
   },
 
   componentDidMount() {
