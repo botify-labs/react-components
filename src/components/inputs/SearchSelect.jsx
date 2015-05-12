@@ -421,23 +421,15 @@ const SearchSelect = React.createClass({
   },
 
   _renderGroup(group, key) {
-    let isOpened = this._isGroupOpen(group);
     return (
-      <div
-        className={classNames("SearchSelect-group", `SearchSelect-group--${isOpened ? 'open' : 'closed'}`)}
+      <SearchSelectGroup
         key={key}
+        label={group.label}
+        isOpen={this._isGroupOpen(group)}
+        onClick={this._onGroupClick.bind(null, group)}
       >
-        <div
-          className="SearchSelect-groupHeader"
-          onClick={this._onGroupClick.bind(null, group)}
-        >
-          <i className="SearchSelect-groupHeaderIcon" />
-          <span className="SearchSelect-groupheaderLabel">{group.label}</span>
-        </div>
-        <div className="SearchSelect-groupOptions">
-          {_.map(group.options, this._renderOption)}
-        </div>
-      </div>
+        {_.map(group.options, this._renderOption)}
+      </SearchSelectGroup>
     );
   },
 
@@ -451,12 +443,46 @@ const SearchSelect = React.createClass({
 
     return (
       <OptionRender
-        className={classNames('SearchSelect-option', isSuggested && 'SearchSelect-option--suggested')}
+        className={classNames('SearchSelectOption', isSuggested && 'SearchSelectOption--suggested')}
         key={key}
         option={option}
         filter={filterValue}
         onClick={this._onOptionSelect.bind(null, option)}
       />
+    );
+  },
+
+});
+
+const SearchSelectGroup = React.createClass({
+
+  displayName: 'SearchSelectGroup',
+
+  propTypes: {
+    label: PropTypes.string.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    onClick: PropTypes.func.isRequired,
+    children: PropTypes.node.isFocused,
+  },
+
+  render() {
+    let {label, isOpen, onClick, children, ...otherProps} = this.props;
+    return (
+      <div
+        className={classNames("SearchSelectGroup", `SearchSelectGroup--${isOpen ? 'open' : 'closed'}`)}
+        {...otherProps}
+      >
+        <div
+          className="SearchSelectGroup-header"
+          onClick={onClick}
+        >
+          <i className="SearchSelectGroup-headerIcon" />
+          <span className="SearchSelectGroup-headerLabel">{label}</span>
+        </div>
+        <div className="SearchSelectGroup-options">
+          {children}
+        </div>
+      </div>
     );
   },
 
