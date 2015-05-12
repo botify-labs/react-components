@@ -90,7 +90,7 @@ const Select = React.createClass({
   getInitialState() {
     return {
       filterValue: '',
-      suggestedOption: null,
+      suggestedOption: this.props.valueLink.value,
       isFocused: false,
       isListOpen: false,
       openGroupsId: [],
@@ -125,7 +125,6 @@ const Select = React.createClass({
 
   _selectOption(option) {
     this.requestChange({ $set: option });
-    this._setSuggestedOption(option);
   },
 
   //State Helpers: openGroupsId
@@ -207,7 +206,7 @@ const Select = React.createClass({
     let {suggestedOption} = this.state;
     let optionsIterator = this._getOptionsIterator();
 
-    let currentSuggestionIndex = suggestedOption ? _.findIndex(optionsIterator, (option) => option.id === suggestedOption.id) : 0;
+    let currentSuggestionIndex = suggestedOption ? _.findIndex(optionsIterator, (option) => option.id === suggestedOption.id) : -1;
     let movedSuggestionIndex = currentSuggestionIndex + n;
 
     movedSuggestionIndex = Math.min(Math.max(movedSuggestionIndex, 0), optionsIterator.length - 1);
@@ -219,7 +218,7 @@ const Select = React.createClass({
     this.setState({suggestedOption: option});
   },
 
-  _clearSuggestionOption() {
+  _clearSuggestedOption() {
     this._setSuggestedOption(null);
   },
 
@@ -284,12 +283,13 @@ const Select = React.createClass({
   _onFilterInputKeyDown(e) {
     let {isListOpen} = this.state;
 
+    if (!isListOpen) {
+      this._openList();
+      return;
+    }
+
     switch (e.which) {
     case KEY_CODES.ENTER:
-      if (!isListOpen) {
-        this._openList();
-        break;
-      }
     case KEY_CODES.TAB:
       this._selectOption(this.state.suggestedOption);
       break;
@@ -338,17 +338,25 @@ const Select = React.createClass({
       this._clearFilterValue();
       this._closeAllGroups();
       this._closeList();
+
+      if (value) {
+        this._setSuggestedOption(value);
+      }
     }
 
     if (prevState.filterValue !== filterValue) {
       console.log('2');
-      //Always remove selection (clear value) when the filtreValue change
-      this._removeSelection();
+
+      if (!filterValue && !value) {
+        this._clearSuggestedOption();
+      }
 
       //Select first option if not setted whereas filterValue is not empty
-      if (filterValue && !suggestedOption) {
+      // and remove selection (clear value) when the filtreValue change
+      if (filterValue) {
         console.log('2.1');
         this._suggestFirstOption(filterValue);
+        this._removeSelection();
       }
 
       //Open all groups if filterValue was empty
