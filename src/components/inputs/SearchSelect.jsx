@@ -3,7 +3,7 @@ const { update } = addons;
 import _ from 'lodash';
 import classNames from 'classnames';
 
-import * as Select from './Select';
+import Select from './Select';
 import InputMixin from '../../mixins/InputMixin';
 
 
