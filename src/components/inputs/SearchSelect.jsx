@@ -364,6 +364,10 @@ const SearchSelect = React.createClass({
     }
   },
 
+  componentWillUnmount() {
+    this._cancelBlurInterval();
+  },
+
   //Renders
 
   render() {
