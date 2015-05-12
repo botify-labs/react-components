@@ -46,7 +46,10 @@ const SearchSelect = React.createClass({
   displayName: 'SearchSelect',
 
   mixins: [
-    InputMixin(Select.PropTypes.option),
+    InputMixin(React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.number,
+    ])),
   ],
 
   propTypes: {
@@ -56,10 +59,6 @@ const SearchSelect = React.createClass({
     optionRender: PropTypes.func,
     filterOption: PropTypes.func, //By default filter option by their label.
     hideGroupsWithNoMatch: PropTypes.bool,
-    valueLink: PropTypes.shape({
-      value: Select.PropTypes.option,
-      requestChange: PropTypes.func.isRequired,
-    }).isRequired,
   },
 
   //Life Cycle methods
@@ -76,7 +75,7 @@ const SearchSelect = React.createClass({
   getInitialState() {
     return {
       filterValue: '',
-      suggestedOption: this.props.valueLink.value,
+      suggestedOptionId: this.getValue(),
       isFocused: false,
       isListOpen: false,
       openGroupsId: [],
@@ -109,8 +108,12 @@ const SearchSelect = React.createClass({
     this.requestChange({ $set: null });
   },
 
-  _selectOption(option) {
-    this.requestChange({ $set: option });
+  _selectOption(optionId) {
+    this.requestChange({ $set: optionId });
+  },
+
+  _getSelectedOptionId(props) {
+    return this.getValue(props);
   },
 
   //State Helpers: openGroupsId
@@ -141,10 +144,10 @@ const SearchSelect = React.createClass({
     this.setState({ openGroupsId: update(openGroupsId, {$splice: [[index, 1]]}) });
   },
 
-  _openParentGroupIfNot(option) {
+  _openParentGroupIfNot(optionId) {
     let { options } = this.props;
 
-    let suggestedGroup = _.find(options, (group) => group.isGroup && _.contains(_.pluck(group.options, 'id'), option.id));
+    let suggestedGroup = _.find(options, (group) => group.isGroup && _.contains(_.pluck(group.options, 'id'), optionId));
     if (suggestedGroup && !this._isGroupOpen(suggestedGroup)) {
       this._openGroup(suggestedGroup);
     }
@@ -170,7 +173,7 @@ const SearchSelect = React.createClass({
     this._updateFilterValue('');
   },
 
-  //State Helpers: suggestedOption
+  //State Helpers: suggestedOptionId
 
   _suggestFirstOption() {
     let suggestion = this._getOptionsIterator()[0];
@@ -189,10 +192,10 @@ const SearchSelect = React.createClass({
    * @param  {Integer} n
    */
   _moveSuggestion(n) {
-    let {suggestedOption} = this.state;
+    let {suggestedOptionId} = this.state;
     let optionsIterator = this._getOptionsIterator();
 
-    let currentSuggestionIndex = suggestedOption ? _.findIndex(optionsIterator, (option) => option.id === suggestedOption.id) : -1;
+    let currentSuggestionIndex = suggestedOptionId ? _.findIndex(optionsIterator, (option) => option.id === suggestedOptionId) : -1;
     let movedSuggestionIndex = currentSuggestionIndex + n;
 
     movedSuggestionIndex = Math.min(Math.max(movedSuggestionIndex, 0), optionsIterator.length - 1);
@@ -201,14 +204,22 @@ const SearchSelect = React.createClass({
   },
 
   _setSuggestedOption(option) {
-    this.setState({suggestedOption: option});
+    this._setSuggestedOptionId(option ? option.id : null);
+  },
+
+  _setSuggestedOptionId(optionId) {
+    this.setState({suggestedOptionId: optionId});
   },
 
   _clearSuggestedOption() {
-    this._setSuggestedOption(null);
+    this._setSuggestedOptionId(null);
   },
 
-  //State Helpers: filteredOptions
+  //Prop Helpers: options
+
+  _getOption(optionId) {
+    return _.find(this._getOptionsIterator(), {id: optionId});
+  },
 
   _getOptionsIterator() {
     let options = this._getFilteredOptions();
@@ -277,7 +288,7 @@ const SearchSelect = React.createClass({
     switch (e.which) {
     case KEY_CODES.ENTER:
     case KEY_CODES.TAB:
-      this._selectOption(this.state.suggestedOption);
+      this._selectOption(this.state.suggestedOptionId);
       break;
     case KEY_CODES.ARROW_UP:
       this._suggestPreviousOption();
@@ -293,12 +304,13 @@ const SearchSelect = React.createClass({
   },
 
   _onOptionSelect(option, e) {
-    this._selectOption(option);
+    this._selectOption(option.id);
   },
 
   componentDidUpdate(prevProps, prevState) {
-    let {valueLink: {value}} = this.props,
-        {isFocused, suggestedOption, filterValue} = this.state;
+    let {isFocused, suggestedOptionId, filterValue} = this.state;
+    let selectedOptionId = this._getSelectedOptionId(),
+        previousSelectedOptionId = this._getSelectedOptionId(prevProps);
 
     this._cancelBlurInterval();
 
@@ -315,19 +327,19 @@ const SearchSelect = React.createClass({
     }
 
     //If new value, Clear select without bluring
-    if (prevProps.valueLink.value !== value) {
+    if (previousSelectedOptionId !== selectedOptionId) {
 
-      if (value) {
+      if (selectedOptionId) {
         this._clearFilterValue();
         this._closeAllGroups();
         this._closeList();
-        this._setSuggestedOption(value);
+        this._setSuggestedOptionId(selectedOptionId);
       }
     }
 
     if (prevState.filterValue !== filterValue) {
 
-      if (!filterValue && !value) {
+      if (!filterValue && !selectedOptionId) {
         this._clearSuggestedOption();
       }
 
@@ -352,8 +364,8 @@ const SearchSelect = React.createClass({
     }
 
     //Open Suggested Group
-    if (suggestedOption) {
-      this._openParentGroupIfNot(suggestedOption);
+    if (suggestedOptionId) {
+      this._openParentGroupIfNot(suggestedOptionId);
     }
 
     //Focus input is state isFocused
@@ -374,10 +386,12 @@ const SearchSelect = React.createClass({
     let {
       className,
       placeHolder,
-      valueLink: {value},
     } = this.props;
     let { isFocused, isListOpen, filterValue } = this.state;
+    let selectedOptionId = this._getSelectedOptionId();
+
     let filteredOptions = this._getFilteredOptions();
+    let selectedOption = this._getOption(selectedOptionId);
 
     return (
       <div
@@ -395,8 +409,8 @@ const SearchSelect = React.createClass({
             onChange={this._onFilterInputChange}
             onKeyDown={this._onFilterInputKeyDown}
           />
-          <span className="SearchSelect-valueSpan">{value ? value.label : ''}</span>
-          {!filterValue && !value &&
+          <span className="SearchSelect-valueSpan">{selectedOption ? selectedOption.label : ''}</span>
+          {!filterValue && !selectedOptionId &&
             <span className="SearchSelect-placeholder">{placeHolder}</span>
           }
         </div>
@@ -429,9 +443,9 @@ const SearchSelect = React.createClass({
     let {
       optionRender: OptionRender,
     } = this.props;
-    let { filterValue, suggestedOption } = this.state;
+    let { filterValue, suggestedOptionId } = this.state;
 
-    let isSuggested = suggestedOption && suggestedOption.id === option.id;
+    let isSuggested = suggestedOptionId === option.id;
 
     return (
       <OptionRender
