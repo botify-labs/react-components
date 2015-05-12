@@ -21,21 +21,21 @@ chartData.addMetric(Immutable.Map({
 chartData.addDimension('delay', Immutable.Map({
   label: 'Delay',
 }));
-chartData.addDimensionGroup('delay', 'fast', Immutable.Map({label: "Fast (<500 ms)", color: COLORS.GOOD}));
-chartData.addDimensionGroup('delay', 'medium', Immutable.Map({label: "Medium (500 ms < 1 s)", color: COLORS.MEDIUM}));
-chartData.addDimensionGroup('delay', 'slow', Immutable.Map({label: "Slow (1 s < 2 s)", color: COLORS.BAD}));
-chartData.addDimensionGroup('delay', 'slowest', Immutable.Map({label: "Slowest (>2 s)", color: COLORS.VERY_BAD}));
+chartData.addDimensionGroup('delay', 'fast', Immutable.Map({label: 'Fast (<500 ms)', color: COLORS.GOOD}));
+chartData.addDimensionGroup('delay', 'medium', Immutable.Map({label: 'Medium (500 ms < 1 s)', color: COLORS.MEDIUM}));
+chartData.addDimensionGroup('delay', 'slow', Immutable.Map({label: 'Slow (1 s < 2 s)', color: COLORS.BAD}));
+chartData.addDimensionGroup('delay', 'slowest', Immutable.Map({label: 'Slowest (>2 s)', color: COLORS.VERY_BAD}));
 
 chartData.addDimension('content_type', Immutable.Map({
   label: 'Content Type',
 }));
-chartData.addDimensionGroup('content_type', "text_html", Immutable.Map({color: COLORS.GOOD, label: "text/html"}));
-chartData.addDimensionGroup('content_type', "image_jpeg", Immutable.Map({color: COLORS.YELLOW, label: "image/jpeg"}));
-chartData.addDimensionGroup('content_type', "image_png", Immutable.Map({color: COLORS.YELLOW, label: "image/png"}));
-chartData.addDimensionGroup('content_type', "image_gif", Immutable.Map({color: COLORS.YELLOW, label: "image/gif"}));
-chartData.addDimensionGroup('content_type', "text_css", Immutable.Map({color: COLORS.ORANGE1, label: "text/css"}));
-chartData.addDimensionGroup('content_type', "javascript", Immutable.Map({color: COLORS.ORANGE1, label: "javascript"}));
-chartData.addDimensionGroup('content_type', "not_set", Immutable.Map({label: "Not Set", color: COLORS.VERY_BAD}));
+chartData.addDimensionGroup('content_type', 'text_html', Immutable.Map({color: COLORS.GOOD, label: 'text/html'}));
+chartData.addDimensionGroup('content_type', 'image_jpeg', Immutable.Map({color: COLORS.YELLOW, label: 'image/jpeg'}));
+chartData.addDimensionGroup('content_type', 'image_png', Immutable.Map({color: COLORS.YELLOW, label: 'image/png'}));
+chartData.addDimensionGroup('content_type', 'image_gif', Immutable.Map({color: COLORS.YELLOW, label: 'image/gif'}));
+chartData.addDimensionGroup('content_type', 'text_css', Immutable.Map({color: COLORS.ORANGE1, label: 'text/css'}));
+chartData.addDimensionGroup('content_type', 'javascript', Immutable.Map({color: COLORS.ORANGE1, label: 'javascript'}));
+chartData.addDimensionGroup('content_type', 'not_set', Immutable.Map({label: 'Not Set', color: COLORS.VERY_BAD}));
 
 chartData.setData(Immutable.Map({
   'delay': 'fast',

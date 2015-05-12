@@ -8,16 +8,16 @@ React.render(
   <div>
     <ResourceText
       resourceText={{
-        text: "Example Text",
-        description: "Example description",
-        editUrl: "http://google.com",
+        text: 'Example Text',
+        description: 'Example description',
+        editUrl: 'http://google.com',
       }}
     />
     <ResourceText
       resourceText={{
-        text: "Example Text",
-        description: "Example description",
-        editUrl: "http://google.com",
+        text: 'Example Text',
+        description: 'Example description',
+        editUrl: 'http://google.com',
       }}
     />
   </div>

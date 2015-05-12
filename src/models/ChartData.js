@@ -64,12 +64,12 @@ class ChartData{
 
   _testDataKeys(keys) {
     if (!Map.isMap(keys)) {
-      throw new TypeError("DataKeys is not an Map");
+      throw new TypeError('DataKeys is not an Map');
     }
   }
   _testDataValues(values) {
     if (!List.isList(values)) {
-      throw new TypeError("DataValues is not a List");
+      throw new TypeError('DataValues is not a List');
     }
   }
 
@@ -98,7 +98,7 @@ class ChartData{
    */
   addMetric(metricMetadata = Map()) {
     if (!Map.isMap(metricMetadata)) {
-      throw new TypeError("metricMetadata is not a Map");
+      throw new TypeError('metricMetadata is not a Map');
     }
     this.metrics = this.metrics.push(metricMetadata);
   }
@@ -125,7 +125,7 @@ class ChartData{
    */
   addDimension(dimKey, dimMetadata = Map()) {
     if (!Map.isMap(dimMetadata)) {
-      throw new TypeError("dimMetadata is not a Map");
+      throw new TypeError('dimMetadata is not a Map');
     }
     var dimensionValue = dimMetadata.set('groups', OrderedMap());
 
@@ -163,7 +163,7 @@ class ChartData{
       throw new Error("you can't add a dimension group to a dimension that doesn't exist");
     }
     if (!Map.isMap(groupMetadata)) {
-      throw new TypeError("groupMetadata is not a Map");
+      throw new TypeError('groupMetadata is not a Map');
     }
     this.dimensions = this.dimensions.setIn([dimKey, 'groups', groupKey], groupMetadata);
   }

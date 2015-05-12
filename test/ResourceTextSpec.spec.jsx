@@ -20,7 +20,7 @@ describe('ResourceText', () => {
 
 
   it('should create a span.ResourceText-text node if a resourceText.text is given', () => {
-    let resourceText = {text: "Example Text"};
+    let resourceText = {text: 'Example Text'};
     let rtInstance = render(<ResourceText resourceText={resourceText} />);
 
     let textInstance = TestUtils.findRenderedDOMComponentWithClass(rtInstance, 'ResourceText-text');
@@ -40,7 +40,7 @@ describe('ResourceText', () => {
 
 
   it('should create a HelpTooltip component if a resourceText.description is given', () => {
-    let resourceText = {description: "Example Description"};
+    let resourceText = {description: 'Example Description'};
     let rtInstance = render(<ResourceText resourceText={resourceText} />);
 
     let helpTooltipInstance = TestUtils.findRenderedComponentWithType(rtInstance, HelpTooltip);
@@ -61,7 +61,7 @@ describe('ResourceText', () => {
 
 
   it('should create a AdminMenu component if a resourceText.editUrl is given', () => {
-    let resourceText = {description: "Example Description", editUrl: "url"};
+    let resourceText = {description: 'Example Description', editUrl: 'url'};
     let rtInstance = render(<ResourceText resourceText={resourceText} />);
 
     let adminMenuInstance = TestUtils.findRenderedComponentWithType(rtInstance, AdminMenu);
