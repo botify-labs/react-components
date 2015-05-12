@@ -39,7 +39,6 @@ let OptionExample = React.createClass({
   propTypes: {
     className: PropTypes.string.isRequired,
     option: PropTypes.shape({
-      ...SearchSelect.optionPropType,
       label: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired,
       description: PropTypes.string,

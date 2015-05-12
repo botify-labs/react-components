@@ -1,88 +1,88 @@
 $fa-font-path: "~font-awesome/fonts/";
 @import "node_modules/font-awesome/scss/font-awesome";
 
-.Select{
+.SearchSelect{
   position: relative;
 
-  .Select-inputContainer{
+  .SearchSelect-inputContainer{
     padding: 4px;
     cursor: text;
     border: 1px solid #ccc;
     background-color: #fff;
 
-    .Select-placeholder{
+    .SearchSelect-placeholder{
       color: #777;
     }
 
-    .Select-filterInput{
+    .SearchSelect-filterInput{
       border: none;
       outline: none;
 
-      &.Select-filterInput--empty{
+      &.SearchSelect-filterInput--empty{
         width: 1px;
       }
     }
   }
 
-  &.Select--focused{
-    .Select-inputContainer{
+  &.SearchSelect--focused{
+    .SearchSelect-inputContainer{
       outline: none;
       border-color: #66afe9;
       box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
     }
   }
 
-  .Select-optionsList{
+  .SearchSelect-optionsList{
     overflow: hidden;
     position: absolute;
     width: 100%;
     border: 1px solid #ccc;
     background-color: #fff;
 
-    &.Select-optionsList--closed{
+    &.SearchSelect-optionsList--closed{
       height: 0px;
       padding: 0px;
       border: none;
     }
 
-    .Select-group{
-      .Select-groupHeader{
+    .SearchSelect-group{
+      .SearchSelect-groupHeader{
         cursor: pointer;
         padding: 1px 5px;
 
-        .Select-groupHeaderIcon{
+        .SearchSelect-groupHeaderIcon{
           text-align: center;
           width: 14px;
         }
       }
 
-      .Select-groupOptions{
+      .SearchSelect-groupOptions{
         overflow: hidden;
 
-        .Select-option{
+        .SearchSelect-option{
           padding-left: 16px;
         }
       }
 
-      &.Select-group--open{
-        .Select-groupHeader .Select-groupHeaderIcon{
+      &.SearchSelect-group--open{
+        .SearchSelect-groupHeader .SearchSelect-groupHeaderIcon{
           @extend .fa;
           @extend .fa-caret-down;
         }
       }
 
-      &.Select-group--closed{
-        .Select-groupHeader .Select-groupHeaderIcon{
+      &.SearchSelect-group--closed{
+        .SearchSelect-groupHeader .SearchSelect-groupHeaderIcon{
           @extend .fa;
           @extend .fa-caret-right;
         }
-        .Select-groupOptions{
+        .SearchSelect-groupOptions{
           height: 0px;
         }
       }
 
       &:hover{
-        .Select-groupHeader{
+        .SearchSelect-groupHeader{
           cursor: pointer;
           font-weight: 600;
           background-color: rgba(204, 204, 204,.2);
@@ -90,10 +90,10 @@ $fa-font-path: "~font-awesome/fonts/";
       }
     }
 
-    .Select-option{
+    .SearchSelect-option{
       padding: 1px 8px;
 
-      &.Select-option--suggested {
+      &.SearchSelect-option--suggested {
         background-color: rgba(102, 142, 233,.2) !important;
       }
 

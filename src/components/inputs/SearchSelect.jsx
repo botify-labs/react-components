@@ -3,6 +3,7 @@ const { update } = addons;
 import _ from 'lodash';
 import classNames from 'classnames';
 
+import * as Select from './Select';
 import InputMixin from '../../mixins/InputMixin';
 
 
@@ -14,20 +15,6 @@ const KEY_CODES = {
 };
 const DEFAULT_PLACEHOLDER = 'Search option';
 
-const optionPropType = PropTypes.shape({
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-});
-
-const optionGroupOf = (_optionPropType) => PropTypes.oneOfType([
-  PropTypes.shape({
-    isGroup: PropTypes.bool.isRequired,
-    id: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    options: PropTypes.arrayOf(_optionPropType).isRequired,
-  }),
-  optionPropType,
-]);
 
 const OptionDefault = React.createClass({
 
@@ -35,7 +22,6 @@ const OptionDefault = React.createClass({
 
   propTypes: {
     option: PropTypes.shape({
-      ...optionPropType,
       label: PropTypes.string.isRequired,
     }).isRequired,
   },
@@ -55,23 +41,23 @@ const OptionDefault = React.createClass({
 
 });
 
-const Select = React.createClass({
+const SearchSelect = React.createClass({
 
-  displayName: 'Select',
+  displayName: 'SearchSelect',
 
   mixins: [
-    InputMixin(optionPropType),
+    InputMixin(Select.PropTypes.option),
   ],
 
   propTypes: {
     className: PropTypes.string,
     placeHolder: PropTypes.string,
-    options: PropTypes.arrayOf(optionGroupOf(optionPropType)).isRequired,
+    options: PropTypes.arrayOf(Select.PropTypes.optionGroupOf(Select.PropTypes.option)).isRequired,
     optionRender: PropTypes.func,
     filterOption: PropTypes.func, //By default filter option by their label.
     hideGroupsWithNoMatch: PropTypes.bool,
     valueLink: PropTypes.shape({
-      value: optionPropType,
+      value: Select.PropTypes.option,
       requestChange: PropTypes.func.isRequired,
     }).isRequired,
   },
@@ -403,13 +389,13 @@ const Select = React.createClass({
 
     return (
       <div
-        className={classNames('Select', isFocused && 'Select--focused', className)}
+        className={classNames('SearchSelect', isFocused && 'SearchSelect--focused', className)}
       >
-        <div className="Select-inputContainer"
+        <div className="SearchSelect-inputContainer"
           onClick={this._onInputContainerClick}
         >
           <input
-            className={classNames('Select-filterInput', !filterValue && 'Select-filterInput--empty')}
+            className={classNames('SearchSelect-filterInput', !filterValue && 'SearchSelect-filterInput--empty')}
             type="text"
             ref="searchInput"
             value={filterValue}
@@ -417,13 +403,13 @@ const Select = React.createClass({
             onChange={this._onFilterInputChange}
             onKeyDown={this._onFilterInputKeyDown}
           />
-          <span className="Select-valueSpan">{value ? value.label : ''}</span>
+          <span className="SearchSelect-valueSpan">{value ? value.label : ''}</span>
           {!filterValue && !value &&
-            <span className="Select-placeholder">{placeHolder}</span>
+            <span className="SearchSelect-placeholder">{placeHolder}</span>
           }
         </div>
         <div
-          className={classNames('Select-optionsList', `Select-optionsList--${isListOpen ? 'open' : 'closed'}`)}
+          className={classNames('SearchSelect-optionsList', `SearchSelect-optionsList--${isListOpen ? 'open' : 'closed'}`)}
         >
           {_.map(filteredOptions, (option, i) => {
             let render = option.isGroup ? this._renderGroup : this._renderOption;
@@ -438,17 +424,17 @@ const Select = React.createClass({
     let isOpened = this._isGroupOpen(group);
     return (
       <div
-        className={classNames("Select-group", `Select-group--${isOpened ? 'open' : 'closed'}`)}
+        className={classNames("SearchSelect-group", `SearchSelect-group--${isOpened ? 'open' : 'closed'}`)}
         key={key}
       >
         <div
-          className="Select-groupHeader"
+          className="SearchSelect-groupHeader"
           onClick={this._onGroupClick.bind(null, group)}
         >
-          <i className="Select-groupHeaderIcon" />
-          <span className="Select-groupheaderLabel">{group.label}</span>
+          <i className="SearchSelect-groupHeaderIcon" />
+          <span className="SearchSelect-groupheaderLabel">{group.label}</span>
         </div>
-        <div className="Select-groupOptions">
+        <div className="SearchSelect-groupOptions">
           {_.map(group.options, this._renderOption)}
         </div>
       </div>
@@ -465,7 +451,7 @@ const Select = React.createClass({
 
     return (
       <OptionRender
-        className={classNames('Select-option', isSuggested && 'Select-option--suggested')}
+        className={classNames('SearchSelect-option', isSuggested && 'SearchSelect-option--suggested')}
         key={key}
         option={option}
         filter={filterValue}
@@ -476,10 +462,6 @@ const Select = React.createClass({
 
 });
 
+SearchSelect.PropTypes = Select.PropTypes;
 
-Select.PropTypes = {
-  option: optionPropType,
-  optionGroupOf: optionGroupOf,
-};
-
-export default Select;
+export default SearchSelect;
