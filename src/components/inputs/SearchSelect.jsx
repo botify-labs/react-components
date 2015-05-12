@@ -92,8 +92,29 @@ const Select = React.createClass({
       filterValue: '',
       suggestedOption: null,
       isFocused: false,
+      isListOpen: false,
       openGroupsId: [],
     };
+  },
+
+  //Prop Helpers: isFocused
+
+  _focus() {
+    this.setState({isFocused: true});
+  },
+
+  _blur() {
+    this.setState({isFocused: false});
+  },
+
+  //Prop Helpers: isListOpen
+
+  _openList() {
+    this.setState({isListOpen: true});
+  },
+
+  _closeList() {
+    this.setState({isListOpen: false});
   },
 
   //Prop Helpers: value
@@ -235,20 +256,6 @@ const Select = React.createClass({
     return options;
   },
 
-  //Element Helpers
-
-  _openList() {
-    this.setState({isFocused: true});
-  },
-
-  _closeList() {
-    this.setState({isFocused: false});
-  },
-
-  _focusFilterInput() {
-    React.findDOMNode(this.refs.searchInput).focus();
-  },
-
   //Elements Listeners
 
   _cancelBlurInterval() {
@@ -258,35 +265,28 @@ const Select = React.createClass({
     }
   },
 
-  _onInputClick(e) {
-    this._cancelBlurInterval();
-    this._focusFilterInput();
-  },
-
-  _onFilterInputFocus(e) {
-    this._cancelBlurInterval();
+  _onInputContainerClick(e) {
+    this._focus();
+    //Open the list as list might be already open.
     this._openList();
   },
 
   _onFilterInputBlur(e) {
-    this._cancelBlurInterval();
     this._blurInterval = setTimeout(() => {
-      this._clearFilterValue();
-      this._closeAllGroups();
-      this._closeList();
+      this._blur();
     }, 100);
   },
 
   _onFilterInputChange(e) {
-    this._cancelBlurInterval();
     this._updateFilterValue(e.target.value);
   },
 
   _onFilterInputKeyDown(e) {
-    this._cancelBlurInterval();
+    let {isListOpen} = this.state;
+
     switch (e.which) {
     case KEY_CODES.ENTER:
-      if (!this.state.isFocused) {
+      if (!isListOpen) {
         this._openList();
         break;
       }
@@ -303,23 +303,36 @@ const Select = React.createClass({
   },
 
   _onGroupClick(group, e) {
-    this._cancelBlurInterval();
     this._toggleGroupOpenState(group);
-    this._focusFilterInput();
   },
 
   _onOptionSelect(option, e) {
-    this._cancelBlurInterval();
     this._selectOption(option);
   },
 
   componentDidUpdate(prevProps, prevState) {
     let {valueLink: {value}} = this.props,
-        {suggestedOption, filterValue} = this.state;
+        {isFocused, suggestedOption, filterValue} = this.state;
 
     console.log('componentDidUpdate');
+    this._cancelBlurInterval();
 
-    //Clear select if new value
+    if (prevState.isFocused !== isFocused) {
+      console.log('0');
+      if (isFocused) {
+        //If became focused, open the list
+        console.log('0.1');
+        this._openList();
+      } else {
+        //If became blurred, clear the select
+        console.log('0.2');
+        this._clearFilterValue();
+        this._closeAllGroups();
+        this._closeList();
+      }
+    }
+
+    //If new value, Clear select without bluring
     if (prevProps.valueLink.value !== value) {
       console.log('1');
       this._clearFilterValue();
@@ -329,6 +342,7 @@ const Select = React.createClass({
 
     if (prevState.filterValue !== filterValue) {
       console.log('2');
+      //Always remove selection (clear value) when the filtreValue change
       this._removeSelection();
 
       //Select first option if not setted whereas filterValue is not empty
@@ -357,6 +371,14 @@ const Select = React.createClass({
       console.log('3');
       this._openParentGroupIfNot(suggestedOption);
     }
+
+    //Focus input is state isFocused
+    //Note: I cannot be done in the setstate callback as when the user clicks somewhere on the list,
+    //      the input is blurred, so we need to refocus it.
+    if (isFocused) {
+      console.log('4');
+      React.findDOMNode(this.refs.searchInput).focus();
+    }
   },
 
   //Renders
@@ -367,22 +389,21 @@ const Select = React.createClass({
       placeHolder,
       valueLink: {value},
     } = this.props;
-    let { isFocused, filterValue } = this.state;
+    let { isFocused, isListOpen, filterValue } = this.state;
     let filteredOptions = this._getFilteredOptions();
 
     return (
       <div
-        className={classNames('Select', `Select--${isFocused ? 'opened' : 'closed'}`, className)}
+        className={classNames('Select', isFocused && 'Select--focused', className)}
       >
-        <div className="Select-input"
-          onClick={this._onInputClick}
+        <div className="Select-inputContainer"
+          onClick={this._onInputContainerClick}
         >
           <input
             className={classNames('Select-filterInput', !filterValue && 'Select-filterInput--empty')}
             type="text"
             ref="searchInput"
             value={filterValue}
-            onFocus={this._onFilterInputFocus}
             onBlur={this._onFilterInputBlur}
             onChange={this._onFilterInputChange}
             onKeyDown={this._onFilterInputKeyDown}
@@ -393,7 +414,7 @@ const Select = React.createClass({
           }
         </div>
         <div
-          className="Select-optionsList"
+          className={classNames('Select-optionsList', `Select-optionsList--${isListOpen ? 'open' : 'closed'}`)}
         >
           {_.map(filteredOptions, (option, i) => {
             let render = option.isGroup ? this._renderGroup : this._renderOption;
@@ -408,7 +429,7 @@ const Select = React.createClass({
     let isOpened = this._isGroupOpen(group);
     return (
       <div
-        className={classNames("Select-group", `Select-group--${isOpened ? 'opened' : 'closed'}`)}
+        className={classNames("Select-group", `Select-group--${isOpened ? 'open' : 'closed'}`)}
         key={key}
       >
         <div

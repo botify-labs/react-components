@@ -4,7 +4,7 @@ $fa-font-path: "~font-awesome/fonts/";
 .Select{
   position: relative;
 
-  .Select-input{
+  .Select-inputContainer{
     padding: 4px;
     cursor: text;
     border: 1px solid #ccc;
@@ -24,19 +24,11 @@ $fa-font-path: "~font-awesome/fonts/";
     }
   }
 
-  &.Select--opened{
-    .Select-input{
+  &.Select--focused{
+    .Select-inputContainer{
       outline: none;
       border-color: #66afe9;
       box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
-    }
-  }
-
-  &.Select--closed{
-    .Select-optionsList{
-      height: 0px;
-      padding: 0px;
-      border: none;
     }
   }
 
@@ -46,6 +38,12 @@ $fa-font-path: "~font-awesome/fonts/";
     width: 100%;
     border: 1px solid #ccc;
     background-color: #fff;
+
+    &.Select-optionsList--closed{
+      height: 0px;
+      padding: 0px;
+      border: none;
+    }
 
     .Select-group{
       .Select-groupHeader{
@@ -66,7 +64,7 @@ $fa-font-path: "~font-awesome/fonts/";
         }
       }
 
-      &.Select-group--opened{
+      &.Select-group--open{
         .Select-groupHeader .Select-groupHeaderIcon{
           @extend .fa;
           @extend .fa-caret-down;
