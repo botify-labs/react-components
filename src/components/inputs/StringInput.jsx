@@ -15,7 +15,7 @@ const StringInput = React.createClass({
     return (
       <input
         {...otherProps}
-        className={classNames(className, 'form-control')}
+        className={classNames('StringInput', className)}
         type="text"
         />
     );

@@ -80,7 +80,7 @@ const CompoundFilter = React.createClass({
             />
           {onRemove &&
             <button
-              className="CompoundFilter-remove btn"
+              className="CompoundFilter-remove"
               onClick={onRemove}
               >
               Remove
