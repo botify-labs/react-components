@@ -300,18 +300,14 @@ const SearchSelect = React.createClass({
     let {valueLink: {value}} = this.props,
         {isFocused, suggestedOption, filterValue} = this.state;
 
-    console.log('componentDidUpdate');
     this._cancelBlurInterval();
 
     if (prevState.isFocused !== isFocused) {
-      console.log('0');
       if (isFocused) {
         //If became focused, open the list
-        console.log('0.1');
         this._openList();
       } else {
         //If became blurred, clear the select
-        console.log('0.2');
         this._clearFilterValue();
         this._closeAllGroups();
         this._closeList();
@@ -320,7 +316,6 @@ const SearchSelect = React.createClass({
 
     //If new value, Clear select without bluring
     if (prevProps.valueLink.value !== value) {
-      console.log('1');
 
       if (value) {
         this._clearFilterValue();
@@ -331,17 +326,14 @@ const SearchSelect = React.createClass({
     }
 
     if (prevState.filterValue !== filterValue) {
-      console.log('2');
 
       if (!filterValue && !value) {
-        console.log('2.0');
         this._clearSuggestedOption();
       }
 
       //Select first option if not setted whereas filterValue is not empty
       // and remove selection (clear value) when the filtreValue change
       if (filterValue) {
-        console.log('2.1');
         this._suggestFirstOption(filterValue);
         this._removeSelection();
       }
@@ -349,21 +341,18 @@ const SearchSelect = React.createClass({
       //Open all groups if filterValue was empty
       let filterValueWasEmpty = prevState.filterValue.length === 0 && filterValue.length > 0;
       if (filterValueWasEmpty) {
-        console.log('2.2');
         this._openAllGroups();
       }
 
       //Close all groups if filterValue become empty
       let filterValueBecomeEmpty = prevState.filterValue.length > 0 && filterValue.length === 0;
       if (filterValueBecomeEmpty) {
-        console.log('2.3');
         this._closeAllGroups();
       }
     }
 
     //Open Suggested Group
     if (suggestedOption) {
-      console.log('3');
       this._openParentGroupIfNot(suggestedOption);
     }
 
@@ -371,7 +360,6 @@ const SearchSelect = React.createClass({
     //Note: I cannot be done in the setstate callback as when the user clicks somewhere on the list,
     //      the input is blurred, so we need to refocus it.
     if (isFocused) {
-      console.log('4');
       React.findDOMNode(this.refs.searchInput).focus();
     }
   },
@@ -462,7 +450,7 @@ const SearchSelectGroup = React.createClass({
     label: PropTypes.string.isRequired,
     isOpen: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired,
-    children: PropTypes.node.isFocused,
+    children: PropTypes.node.isRequired,
   },
 
   render() {
