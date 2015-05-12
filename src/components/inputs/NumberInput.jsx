@@ -15,9 +15,10 @@ const NumberInput = React.createClass({
   },
 
   render() {
-    let { className } = this.props;
+    let { className, ...otherProps } = this.props;
     return (
       <input
+        {...otherProps}
         className={classNames('NumberInput', className)}
         value={this.getValue()}
         onChange={e => this.requestChange({ $set: parseFloat(e.target.value) })}

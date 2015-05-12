@@ -76,11 +76,12 @@ const Select = React.createClass({
   },
 
   render() {
-    let { options, className, nullLabel } = this.props;
+    let { options, className, nullLabel, ...otherProps } = this.props;
     let selectedOptionId = this.getValue();
 
     return (
       <select
+        {...otherProps}
         className={classNames('Select', className)}
         valueLink={this.link(selectedOptionId || NULL_OPTION, this._handleChange)}
         >
