@@ -70,12 +70,15 @@
         "valid-typeof":             2,
 
         //Best Practices
-        "block-scoped-var":         0,
+        "block-scoped-var":         0, //Not relevant in ES6
         "complexity":               0,
+        "consistent-return":        2,
+        "curly":                    2,
+        "default-case":             0,
         "dot-notation":             [2, {"allowKeywords": true}],
+        "dot-location":             [1, "property"],
         "eqeqeq":                   2,
         "guard-for-in":             2,
-        "indent":                   [2, 2],
         "no-alert":                 2,
         "no-caller":                2,
         "no-eq-null":               2,
@@ -114,6 +117,7 @@
         "camelcase":                2,
         "comma-style":              [2, "last"],
         "eol-last":                 2,
+        "indent":                   [2, 2],
         "new-cap":                  [2, "newIsCap"], // Immutable collections and React mixins do not respect this rule
         "no-new-object":            2,
         "no-underscore-dangle":     0, // allow private naming with _
