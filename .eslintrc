@@ -116,7 +116,7 @@
         "space-infix-ops":          2,
 
         //ECMAScript 6
-        "strict":                   0, //Made by babel
+        "strict":                   [2, "never"], //Made by babel
 
         //Legacy
         "max-depth":                0,

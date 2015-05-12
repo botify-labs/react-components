@@ -1,5 +1,3 @@
-'use strict';
-
 import React, {PropTypes} from 'react';
 import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 import classNames from 'classnames';
