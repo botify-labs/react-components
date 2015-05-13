@@ -68,7 +68,7 @@ const PredicateBaseInput = React.createClass({
     let predicate = this._getPredicate(predicateId);
 
     return (
-      <div className={classNames('PredicateBaseInput', disabled && 'isDisabled', className)}>
+      <div className={classNames('PredicateBaseInput', disabled && 'PredicateBaseInput--disabled', className)}>
         <Select
           disabled={disabled}
           className="PredicateBaseInput-predicateOptions"
