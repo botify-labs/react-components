@@ -29,6 +29,7 @@ const TopCompoundFilter = React.createClass({
       // Id of the selected operator in `OPERATOR_OPTIONS`
       operatorId: PropTypes.oneOf(OPERATOR_OPTIONS.map((operator) => operator.id)),
       // List of the values of the `CompoundFilter` children
+      // While a map may be more efficient, item order must be assured, so we use an array
       compoundFilters: PropTypes.arrayOf(PropTypes.shape({
         // Each compound filter should have a unique key, so that its component can be correctly
         // reconciled between renders.
