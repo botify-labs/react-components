@@ -51,7 +51,7 @@ const ButtonSelect = React.createClass({
           }
           return (
             <button
-              className={classNames('ButtonSelect-option', isActive && 'isActive')}
+              className={classNames('ButtonSelect-option', option.className, isActive && 'isActive')}
               key={option.id}
               onClick={onClick}
               disabled={disabled}
