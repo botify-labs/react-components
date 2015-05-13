@@ -14,13 +14,17 @@ const NumberInput = React.createClass({
     className: PropTypes.string,
   },
 
+  _handleChange(value) {
+    this.requestChange({ $set: parseFloat(value) });
+  },
+
   render() {
-    let { className } = this.props;
+    let { className, ...otherProps } = this.props;
     return (
       <input
+        {...otherProps}
         className={classNames('NumberInput', className)}
-        value={this.getValue()}
-        onChange={e => this.requestChange({ $set: parseFloat(e.target.value) })}
+        valueLink={this.link(this.getValue(), this._handleChange)}
         type="number"
         />
     );

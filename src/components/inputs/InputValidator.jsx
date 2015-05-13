@@ -43,7 +43,7 @@ const InputValidator = (Input, validator) => React.createClass({
     let { isValid, inputValue } = this.getValue();
 
     return (
-      <div className={classNames('InputValidator', isValid ? 'isValid' : 'isInvalid')}>
+      <div className={classNames('InputValidator', `InputValidator--${isValid ? 'valid' : 'invalid'}`)}>
         <Input
           {...otherProps}
           valueLink={{ value: inputValue, requestChange: this._handleChange }}

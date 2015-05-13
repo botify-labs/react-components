@@ -31,6 +31,7 @@ const PredicateBaseInput = React.createClass({
     className: PropTypes.string,
     // List of predicate options `{ id, label, input }`
     predicateOptions: predicateOptionsPropType.isRequired,
+    disabled: PropTypes.bool,
   },
 
   /**
@@ -62,18 +63,20 @@ const PredicateBaseInput = React.createClass({
   },
 
   render() {
-    let { predicateOptions, className } = this.props;
+    let { predicateOptions, className, disabled } = this.props;
     let { predicateId, predicateInputValue } = this.getValue();
     let predicate = this._getPredicate(predicateId);
 
     return (
-      <div className={classNames('PredicateBaseInput', className)}>
+      <div className={classNames('PredicateBaseInput', disabled && 'PredicateBaseInput--disabled', className)}>
         <Select
+          disabled={disabled}
           className="PredicateBaseInput-predicateOptions"
           options={predicateOptions}
           valueLink={this.link(predicateId, this._handlePredicateTypeChange)}
           />
         <predicate.input
+          disabled={disabled}
           className="PredicateBaseInput-predicateInput"
           valueLink={this.link(predicateInputValue, this._handlePredicateValueChange)}
           />
