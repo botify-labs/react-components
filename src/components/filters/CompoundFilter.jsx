@@ -49,8 +49,6 @@ const CompoundFilter = React.createClass({
   },
 
   _handleFilterChange(idx, key, value) {
-    let { filters } = this.getValue();
-
     if (key === uniqueDummyKey) {
       // The dummy filter got assigned a value: it is now a proper filter.
       // Create a new unique id for the next dummy filter.
@@ -60,7 +58,7 @@ const CompoundFilter = React.createClass({
     this.requestChange({
       filters: {
         $splice: [
-          [idx, 1, { key, value }]
+          [idx, 1, { key, value }],
         ],
       },
     });
@@ -82,10 +80,12 @@ const CompoundFilter = React.createClass({
 
     // Append a dummy filter with a default value to the list of filters.
     // Dummy filters can request the creation of a proper filter by calling `requestChange` with a new value.
-    filters = filters.concat([{
-      key: uniqueDummyKey,
-      value: getDefaultValue(FilterInput),
-    }]);
+    filters = filters.concat([
+      {
+        key: uniqueDummyKey,
+        value: getDefaultValue(FilterInput),
+      },
+    ]);
 
     return (
       <div className={classNames('CompoundFilter', className)}>

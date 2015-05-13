@@ -24,7 +24,6 @@ const PredicateBaseInput = React.createClass({
       predicateId: PropTypes.string,
       // Value of the selected predicate input, its format depends entirely on the predicate input
       predicateInputValue: PropTypes.any,
-      disabled: PropTypes.bool,
     })),
   ],
 
@@ -32,6 +31,7 @@ const PredicateBaseInput = React.createClass({
     className: PropTypes.string,
     // List of predicate options `{ id, label, input }`
     predicateOptions: predicateOptionsPropType.isRequired,
+    disabled: PropTypes.bool,
   },
 
   /**
