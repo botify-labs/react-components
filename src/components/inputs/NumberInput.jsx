@@ -18,7 +18,7 @@ const NumberInput = React.createClass({
     let { className } = this.props;
     return (
       <input
-        className={classNames('NumberInput', className, 'form-control')}
+        className={classNames('NumberInput', className)}
         value={this.getValue()}
         onChange={e => this.requestChange({ $set: parseFloat(e.target.value) })}
         type="number"
