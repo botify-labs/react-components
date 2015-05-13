@@ -95,9 +95,8 @@ const Select = React.createClass({
                 {option.options.map(this._renderOption)}
               </optgroup>
             );
-          } else {
-            return this._renderOption(option);
           }
+          return this._renderOption(option);
         })}
       </select>
     );
