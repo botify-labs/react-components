@@ -250,23 +250,24 @@ const SearchSelect = React.createClass({
 
   //Elements Listeners
 
-  _cancelBlurInterval() {
-    if (this._blurInterval) {
-      clearTimeout(this._blurInterval);
-      this._blurInterval = null;
-    }
-  },
-
   _onInputContainerClick(e) {
     this._focus();
     //Open the list as list might be already open.
     this._openList();
   },
 
+  _handleMouseDown(e) {
+    if (this.state.isFocused) {
+      this._ignoreNextBlur = true;
+    }
+  },
+
   _onFilterInputBlur(e) {
-    this._blurInterval = setTimeout(() => {
+    if (this._ignoreNextBlur) {
+      this._ignoreNextBlur = false;
+    } else {
       this._blur();
-    }, 100);
+    }
   },
 
   _onFilterInputChange(e) {
@@ -307,8 +308,6 @@ const SearchSelect = React.createClass({
     let {isFocused, suggestedOptionId, filterValue} = this.state;
     let selectedOptionId = this._getSelectedOptionId(),
         previousSelectedOptionId = this._getSelectedOptionId(prevProps);
-
-    this._cancelBlurInterval();
 
     if (prevState.isFocused !== isFocused) {
       if (isFocused) {
@@ -371,10 +370,6 @@ const SearchSelect = React.createClass({
     }
   },
 
-  componentWillUnmount() {
-    this._cancelBlurInterval();
-  },
-
   //Renders
 
   render() {
@@ -391,6 +386,7 @@ const SearchSelect = React.createClass({
     return (
       <div
         className={classNames('SearchSelect', isFocused && 'SearchSelect--focused', className)}
+        onMouseDown={this._handleMouseDown}
       >
         <div className="SearchSelect-inputContainer"
           onClick={this._onInputContainerClick}
