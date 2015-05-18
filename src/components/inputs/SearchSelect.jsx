@@ -214,11 +214,11 @@ const SearchSelect = React.createClass({
   //Prop Helpers: options
 
   _getOption(optionId) {
-    return _.find(this._getOptionsIterator(), {id: optionId});
+    return _.find(this._getOptionsIterator(false), {id: optionId});
   },
 
-  _getOptionsIterator() {
-    let options = this._getFilteredOptions();
+  _getOptionsIterator(filtered = true) {
+    let options = filtered ? this._getFilteredOptions() : this.props.options;
     return _.flatten(_.map(options, (option) => option.isGroup ? option.options : option));
   },
 
