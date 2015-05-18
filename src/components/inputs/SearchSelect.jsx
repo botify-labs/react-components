@@ -104,10 +104,6 @@ const SearchSelect = React.createClass({
 
   //Prop Helpers: value
 
-  _removeSelection() {
-    this.requestChange({ $set: null });
-  },
-
   _selectOption(optionId) {
     this.requestChange({ $set: optionId });
   },
@@ -347,7 +343,6 @@ const SearchSelect = React.createClass({
       // and remove selection (clear value) when the filtreValue change
       if (filterValue) {
         this._suggestFirstOption(filterValue);
-        this._removeSelection();
       }
 
       //Open all groups if filterValue was empty
