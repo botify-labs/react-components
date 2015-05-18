@@ -404,9 +404,11 @@ const SearchSelect = React.createClass({
             onChange={this._onFilterInputChange}
             onKeyDown={this._onFilterInputKeyDown}
           />
-          <span className="SearchSelect-valueSpan">{selectedOption ? selectedOption.label : ''}</span>
-          {!filterValue && !selectedOptionId &&
-            <span className="SearchSelect-placeholder">{placeHolder}</span>
+          {!filterValue &&
+            (selectedOption ?
+              <span className="SearchSelect-valueSpan">{selectedOption.label}</span> :
+              <span className="SearchSelect-placeholder">{placeHolder}</span>
+            )
           }
         </div>
         <div
