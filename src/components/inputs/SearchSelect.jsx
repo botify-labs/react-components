@@ -475,7 +475,7 @@ const SearchSelectGroup = React.createClass({
           className="SearchSelectGroup-header"
           onClick={onClick}
         >
-          <i className="SearchSelectGroup-headerIcon" />
+          <i className={`SearchSelectGroup-headerIcon--${isOpen ? 'open' : 'closed'}`} />
           <span className="SearchSelectGroup-headerLabel">{label}</span>
         </div>
         <div className="SearchSelectGroup-options">

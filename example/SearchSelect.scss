@@ -64,18 +64,17 @@ $fa-font-path: "~font-awesome/fonts/";
         }
       }
 
-      &.SearchSelectGroup--open{
-        .SearchSelectGroup-header .SearchSelectGroup-headerIcon{
-          @extend .fa;
-          @extend .fa-caret-down;
-        }
+      .SearchSelectGroup-headerIcon--open{
+        @extend .fa;
+        @extend .fa-caret-down;
+      }
+
+      .SearchSelectGroup-headerIcon--closed{
+        @extend .fa;
+        @extend .fa-caret-right;
       }
 
       &.SearchSelectGroup--closed{
-        .SearchSelectGroup-header .SearchSelectGroup-headerIcon{
-          @extend .fa;
-          @extend .fa-caret-right;
-        }
         .SearchSelectGroup-options{
           height: 0px;
         }
