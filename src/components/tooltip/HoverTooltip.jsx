@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react/addons';
 
 import Tooltip from './Tooltip';
+import Append from './Append';
 
 var HoverTooltip = React.createClass({
 
@@ -11,6 +12,7 @@ var HoverTooltip = React.createClass({
     renderTooltip: PropTypes.func.isRequired,
     children: PropTypes.node,
     style: PropTypes.object,
+    appendTo: PropTypes.instanceOf(Node),
   },
 
   getInitialState() {
@@ -20,17 +22,26 @@ var HoverTooltip = React.createClass({
   },
 
   render() {
-    let { hasTooltip, renderTooltip, children, style, ...otherProps } = this.props;
+    let { hasTooltip, renderTooltip, children, style, appendTo, ...otherProps } = this.props;
+
+    let tooltip;
+    if (hasTooltip) {
+      tooltip = (
+        <Tooltip
+          key="__tooltip"
+          position={this.state.mousePosition}
+          children={renderTooltip()}
+        />
+      );
+
+      if (appendTo) {
+        tooltip = <Append to={appendTo}>{tooltip}</Append>;
+      }
+    }
 
     return (
       <div {...otherProps} style={{...style, position: 'relative'}} onMouseMove={this._handleMouseMove}>
-        {hasTooltip &&
-          <Tooltip
-            key="__tooltip"
-            position={this.state.mousePosition}
-            children={renderTooltip()}
-          />
-        }
+        {tooltip}
         {children}
       </div>
     );
