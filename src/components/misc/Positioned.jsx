@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react/addons';
 
-var Tooltip = React.createClass({
+var Positioned = React.createClass({
 
-  displayName: 'Tooltip',
+  displayName: 'Positioned',
 
   propTypes: {
     position: React.PropTypes.shape({
@@ -16,7 +16,7 @@ var Tooltip = React.createClass({
 
   getDefaultProps() {
     return {
-      margin: 10, // x and y margin between the mouse and the tooltip
+      margin: 10, // x and y margin between the mouse and the component
     };
   },
 
@@ -54,7 +54,7 @@ var Tooltip = React.createClass({
     style = { ...this._getCommonStyle(), ...this._getPositionStyle(), ...style };
 
     return (
-      <div {...otherProps} className="Tooltip" style={style}>
+      <div {...otherProps} className="Positioned" style={style}>
         {children}
       </div>
     );
@@ -67,7 +67,7 @@ var Tooltip = React.createClass({
   _getPositionStyle() {
     var { width, height } = this.state;
     if (width === null) {
-      // The tooltip hasn't rendered yet
+      // The component hasn't rendered yet
       return { top: -9999, left: -9999 };
     }
 
@@ -75,7 +75,7 @@ var Tooltip = React.createClass({
     var { position, margin } = this.props;
     var containerWidth = document.body.offsetWidth;
 
-    // Calculate the best position for the tooltip so that
+    // Calculate the best position for the component so that
     //  * it won't overlay its given focus position
     //  * it won't cross its container's boundaries
 
@@ -98,4 +98,4 @@ var Tooltip = React.createClass({
 
 });
 
-export default Tooltip;
+export default Positioned;

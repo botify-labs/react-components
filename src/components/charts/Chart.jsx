@@ -1,6 +1,6 @@
 import React from 'react/addons';
 
-import HoverTooltip from '../tooltip/HoverTooltip';
+import FollowCursor from '../misc/FollowCursor';
 import TooltipTable from '../tooltip/TooltipTable';
 import ChartData from '../../models/ChartData';
 
@@ -24,9 +24,9 @@ var Chart = React.createClass({
 
   render() {
     return (
-      <HoverTooltip
-        hasTooltip={!!this.state.hoveredData}
-        renderTooltip={this._renderTooltip}
+      <FollowCursor
+        hasOverlay={!!this.state.hoveredData}
+        renderOverlay={this._renderTooltip}
       >
         <this.props.chart
           {...this.props}
@@ -36,7 +36,7 @@ var Chart = React.createClass({
           onChartMouseOut={this._handleChartMouseOut}
           onMouseMove={this._updateMousePosition}
         />
-      </HoverTooltip>
+      </FollowCursor>
     );
   },
 
