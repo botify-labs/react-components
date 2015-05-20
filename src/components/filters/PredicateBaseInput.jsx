@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react/addons';
 import _ from 'lodash';
 import classNames from 'classnames';
 
-import Select from '../inputs/Select';
+import SearchSelect from '../inputs/SearchSelect';
 
 import InputMixin, { getDefaultValue } from '../../mixins/InputMixin';
 
@@ -69,7 +69,7 @@ const PredicateBaseInput = React.createClass({
 
     return (
       <div className={classNames('PredicateBaseInput', disabled && 'PredicateBaseInput--disabled', className)}>
-        <Select
+        <SearchSelect
           disabled={disabled}
           className="PredicateBaseInput-predicateOptions"
           options={predicateOptions}
