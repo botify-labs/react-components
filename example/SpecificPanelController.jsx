@@ -9,9 +9,9 @@ import VennData from '../src/models/VennData';
 import Immutable from 'immutable';
 import Color from 'color';
 
-var COLORS = {}; //#lol
+let COLORS = {}; //#lol
 
-var chartData = new ChartData();
+let chartData = new ChartData();
 
 chartData.addMetric(Immutable.Map({
   label: 'Count',
@@ -21,21 +21,21 @@ chartData.addMetric(Immutable.Map({
 chartData.addDimension('delay', Immutable.Map({
   label: 'Delay',
 }));
-chartData.addDimensionGroup('delay', 'fast', Immutable.Map({label: "Fast (<500 ms)", color: COLORS.GOOD}));
-chartData.addDimensionGroup('delay', 'medium', Immutable.Map({label: "Medium (500 ms < 1 s)", color: COLORS.MEDIUM}));
-chartData.addDimensionGroup('delay', 'slow', Immutable.Map({label: "Slow (1 s < 2 s)", color: COLORS.BAD}));
-chartData.addDimensionGroup('delay', 'slowest', Immutable.Map({label: "Slowest (>2 s)", color: COLORS.VERY_BAD}));
+chartData.addDimensionGroup('delay', 'fast', Immutable.Map({label: 'Fast (<500 ms)', color: COLORS.GOOD}));
+chartData.addDimensionGroup('delay', 'medium', Immutable.Map({label: 'Medium (500 ms < 1 s)', color: COLORS.MEDIUM}));
+chartData.addDimensionGroup('delay', 'slow', Immutable.Map({label: 'Slow (1 s < 2 s)', color: COLORS.BAD}));
+chartData.addDimensionGroup('delay', 'slowest', Immutable.Map({label: 'Slowest (>2 s)', color: COLORS.VERY_BAD}));
 
 chartData.addDimension('content_type', Immutable.Map({
   label: 'Content Type',
 }));
-chartData.addDimensionGroup('content_type', "text_html", Immutable.Map({color: COLORS.GOOD, label: "text/html"}));
-chartData.addDimensionGroup('content_type', "image_jpeg", Immutable.Map({color: COLORS.YELLOW, label: "image/jpeg"}));
-chartData.addDimensionGroup('content_type', "image_png", Immutable.Map({color: COLORS.YELLOW, label: "image/png"}));
-chartData.addDimensionGroup('content_type', "image_gif", Immutable.Map({color: COLORS.YELLOW, label: "image/gif"}));
-chartData.addDimensionGroup('content_type', "text_css", Immutable.Map({color: COLORS.ORANGE1, label: "text/css"}));
-chartData.addDimensionGroup('content_type', "javascript", Immutable.Map({color: COLORS.ORANGE1, label: "javascript"}));
-chartData.addDimensionGroup('content_type', "not_set", Immutable.Map({label: "Not Set", color: COLORS.VERY_BAD}));
+chartData.addDimensionGroup('content_type', 'text_html', Immutable.Map({color: COLORS.GOOD, label: 'text/html'}));
+chartData.addDimensionGroup('content_type', 'image_jpeg', Immutable.Map({color: COLORS.YELLOW, label: 'image/jpeg'}));
+chartData.addDimensionGroup('content_type', 'image_png', Immutable.Map({color: COLORS.YELLOW, label: 'image/png'}));
+chartData.addDimensionGroup('content_type', 'image_gif', Immutable.Map({color: COLORS.YELLOW, label: 'image/gif'}));
+chartData.addDimensionGroup('content_type', 'text_css', Immutable.Map({color: COLORS.ORANGE1, label: 'text/css'}));
+chartData.addDimensionGroup('content_type', 'javascript', Immutable.Map({color: COLORS.ORANGE1, label: 'javascript'}));
+chartData.addDimensionGroup('content_type', 'not_set', Immutable.Map({label: 'Not Set', color: COLORS.VERY_BAD}));
 
 chartData.setData(Immutable.Map({
   'delay': 'fast',
@@ -54,27 +54,27 @@ chartData.setData(Immutable.Map({
   'content_type': 'javascript',
 }), Immutable.List([4]));
 
-var newUrls = 100;
-var disappearedUrls = 50;
-var allUrls = 150;
+let newUrls = 100;
+let disappearedUrls = 50;
+let allUrls = 150;
 
-var currentUrls = allUrls;
-var previousUrls = disappearedUrls + (allUrls - newUrls);
-var commonUrls = allUrls - newUrls;
+let currentUrls = allUrls;
+let previousUrls = disappearedUrls + (allUrls - newUrls);
+let commonUrls = allUrls - newUrls;
 
-var vennData = new VennData();
+let vennData = new VennData();
 
-var c1 = Color('#80bbe7');
-var c2 = Color('#ffbf85');
-var c3 = c1.clone().mix(c2, 0.5).negate();
+let c1 = Color('#80bbe7');
+let c2 = Color('#ffbf85');
+let c3 = c1.clone().mix(c2, 0.5).negate();
 
-var set1 = Immutable.Map({
+let set1 = Immutable.Map({
   size: currentUrls,
   color: c1.rgbString(),
   label: 'New URLs',
 });
 
-var set2 = Immutable.Map({
+let set2 = Immutable.Map({
   size: previousUrls,
   color: c2.rgbString(),
   label: 'Disappeared URLs',
@@ -83,7 +83,7 @@ var set2 = Immutable.Map({
 vennData.addSet(set1);
 vennData.addSet(set2);
 
-var set3 = Immutable.Map({
+let set3 = Immutable.Map({
   size: commonUrls,
   color: c3.rgbString(),
   label: 'Common URLs',
@@ -91,7 +91,7 @@ var set3 = Immutable.Map({
 
 vennData.addIntersection(Immutable.Set.of(set1, set2), set3);
 
-var ChartRenderer = React.createClass({
+let ChartRenderer = React.createClass({
 
   displayName: 'ChartRenderer',
 
@@ -100,7 +100,7 @@ var ChartRenderer = React.createClass({
   },
 
   render() {
-    var style = {
+    let style = {
       width: 1000,
       height: 500,
     };
@@ -114,7 +114,7 @@ var ChartRenderer = React.createClass({
 
 });
 
-var SpecificPanelController = React.createClass({
+let SpecificPanelController = React.createClass({
 
   displayName: 'SpecificPanelController',
 
@@ -171,11 +171,14 @@ var SpecificPanelController = React.createClass({
   },
 
   _renderVennDiagram() {
+    let onClick = () => {
+      console.log('hello'); // eslint-disable-line
+    };
     return (
       <VennDiagram
         key="vennDiagram"
         vennData={vennData}
-        onClick={() => console.log('hello')}
+        onClick={onClick}
         inclusive
       />
     );
@@ -191,15 +194,15 @@ var SpecificPanelController = React.createClass({
   },
 
   _exportChart() {
-    var div = document.createElement('div');
+    let div = document.createElement('div');
     document.body.appendChild(div);
 
-    var style = {
+    let style = {
       width: 1000,
       height: 500,
     };
 
-    var chart = React.render(
+    let chart = React.render(
       <ChartRenderer
         style={style}
         getImageURI={() => this.refs.chart.getImageURI()}
@@ -208,7 +211,7 @@ var SpecificPanelController = React.createClass({
       </ChartRenderer>
     , div);
 
-    var imageURI = chart.getImageURI();
+    let imageURI = chart.getImageURI();
     window.open(imageURI);
 
     document.body.removeChild(div);

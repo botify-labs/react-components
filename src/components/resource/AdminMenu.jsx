@@ -1,5 +1,3 @@
-'use strict';
-
 import React, {PropTypes} from 'react';
 import {DropdownButton, MenuItem} from 'react-bootstrap';
 import classNames from 'classnames';
@@ -20,7 +18,7 @@ const AdminMenu = React.createClass({
   },
 
   render() {
-    var title = <i className="fa fa-puzzle-piece"></i>;
+    let title = <i className="fa fa-puzzle-piece"></i>;
     return (
       <DropdownButton className={classNames(this.props.className, 'AdminMenu', 'transparent')}
                       title={title} noCaret>

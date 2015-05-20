@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react/addons';
 import Positioned from './Positioned';
 import Append from './Append';
 
-var FollowCursor = React.createClass({
+let FollowCursor = React.createClass({
 
   displayName: 'FollowCursor',
 

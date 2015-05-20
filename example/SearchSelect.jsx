@@ -78,7 +78,7 @@ let render = (value) => {
         options={options}
         optionRender={OptionExample}
         valueLink={{
-          value: value,
+          value,
           requestChange(newValue) {
             render(newValue);
           },

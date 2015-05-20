@@ -1,0 +1,8 @@
+node_modules/**
+bower_components/**
+dist/**
+
+//Not ES6 files
+gulpfile.js
+karma.conf.js
+make-webpack-config.js

@@ -7,7 +7,7 @@ import PanelMenu from './PanelMenu';
 import 'font-awesome/css/font-awesome.css';
 import './Panel.scss';
 
-var Panel = React.createClass({
+let Panel = React.createClass({
 
   displayName: 'Panel',
 
@@ -44,10 +44,10 @@ var Panel = React.createClass({
   },
 
   render() {
-    var displayModes = this.props.displayModes;
-    var actions = this.props.actions;
+    let displayModes = this.props.displayModes;
+    let actions = this.props.actions;
 
-    var currentDisplayMode = _.find(displayModes, {id: this.state.currentDisplayModeId});
+    let currentDisplayMode = _.find(displayModes, {id: this.state.currentDisplayModeId});
 
     return (
       <div className={classNames(this.props.className, 'Panel')}>

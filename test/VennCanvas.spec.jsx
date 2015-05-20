@@ -10,7 +10,7 @@ import { CircleDifference, CircleIntersection } from '../src/components/svg/Circ
 describe('VennCanvas', () => {
   let vennData = new VennData();
 
-  var testSets = [];
+  let testSets = [];
   testSets.push(Map({
     size: 100,
     color: 'red',
@@ -23,7 +23,7 @@ describe('VennCanvas', () => {
   }));
   testSets.forEach((set) => vennData.addSet(set));
 
-  var testIntersections = [];
+  let testIntersections = [];
   testIntersections.push({
     sets: Set.of(testSets[0], testSets[1]),
     intersection: Map({

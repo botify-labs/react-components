@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react/addons';
 
-var Positioned = React.createClass({
+let Positioned = React.createClass({
 
   displayName: 'Positioned',
 
@@ -28,7 +28,7 @@ var Positioned = React.createClass({
   },
 
   componentDidMount() {
-    var node = React.findDOMNode(this);
+    let node = React.findDOMNode(this);
 
     this.setState({
       width: node.offsetWidth,
@@ -37,7 +37,7 @@ var Positioned = React.createClass({
   },
 
   componentDidUpdate(prevProps, prevState) {
-    var node = React.findDOMNode(this);
+    let node = React.findDOMNode(this);
     let width = node.offsetWidth;
     let height = node.offsetHeight;
 
@@ -65,15 +65,15 @@ var Positioned = React.createClass({
   },
 
   _getPositionStyle() {
-    var { width, height } = this.state;
+    let { width, height } = this.state;
     if (width === null) {
       // The component hasn't rendered yet
       return { top: -9999, left: -9999 };
     }
 
-    var positionStyle = {};
-    var { position, margin } = this.props;
-    var containerWidth = document.body.offsetWidth;
+    let positionStyle = {};
+    let { position, margin } = this.props;
+    let containerWidth = document.body.offsetWidth;
 
     // Calculate the best position for the component so that
     //  * it won't overlay its given focus position

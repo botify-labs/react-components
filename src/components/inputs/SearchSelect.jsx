@@ -478,7 +478,7 @@ const SearchSelectGroup = React.createClass({
     let {label, isOpen, onClick, children, ...otherProps} = this.props;
     return (
       <div
-        className={classNames("SearchSelectGroup", `SearchSelectGroup--${isOpen ? 'open' : 'closed'}`)}
+        className={classNames('SearchSelectGroup', `SearchSelectGroup--${isOpen ? 'open' : 'closed'}`)}
         {...otherProps}
       >
         <div

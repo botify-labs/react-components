@@ -7,7 +7,7 @@ import ChartData from '../models/ChartData';
 import 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css';
 import 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js';
 
-var Table = React.createClass({
+let Table = React.createClass({
 
   displayName: 'Table',
 
@@ -41,7 +41,6 @@ var Table = React.createClass({
   },
 
   exportTable() {
-    console.log('Exporting table!');
   },
 
   componentDidMount() {
@@ -59,13 +58,13 @@ var Table = React.createClass({
 
   _getData() {
     return this.props.chartData.rawData.entrySeq().map(([dataKeys, dataValues]) => {
-      var groups = dataKeys.entrySeq().map(([dimKey, groupKey]) => {
-        var group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
+      let groups = dataKeys.entrySeq().map(([dimKey, groupKey]) => {
+        let group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
         return group.get('label');
       });
 
-      var metrics = dataValues.map((value, index) => {
-        var metric = this.props.chartData.getMetric(index);
+      let metrics = dataValues.map((value, index) => {
+        let metric = this.props.chartData.getMetric(index);
         return metric.get('render')(value);
       });
 
@@ -74,13 +73,13 @@ var Table = React.createClass({
   },
 
   _getColumns() {
-    var dimensions = this.props.chartData.dimensions.entrySeq().map(([dimensionKey, dimensionMetadata]) => {
+    let dimensions = this.props.chartData.dimensions.entrySeq().map(([dimensionKey, dimensionMetadata]) => {
       return {
         title: dimensionMetadata.get('label'),
       };
     });
 
-    var metrics = this.props.chartData.metrics.map((metric) => {
+    let metrics = this.props.chartData.metrics.map((metric) => {
       return {
         title: metric.get('label'),
       };

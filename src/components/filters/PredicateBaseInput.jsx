@@ -37,6 +37,7 @@ const PredicateBaseInput = React.createClass({
   /**
    * Returns the predicate option with the given id
    * @param  {String} predicateId
+   * @return {PredicateOption}
    */
   _getPredicate(predicateId) {
     return _.find(this.props.predicateOptions, { id: predicateId });

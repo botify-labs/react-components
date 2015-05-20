@@ -11,7 +11,7 @@ import ChartDataGoogleDataAdapter from '../../../adapters/ChartDataGoogleDataAda
  *   chart: google.visualization.PieChart
  * })
  */
-var GoogleChart = React.createClass({
+let GoogleChart = React.createClass({
 
   displayName: 'GoogleChart',
 
@@ -91,6 +91,7 @@ var GoogleChart = React.createClass({
   /**
    * Called when the mouse moves over the chart
    * Keeps track of what element the mouse is currently hovering
+   * @param {Event} e
    */
   _handleChartMouseMove(e) {
     this._prevTargetID = this._targetID;
@@ -99,20 +100,22 @@ var GoogleChart = React.createClass({
 
   /**
    * Called when a chart data point or category is selected
+   * @param {Event} e
    */
   _handleChartSelect(e) {
     if (!this.props.onChartSelect) {
       return;
     }
 
-    var filter = this.adapter.selectionToDataKeys(e);
-    var data = this.props.chartData.filterData(filter);
+    let filter = this.adapter.selectionToDataKeys(e);
+    let data = this.props.chartData.filterData(filter);
 
     this.props.onChartSelect(data);
   },
 
   /**
    * Called when the mouse enters a chart data point
+   * @param {Event} e
    */
   _handleChartMouseOver(e) {
     if (!this.props.onChartMouseOver || this._targetID.indexOf('legendentry') === 0) {
@@ -120,8 +123,8 @@ var GoogleChart = React.createClass({
       return;
     }
 
-    var filter = this.adapter.selectionToDataKeys(e);
-    var data = this.props.chartData.filterData(filter);
+    let filter = this.adapter.selectionToDataKeys(e);
+    let data = this.props.chartData.filterData(filter);
 
     this.props.onChartMouseOver(data);
   },
@@ -140,6 +143,7 @@ var GoogleChart = React.createClass({
 
   /**
    * Returns the google chart options
+   * @return {Object}
    */
   _getOptions() {
     return _.assign({}, this.props.options, {

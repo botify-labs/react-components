@@ -1,5 +1,3 @@
-'use strict';
-
 import React, {PropTypes} from 'react';
 import HelpTooltip from './HelpTooltip';
 import AdminMenu from './AdminMenu';

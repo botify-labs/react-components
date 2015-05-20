@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import {DropdownButton, MenuItem} from 'react-bootstrap';
 
-var PanelMenu = React.createClass({
+let PanelMenu = React.createClass({
 
   displayName: 'PanelMenu',
 
@@ -58,7 +58,7 @@ var PanelMenu = React.createClass({
   },
 
   render() {
-    var displayModes = this.props.displayModes.map((displayMode) => {
+    let displayModes = this.props.displayModes.map((displayMode) => {
       return (
         <MenuItem key={displayMode.id}
                   className={displayMode.id === this.props.currentDisplayModeId && 'text-muted'}
@@ -69,7 +69,7 @@ var PanelMenu = React.createClass({
       );
     });
 
-    var actions = this.props.actions.map((action) => {
+    let actions = this.props.actions.map((action) => {
       return (
         <MenuItem key={action.id}
                   onSelect={this._handleActionSelect.bind(null, action)}>
