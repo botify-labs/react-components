@@ -257,7 +257,8 @@ const SearchSelect = React.createClass({
   },
 
   _handleMouseDown(e) {
-    if (this.state.isFocused) {
+    if (e.button === 0 && this.state.isFocused) {
+      // Only cancel blur on left click
       this._ignoreNextBlur = true;
     }
   },
