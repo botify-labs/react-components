@@ -59,6 +59,7 @@ const SearchSelect = React.createClass({
     optionRender: PropTypes.func,
     filterOption: PropTypes.func, //By default filter option by their label.
     hideGroupsWithNoMatch: PropTypes.bool,
+    disabled: PropTypes.bool,
   },
 
   //Life Cycle methods
@@ -69,6 +70,7 @@ const SearchSelect = React.createClass({
       optionRender: OptionDefault,
       hideGroupsWithNoMatch: true,
       filterOption: (filter, option, group) => (new RegExp(filter, 'i').test(option.label)),
+      disabled: false,
     };
   },
 
@@ -103,10 +105,6 @@ const SearchSelect = React.createClass({
   },
 
   //Prop Helpers: value
-
-  _removeSelection() {
-    this.requestChange({ $set: null });
-  },
 
   _selectOption(optionId) {
     this.requestChange({ $set: optionId });
@@ -218,11 +216,11 @@ const SearchSelect = React.createClass({
   //Prop Helpers: options
 
   _getOption(optionId) {
-    return _.find(this._getOptionsIterator(), {id: optionId});
+    return _.find(this._getOptionsIterator(false), {id: optionId});
   },
 
-  _getOptionsIterator() {
-    let options = this._getFilteredOptions();
+  _getOptionsIterator(filtered = true) {
+    let options = filtered ? this._getFilteredOptions() : this.props.options;
     return _.flatten(_.map(options, (option) => option.isGroup ? option.options : option));
   },
 
@@ -254,23 +252,25 @@ const SearchSelect = React.createClass({
 
   //Elements Listeners
 
-  _cancelBlurInterval() {
-    if (this._blurInterval) {
-      clearTimeout(this._blurInterval);
-      this._blurInterval = null;
-    }
-  },
-
   _onInputContainerClick(e) {
     this._focus();
     //Open the list as list might be already open.
     this._openList();
   },
 
+  _handleMouseDown(e) {
+    if (e.button === 0 && this.state.isFocused) {
+      // Only cancel blur on left click
+      this._ignoreNextBlur = true;
+    }
+  },
+
   _onFilterInputBlur(e) {
-    this._blurInterval = setTimeout(() => {
+    if (this._ignoreNextBlur) {
+      this._ignoreNextBlur = false;
+    } else {
       this._blur();
-    }, 100);
+    }
   },
 
   _onFilterInputChange(e) {
@@ -312,8 +312,6 @@ const SearchSelect = React.createClass({
     let selectedOptionId = this._getSelectedOptionId(),
         previousSelectedOptionId = this._getSelectedOptionId(prevProps);
 
-    this._cancelBlurInterval();
-
     if (prevState.isFocused !== isFocused) {
       if (isFocused) {
         //If became focused, open the list
@@ -347,7 +345,6 @@ const SearchSelect = React.createClass({
       // and remove selection (clear value) when the filtreValue change
       if (filterValue) {
         this._suggestFirstOption(filterValue);
-        this._removeSelection();
       }
 
       //Open all groups if filterValue was empty
@@ -376,16 +373,13 @@ const SearchSelect = React.createClass({
     }
   },
 
-  componentWillUnmount() {
-    this._cancelBlurInterval();
-  },
-
   //Renders
 
   render() {
     let {
       className,
       placeHolder,
+      disabled,
     } = this.props;
     let { isFocused, isListOpen, filterValue } = this.state;
     let selectedOptionId = this._getSelectedOptionId();
@@ -395,23 +389,32 @@ const SearchSelect = React.createClass({
 
     return (
       <div
-        className={classNames('SearchSelect', isFocused && 'SearchSelect--focused', className)}
+        className={classNames(
+          'SearchSelect',
+          isFocused && 'SearchSelect--focused',
+          disabled && 'SearchSelect--disabled',
+          className
+        )}
+        onMouseDown={!disabled && this._handleMouseDown}
       >
         <div className="SearchSelect-inputContainer"
-          onClick={this._onInputContainerClick}
+          onClick={!disabled && this._onInputContainerClick}
         >
           <input
             className={classNames('SearchSelect-filterInput', !filterValue && 'SearchSelect-filterInput--empty')}
             type="text"
             ref="searchInput"
+            disabled={disabled}
             value={filterValue}
             onBlur={this._onFilterInputBlur}
             onChange={this._onFilterInputChange}
             onKeyDown={this._onFilterInputKeyDown}
           />
-          <span className="SearchSelect-valueSpan">{selectedOption ? selectedOption.label : ''}</span>
-          {!filterValue && !selectedOptionId &&
-            <span className="SearchSelect-placeholder">{placeHolder}</span>
+          {!filterValue &&
+            (selectedOption ?
+              <span className="SearchSelect-valueSpan">{selectedOption.label}</span> :
+              <span className="SearchSelect-placeholder">{placeHolder}</span>
+            )
           }
         </div>
         <div
@@ -482,7 +485,7 @@ const SearchSelectGroup = React.createClass({
           className="SearchSelectGroup-header"
           onClick={onClick}
         >
-          <i className="SearchSelectGroup-headerIcon" />
+          <i className={`SearchSelectGroup-headerIcon SearchSelectGroup-headerIcon--${isOpen ? 'open' : 'closed'}`} />
           <span className="SearchSelectGroup-headerLabel">{label}</span>
         </div>
         <div className="SearchSelectGroup-options">
