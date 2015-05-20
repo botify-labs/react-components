@@ -3,7 +3,7 @@ const { TestUtils } = addons;
 
 import { render, unmount } from './utils';
 import HorizontalGauge from '../src/components/gauges/HorizontalGauge';
-import Tooltip from '../src/components/tooltip/Tooltip';
+import Positioned from '../src/components/misc/Positioned';
 
 describe('HorizontalGauge', () => {
 
@@ -32,10 +32,10 @@ describe('HorizontalGauge', () => {
     // TestUtils.Simulate.{mouseEnter, mouseLeave} don't work (yet)
     // See https://github.com/facebook/react/issues/1297
     TestUtils.SimulateNative.mouseOver(gaugeNode);
-    tooltips = TestUtils.scryRenderedComponentsWithType(gauge, Tooltip);
+    tooltips = TestUtils.scryRenderedComponentsWithType(gauge, Positioned);
     expect(tooltips.length).toBe(1);
     TestUtils.SimulateNative.mouseOut(gaugeNode);
-    tooltips = TestUtils.scryRenderedComponentsWithType(gauge, Tooltip);
+    tooltips = TestUtils.scryRenderedComponentsWithType(gauge, Positioned);
     expect(tooltips.length).toBe(0);
     unmount(gauge);
   });

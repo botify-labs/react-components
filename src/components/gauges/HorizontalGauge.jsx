@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import HoverTooltip from '../tooltip/HoverTooltip';
+import FollowCursor from '../misc/FollowCursor';
 import TooltipTable from '../tooltip/TooltipTable';
 import './HorizontalGauge.scss';
 
@@ -70,9 +70,9 @@ const HorizontalGauge = React.createClass({
     let { stacks, all, style, ...otherProps } = this.props;
     let { hasTooltip } = this.state;
     return (
-      <HoverTooltip
-        hasTooltip={hasTooltip}
-        renderTooltip={this._renderTooltip}
+      <FollowCursor
+        hasOverlay={hasTooltip}
+        renderOverlay={this._renderTooltip}
       >
         <div
           {...otherProps}
@@ -92,7 +92,7 @@ const HorizontalGauge = React.createClass({
             />
           ))}
         </div>
-      </HoverTooltip>
+      </FollowCursor>
     );
 
   },

@@ -1,15 +1,15 @@
 import React, { PropTypes } from 'react/addons';
 
-import Tooltip from './Tooltip';
+import Positioned from './Positioned';
 import Append from './Append';
 
-var HoverTooltip = React.createClass({
+var FollowCursor = React.createClass({
 
-  displayName: 'HoverTooltip',
+  displayName: 'FollowCursor',
 
   propTypes: {
-    hasTooltip: PropTypes.bool,
-    renderTooltip: PropTypes.func.isRequired,
+    hasOverlay: PropTypes.bool.isRequired,
+    renderOverlay: PropTypes.func.isRequired,
     children: PropTypes.node,
     style: PropTypes.object,
     appendTo: PropTypes.instanceOf(Node),
@@ -22,26 +22,26 @@ var HoverTooltip = React.createClass({
   },
 
   render() {
-    let { hasTooltip, renderTooltip, children, style, appendTo, ...otherProps } = this.props;
+    let { hasOverlay, renderOverlay, children, style, appendTo, ...otherProps } = this.props;
 
-    let tooltip;
-    if (hasTooltip) {
-      tooltip = (
-        <Tooltip
-          key="__tooltip"
+    let overlay;
+    if (hasOverlay) {
+      overlay = (
+        <Positioned
+          key="__overlay"
           position={this.state.mousePosition}
-          children={renderTooltip()}
+          children={renderOverlay()}
         />
       );
 
       if (appendTo) {
-        tooltip = <Append to={appendTo}>{tooltip}</Append>;
+        overlay = <Append to={appendTo}>{overlay}</Append>;
       }
     }
 
     return (
       <div {...otherProps} style={{...style, position: 'relative'}} onMouseMove={this._handleMouseMove}>
-        {tooltip}
+        {overlay}
         {children}
       </div>
     );
@@ -60,4 +60,4 @@ var HoverTooltip = React.createClass({
 
 });
 
-export default HoverTooltip;
+export default FollowCursor;

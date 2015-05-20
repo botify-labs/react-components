@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
-import HoverTooltip from '../tooltip/HoverTooltip';
-import TooltipData from '../tooltip/TooltipTable';
+import FollowCursor from '../misc/FollowCursor';
+import TooltipTable from '../tooltip/TooltipTable';
 import VennCanvas from './VennCanvas';
 import VennLegend from './VennLegend';
 import VennData from '../../models/VennData';
@@ -42,9 +42,9 @@ const VennDiagram = React.createClass({
     let {vennData, inclusive, onClick, ...otherProps} = this.props;
     let {activeSet} = this.state;
     return (
-      <HoverTooltip
-        hasTooltip={!!activeSet}
-        renderTooltip={this._renderTooltip}
+      <FollowCursor
+        hasOverlay={!!activeSet}
+        renderOverlay={this._renderTooltip}
       >
         <div {...otherProps} className="VennChart">
           <VennCanvas
@@ -63,7 +63,7 @@ const VennDiagram = React.createClass({
             onMouseOut={this._handleMouseOut}
           />
         </div>
-      </HoverTooltip>
+      </FollowCursor>
     );
   },
 
@@ -79,7 +79,7 @@ const VennDiagram = React.createClass({
     let {setLabel, sizeLabel, formatSize, vennData, inclusive} = this.props;
     let {activeSet} = this.state;
     return (
-      <TooltipData
+      <TooltipTable
         groups={[
           [setLabel, activeSet.get('label')],
         ]}
