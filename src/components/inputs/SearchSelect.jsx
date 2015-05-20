@@ -59,6 +59,7 @@ const SearchSelect = React.createClass({
     optionRender: PropTypes.func,
     filterOption: PropTypes.func, //By default filter option by their label.
     hideGroupsWithNoMatch: PropTypes.bool,
+    disabled: PropTypes.bool,
   },
 
   //Life Cycle methods
@@ -69,6 +70,7 @@ const SearchSelect = React.createClass({
       optionRender: OptionDefault,
       hideGroupsWithNoMatch: true,
       filterOption: (filter, option, group) => (new RegExp(filter, 'i').test(option.label)),
+      disabled: false,
     };
   },
 
@@ -377,6 +379,7 @@ const SearchSelect = React.createClass({
     let {
       className,
       placeHolder,
+      disabled,
     } = this.props;
     let { isFocused, isListOpen, filterValue } = this.state;
     let selectedOptionId = this._getSelectedOptionId();
@@ -386,16 +389,22 @@ const SearchSelect = React.createClass({
 
     return (
       <div
-        className={classNames('SearchSelect', isFocused && 'SearchSelect--focused', className)}
-        onMouseDown={this._handleMouseDown}
+        className={classNames(
+          'SearchSelect',
+          isFocused && 'SearchSelect--focused',
+          disabled && 'SearchSelect--disabled',
+          className
+        )}
+        onMouseDown={!disabled && this._handleMouseDown}
       >
         <div className="SearchSelect-inputContainer"
-          onClick={this._onInputContainerClick}
+          onClick={!disabled && this._onInputContainerClick}
         >
           <input
             className={classNames('SearchSelect-filterInput', !filterValue && 'SearchSelect-filterInput--empty')}
             type="text"
             ref="searchInput"
+            disabled={disabled}
             value={filterValue}
             onBlur={this._onFilterInputBlur}
             onChange={this._onFilterInputChange}
