@@ -2,7 +2,7 @@
   "name": "react-components",
   "version": "0.9.0",
   "description": "ReactJS components",
-  "author": "Alexandre Kirszenberg <alexandre.kirszenberg@gmail.com>",
+  "author": "Botify <labs@botify.com>",
   "scripts": {
     "gulp": "gulp",
     "start": "gulp webpack-server",
