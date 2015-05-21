@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import FollowCursor from '../misc/FollowCursor';
+import Tooltip from '../tooltip/Tooltip';
 import TooltipTable from '../tooltip/TooltipTable';
 import VennCanvas from './VennCanvas';
 import VennLegend from './VennLegend';
@@ -79,14 +80,16 @@ const VennDiagram = React.createClass({
     let {setLabel, sizeLabel, formatSize, vennData, inclusive} = this.props;
     let {activeSet} = this.state;
     return (
-      <TooltipTable
-        groups={[
-          [setLabel, activeSet.get('label')],
-        ]}
-        metrics={[
-          [sizeLabel, formatSize(vennData.getSizeOf(activeSet, inclusive))],
-        ]}
-      />
+      <Tooltip className="VennChart-tooltip">
+        <TooltipTable
+          groups={[
+            [setLabel, activeSet.get('label')],
+          ]}
+          metrics={[
+            [sizeLabel, formatSize(vennData.getSizeOf(activeSet, inclusive))],
+          ]}
+        />
+      </Tooltip>
     );
   },
 
