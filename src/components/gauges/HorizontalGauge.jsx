@@ -1,15 +1,14 @@
 import React, { PropTypes } from 'react';
+import classNames from 'classnames';
 
 import FollowCursor from '../misc/FollowCursor';
 import Tooltip from '../tooltip/Tooltip';
 import TooltipTable from '../tooltip/TooltipTable';
-import './HorizontalGauge.scss';
 
 let stackPropType = PropTypes.shape({
-  label: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
-  display: PropTypes.node,
-  color: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  color: PropTypes.string,
 });
 
 const HorizontalGauge = React.createClass({
@@ -30,6 +29,8 @@ const HorizontalGauge = React.createClass({
     formatAllValue: PropTypes.func,
     formatStackValue: PropTypes.func,
     style: PropTypes.object,
+    className: PropTypes.string,
+    renderTooltip: PropTypes.func,
   },
 
   getDefaultProps() {
@@ -70,30 +71,42 @@ const HorizontalGauge = React.createClass({
   },
 
   render() {
-    let { stacks, all, style, ...otherProps } = this.props;
+    let { stacks, all, style, renderTooltip, className, ...otherProps } = this.props;
     let { hasTooltip } = this.state;
+
     return (
       <FollowCursor
         hasOverlay={hasTooltip}
-        renderOverlay={this._renderTooltip}
+        renderOverlay={renderTooltip || this._renderTooltip}
       >
         <div
           {...otherProps}
           onMouseEnter={this._handleMouseEnter}
           onMouseLeave={this._handleMouseLeave}
-          className="HorizontalGauge"
-          style={{ ...style, backgroundColor: all.color }}
+          className={classNames('HorizontalGauge', className)}
+          style={{ position: 'relative', ...style }}
         >
-          {stacks.map((stack, idx) => (
+          <div className="HorizontalGauge-stacks">
             <div
-              key={idx}
-              className="HorizontalGauge-stack"
+              className="HorizontalGauge-all"
               style={{
-                width: `${stack.value / all.value * 100}%`,
-                backgroundColor: stack.color,
+                position: 'absolute',
+                width: '100%',
+                backgroundColor: all.color,
               }}
             />
-          ))}
+            {stacks.map((stack, idx) => (
+              <div
+                key={idx}
+                className="HorizontalGauge-stack"
+                style={{
+                  position: 'relative',
+                  width: `${stack.value / all.value * 100}%`,
+                  backgroundColor: stack.color,
+                }}
+              />
+            ))}
+          </div>
         </div>
       </FollowCursor>
     );
