@@ -79,15 +79,15 @@ describe('HorizontalGauge', () => {
 
   it('should render stacks with a width relative their values and with the provided color', () => {
     let gauge = render(<HorizontalGauge stacks={stacks} all={all} />);
-    let gaugeNode = React.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge'));
-    expect(gaugeNode.style.backgroundColor).toBe(all.color);
+    let allNode = React.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge-all'));
+    expect(allNode.style.backgroundColor).toBe(all.color);
     let stacksComponents = TestUtils.scryRenderedDOMComponentsWithClass(gauge, 'HorizontalGauge-stack');
     expect(stacksComponents.length).toBe(stacks.length);
     stacks.forEach((stack, idx) => {
       let node = React.findDOMNode(stacksComponents[idx]);
       expect(node.style.backgroundColor).toBe(stack.color);
       let observedWidth = Math.round(node.offsetWidth);
-      let expectedWidth = Math.round(stack.value / all.value * gaugeNode.offsetWidth);
+      let expectedWidth = Math.round(stack.value / all.value * allNode.offsetWidth);
       expect(observedWidth).toBe(expectedWidth);
     });
     unmount(gauge);
