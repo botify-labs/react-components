@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 
 import FollowCursor from '../misc/FollowCursor';
+import Tooltip from '../tooltip/Tooltip';
 import TooltipTable from '../tooltip/TooltipTable';
 import './HorizontalGauge.scss';
 
@@ -59,10 +60,12 @@ const HorizontalGauge = React.createClass({
   _renderTooltip() {
     let { stacks, all, formatAllValue, formatStackValue } = this.props;
     return (
-      <TooltipTable
-        groups={[[all.label, formatAllValue(all.value)]]}
-        metrics={stacks.map((stack) => [stack.label, formatStackValue(stack.value)])}
-      />
+      <Tooltip className="HorizontalGauge-tooltip">
+        <TooltipTable
+          groups={[[all.label, formatAllValue(all.value)]]}
+          metrics={stacks.map((stack) => [stack.label, formatStackValue(stack.value)])}
+        />
+      </Tooltip>
     );
   },
 

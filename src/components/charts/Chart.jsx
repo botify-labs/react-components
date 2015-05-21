@@ -1,6 +1,7 @@
 import React from 'react/addons';
 
 import FollowCursor from '../misc/FollowCursor';
+import Tooltip from '../tooltip/Tooltip';
 import TooltipTable from '../tooltip/TooltipTable';
 import ChartData from '../../models/ChartData';
 
@@ -57,9 +58,9 @@ let Chart = React.createClass({
     });
 
     return (
-      <div className="Chart-tooltip">
+      <Tooltip className="Chart-tooltip">
         {data.toJS()}
-      </div>
+      </Tooltip>
     );
   },
 
