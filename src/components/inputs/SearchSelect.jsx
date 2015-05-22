@@ -270,6 +270,18 @@ const SearchSelect = React.createClass({
       this._ignoreNextBlur = false;
     } else {
       this._blur();
+      this._closeList();
+    }
+  },
+
+  _onFilterInputFocus(e) {
+    let {isListOpen, isFocused} = this.state;
+
+    if (!isFocused) {
+      this._focus();
+    }
+    if (!isListOpen) {
+      this._openList();
     }
   },
 
@@ -409,6 +421,7 @@ const SearchSelect = React.createClass({
             onBlur={this._onFilterInputBlur}
             onChange={this._onFilterInputChange}
             onKeyDown={this._onFilterInputKeyDown}
+            onFocus={this._onFilterInputFocus}
           />
           {!filterValue &&
             (selectedOption ?
