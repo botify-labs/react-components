@@ -300,7 +300,9 @@ const SearchSelect = React.createClass({
     switch (e.which) {
     case KEY_CODES.ENTER:
     case KEY_CODES.TAB:
-      this._selectOption(this.state.suggestedOptionId);
+      if (this.state.suggestedOptionId) {
+        this._selectOption(this.state.suggestedOptionId);
+      }
       break;
     case KEY_CODES.ARROW_UP:
       this._suggestPreviousOption();
