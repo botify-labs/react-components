@@ -290,7 +290,7 @@ const SearchSelect = React.createClass({
   },
 
   _onFilterInputKeyDown(e) {
-    let {isListOpen} = this.state;
+    let {isListOpen, suggestedOptionId} = this.state;
 
     if (!isListOpen) {
       this._openList();
@@ -300,8 +300,8 @@ const SearchSelect = React.createClass({
     switch (e.which) {
     case KEY_CODES.ENTER:
     case KEY_CODES.TAB:
-      if (this.state.suggestedOptionId) {
-        this._selectOption(this.state.suggestedOptionId);
+      if (suggestedOptionId) {
+        this._selectOption(suggestedOptionId);
       }
       break;
     case KEY_CODES.ARROW_UP:
