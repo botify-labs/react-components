@@ -437,7 +437,7 @@ const SearchSelect = React.createClass({
           >
             {_.map(this._getFilteredOptions(), (option, i) => {
               let render = option.isGroup ? this._renderGroup : this._renderOption;
-              return render(option, i);
+              return render(option);
             })}
           </div>
         }
