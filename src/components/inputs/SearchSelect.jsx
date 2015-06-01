@@ -444,10 +444,10 @@ const SearchSelect = React.createClass({
     );
   },
 
-  _renderGroup(group, key) {
+  _renderGroup(group) {
     return (
       <SearchSelectGroup
-        key={key}
+        key={group.id}
         label={group.label}
         isOpen={this._isGroupOpen(group)}
         onClick={this._onGroupClick.bind(null, group)}
@@ -457,7 +457,7 @@ const SearchSelect = React.createClass({
     );
   },
 
-  _renderOption(option, key) {
+  _renderOption(option) {
     let {
       optionRender: OptionRender,
     } = this.props;
@@ -468,7 +468,7 @@ const SearchSelect = React.createClass({
     return (
       <OptionRender
         className={classNames('SearchSelectOption', isSuggested && 'SearchSelectOption--suggested')}
-        key={key}
+        key={option.id}
         option={option}
         filter={filterValue}
         onClick={this._onOptionSelect.bind(null, option)}
