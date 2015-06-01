@@ -396,9 +396,8 @@ const SearchSelect = React.createClass({
       disabled,
     } = this.props;
     let { isFocused, isListOpen, filterValue } = this.state;
-    let selectedOptionId = this._getSelectedOptionId();
 
-    let filteredOptions = this._getFilteredOptions();
+    let selectedOptionId = this._getSelectedOptionId();
     let selectedOption = this._getOption(selectedOptionId);
 
     return (
@@ -432,22 +431,24 @@ const SearchSelect = React.createClass({
             )
           }
         </div>
-        <div
-          className={classNames('SearchSelect-optionsList', `SearchSelect-optionsList--${isListOpen ? 'open' : 'closed'}`)}
-        >
-          {_.map(filteredOptions, (option, i) => {
-            let render = option.isGroup ? this._renderGroup : this._renderOption;
-            return render(option, i);
-          })}
-        </div>
+        {isListOpen &&
+          <div
+            className="SearchSelect-optionsList"
+          >
+            {_.map(this._getFilteredOptions(), (option, i) => {
+              let render = option.isGroup ? this._renderGroup : this._renderOption;
+              return render(option);
+            })}
+          </div>
+        }
       </div>
     );
   },
 
-  _renderGroup(group, key) {
+  _renderGroup(group) {
     return (
       <SearchSelectGroup
-        key={key}
+        key={group.id}
         label={group.label}
         isOpen={this._isGroupOpen(group)}
         onClick={this._onGroupClick.bind(null, group)}
@@ -457,7 +458,7 @@ const SearchSelect = React.createClass({
     );
   },
 
-  _renderOption(option, key) {
+  _renderOption(option) {
     let {
       optionRender: OptionRender,
     } = this.props;
@@ -468,7 +469,7 @@ const SearchSelect = React.createClass({
     return (
       <OptionRender
         className={classNames('SearchSelectOption', isSuggested && 'SearchSelectOption--suggested')}
-        key={key}
+        key={option.id}
         option={option}
         filter={filterValue}
         onClick={this._onOptionSelect.bind(null, option)}
