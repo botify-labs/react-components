@@ -400,8 +400,6 @@ const SearchSelect = React.createClass({
     let selectedOptionId = this._getSelectedOptionId();
     let selectedOption = this._getOption(selectedOptionId);
 
-    let filteredOptions = isListOpen && this._getFilteredOptions();
-
     return (
       <div
         className={classNames(
@@ -437,7 +435,7 @@ const SearchSelect = React.createClass({
           <div
             className={classNames('SearchSelect-optionsList', `SearchSelect-optionsList--${isListOpen ? 'open' : 'closed'}`)}
           >
-            {_.map(filteredOptions, (option, i) => {
+            {_.map(this._getFilteredOptions(), (option, i) => {
               let render = option.isGroup ? this._renderGroup : this._renderOption;
               return render(option, i);
             })}
