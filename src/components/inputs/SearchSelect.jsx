@@ -433,7 +433,7 @@ const SearchSelect = React.createClass({
         </div>
         {isListOpen &&
           <div
-            className={classNames('SearchSelect-optionsList', `SearchSelect-optionsList--${isListOpen ? 'open' : 'closed'}`)}
+            className="SearchSelect-optionsList"
           >
             {_.map(this._getFilteredOptions(), (option, i) => {
               let render = option.isGroup ? this._renderGroup : this._renderOption;

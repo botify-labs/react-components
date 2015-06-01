@@ -39,12 +39,6 @@ $fa-font-path: "~font-awesome/fonts/";
     border: 1px solid #ccc;
     background-color: #fff;
 
-    &.SearchSelect-optionsList--closed{
-      height: 0px;
-      padding: 0px;
-      border: none;
-    }
-
     .SearchSelectGroup{
       .SearchSelectGroup-header{
         cursor: pointer;
