@@ -2,7 +2,6 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var shell = require('gulp-shell');
 var bump = require('gulp-bump');
-var eslint = require('gulp-eslint');
 
 var fs = require('fs');
 var chalk = require('chalk');
@@ -104,11 +103,4 @@ gulp.task('server', function() {
     }
     console.log('Listening at localhost:3000'); // eslint-disable-line
   });
-});
-
-gulp.task('lint', function() {
-  return gulp.src(['**/*.js', '**/*.jsx'])
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(eslint.failOnError());
 });
