@@ -4,7 +4,7 @@ set -e # Any subsequent(*) commands which fail will cause the shell script to ex
 cd "$(dirname $0)/.."
 
 echo -e "Linting..."
-gulp lint
+./node_modules/.bin/eslint --ext .jsx --ext .js .
 
 echo "SUCCESS"
 exit 0
