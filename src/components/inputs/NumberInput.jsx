@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import InputMixin from '../../mixins/InputMixin';
+import Input from './Input';
 
 const NumberInput = React.createClass({
 
@@ -20,13 +21,14 @@ const NumberInput = React.createClass({
 
   render() {
     let { className, ...otherProps } = this.props;
+
     return (
-      <input
+      <Input
         {...otherProps}
         className={classNames('NumberInput', className)}
-        valueLink={this.link(this.getValue(), this._handleChange)}
+        valueLink={this.link(this.getValue() + '', this._handleChange)}
         type="number"
-        />
+      />
     );
   },
 
