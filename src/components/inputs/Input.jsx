@@ -59,7 +59,6 @@ const Input = React.createClass({
         onFocus={this._handleFocus}
         onBlur={this._handleBlur}
         valueLink={this.link(this._getTemporaryValue(), this._handleChange)}
-        type="text"
       />
     );
   },
