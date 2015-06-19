@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import classNames from 'classnames';
+import Input from './Input';
 
 const StringInput = React.createClass({
 
@@ -13,7 +14,7 @@ const StringInput = React.createClass({
     let { className, ...otherProps } = this.props;
 
     return (
-      <input
+      <Input
         {...otherProps}
         className={classNames('StringInput', className)}
         type="text"
