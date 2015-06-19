@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import InputMixin from '../../mixins/InputMixin';
 
+// Input that only emits change on blur
 const Input = React.createClass({
 
   displayName: 'Input',
