@@ -69,7 +69,10 @@ const SearchSelect = React.createClass({
       placeHolder: DEFAULT_PLACEHOLDER,
       optionRender: OptionDefault,
       hideGroupsWithNoMatch: true,
-      filterOption: (filter, option, group) => (new RegExp(filter, 'i').test(option.label)),
+      filterOption: (val, option, group) => {
+        val = val.replace(/[\\\^\$\*\+\?\.\(\)\|\{\}\[\]]/g, '\\$&'); //Escape regex special characters
+        return new RegExp(val, 'i').test(option.label);
+      },
       disabled: false,
     };
   },
