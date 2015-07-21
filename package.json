@@ -5,7 +5,7 @@
   "author": "Botify <labs@botify.com>",
   "scripts": {
     "gulp": "gulp",
-    "start": "gulp webpack-server",
+    "start": "gulp server",
     "test": "karma start"
   },
   "main": "src/index.js",
@@ -22,6 +22,7 @@
     "lodash": "~2.4.1",
     "react": "~0.13.1",
     "react-bootstrap": "~0.15.1",
+    "react-controllables": "^0.3.3",
     "venn.js": "botify-labs/venn.js#3307268434935e8e2e61d85677b2c5b6c7b442c1"
   },
   "devDependencies": {

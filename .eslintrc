@@ -143,7 +143,7 @@
         "comma-style":              [2, "last"],
         "eol-last":                 2,
         "indent":                   [2, 2],
-        "new-cap":                  [2, "newIsCap"], // Immutable collections and React mixins do not respect this rule
+        "new-cap":                  [0], // Immutable collections and React mixins do not respect this rule
         "no-new-object":            2,
         "no-underscore-dangle":     0, // allow private naming with _
         "quotes":                   [1, "single", "avoid-escape"],
