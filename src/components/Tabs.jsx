@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import controllable from 'react-controllables';
 import cx from 'classnames';
+import _ from 'lodash';
 
 const Tabs = React.createClass({
 
