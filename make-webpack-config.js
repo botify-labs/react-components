@@ -21,7 +21,7 @@ module.exports = function(build, grep) {
   var config = {
     resolve: {
       extensions: ['', '.js', '.jsx'],
-      root: [path.resolve(__dirname, 'bower_components')],
+      root: [npmPath, bowerPath, resolve('src')],
     },
     plugins: [
       new webpack.ResolverPlugin(

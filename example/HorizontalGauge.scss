@@ -1,0 +1,28 @@
+.HorizontalGauge {
+    overflow: hidden;
+
+    padding: 2px;
+    border: 1px solid #C9C9C9;
+    border-radius: 4px;
+
+    width: 200px;
+    background-color: white;
+
+    .HorizontalGauge-stacks {
+        position: relative;
+    }
+
+    .HorizontalGauge-stack, .HorizontalGauge-all {
+        border-radius: 2px;
+        overflow: hidden;
+        height: 4px;
+    }
+}
+
+.HorizontalGauge-percentageValue {
+    color: #999;
+}
+
+.TooltipTable-cell-value {
+    white-space: nowrap;
+}
