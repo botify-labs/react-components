@@ -60,6 +60,7 @@ const SearchSelect = React.createClass({
     filterOption: PropTypes.func, //By default filter option by their label.
     hideGroupsWithNoMatch: PropTypes.bool,
     disabled: PropTypes.bool,
+    onQueryChange: PropTypes.func, //Called when input value (query) change. Whereas valueLink.requestChange is called when an option is selected.
   },
 
   //Life Cycle methods
@@ -289,7 +290,11 @@ const SearchSelect = React.createClass({
   },
 
   _onFilterInputChange(e) {
-    this._updateFilterValue(e.target.value);
+    let value = e.target.value;
+    if (this.props.onQueryChange) {
+      this.props.onQueryChange(value);
+    }
+    this._updateFilterValue(value);
   },
 
   _onFilterInputKeyDown(e) {
@@ -308,9 +313,11 @@ const SearchSelect = React.createClass({
       }
       break;
     case KEY_CODES.ARROW_UP:
+      e.preventDefault();
       this._suggestPreviousOption();
       break;
     case KEY_CODES.ARROW_DOWN:
+      e.preventDefault();
       this._suggestNextOption();
       break;
     }
