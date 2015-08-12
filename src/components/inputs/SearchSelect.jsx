@@ -332,7 +332,7 @@ const SearchSelect = React.createClass({
   },
 
   componentDidUpdate(prevProps, prevState) {
-    let {isFocused, suggestedOptionId, filterValue} = this.state;
+    let {isFocused, suggestedOptionId, filterValue, options} = this.state;
     let selectedOptionId = this._getSelectedOptionId(),
         previousSelectedOptionId = this._getSelectedOptionId(prevProps);
 
@@ -356,6 +356,12 @@ const SearchSelect = React.createClass({
         this._closeAllGroups();
         this._closeList();
         this._setSuggestedOptionId(selectedOptionId);
+      }
+    }
+
+    if (prevProps.options !== this.props.options) {
+      if (filterValue) {
+        this._suggestFirstOption(filterValue);
       }
     }
 
