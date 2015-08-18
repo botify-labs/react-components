@@ -322,7 +322,7 @@ const SuggestSelect = React.createClass({
     if (previousSelectedOptionId !== selectedOptionId) {
 
       if (selectedOptionId) {
-        this.clearFilterValue(false);
+        this.clearFilterValue();
         this.closeAllGroups();
         this.closeList();
         this.setSuggestedOptionId(selectedOptionId);
