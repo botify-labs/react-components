@@ -57,8 +57,8 @@ const SuggestSelectClient = React.createClass({
 
   _filterOptions(filterOption, filterValue, options, parentOption) {
     return _.compact(_.map(options, option => {
-      //Filter if option selectable and filterOption function return true.
-      let keepOption = option.isNotSelectable ? true : filterOption(filterValue, option, parentOption);
+      //Keep if option not selectable or filterOption function return true.
+      let keepOption = option.isNotSelectable || filterOption(filterValue, option, parentOption);
       return keepOption && {
         ...option,
         options: option.isGroup ? this._filterOptions(filterOption, filterValue, option.options, option) : null,
