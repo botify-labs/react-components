@@ -7,14 +7,33 @@ import Select from './Select';
 import InputMixin from '../../mixins/InputMixin';
 
 
+
+const optionPropType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  labelSelected: PropTypes.string, //Label displayed when selected
+});
+
+const optionGroupPropType = PropTypes.oneOfType([
+  PropTypes.shape({
+    isGroup: PropTypes.bool.isRequired,
+    id: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    labelSelected: PropTypes.string, //Label displayed when selected
+    options: PropTypes.arrayOf(optionPropType).isRequired,
+    isNotSelectable: PropTypes.bool,
+  }),
+  optionPropType,
+]);
+
+const optionsPropType = PropTypes.arrayOf(optionGroupPropType);
+
 const KEY_CODES = {
   TAB: 9,
   ENTER: 13,
   ARROW_UP: 38,
   ARROW_DOWN: 40,
 };
-const DEFAULT_PLACEHOLDER = 'Search option';
-
 
 const OptionDefault = React.createClass({
 
@@ -41,9 +60,9 @@ const OptionDefault = React.createClass({
 
 });
 
-const SearchSelect = React.createClass({
+const SuggestSelect = React.createClass({
 
-  displayName: 'SearchSelect',
+  displayName: 'SuggestSelect',
 
   mixins: [
     InputMixin(React.PropTypes.oneOfType([
@@ -55,25 +74,20 @@ const SearchSelect = React.createClass({
   propTypes: {
     className: PropTypes.string,
     placeHolder: PropTypes.string,
-    options: PropTypes.arrayOf(Select.PropTypes.optionGroupOf(Select.PropTypes.option)).isRequired,
+    options: optionsPropType.isRequired,
     optionRender: PropTypes.func,
-    filterOption: PropTypes.func, //By default filter option by their label.
-    hideGroupsWithNoMatch: PropTypes.bool,
+    hideGroupsWithoutOptions: PropTypes.bool,
     disabled: PropTypes.bool,
-    onQueryChange: PropTypes.func, //Called when input value (query) change. Whereas valueLink.requestChange is called when an option is selected.
+    onFilterChange: PropTypes.func, //Called when input value (query) change. Whereas valueLink.requestChange is called when an option is selected.
   },
 
   //Life Cycle methods
 
   getDefaultProps() {
     return {
-      placeHolder: DEFAULT_PLACEHOLDER,
+      placeHolder: '',
       optionRender: OptionDefault,
-      hideGroupsWithNoMatch: true,
-      filterOption: (val, option, group) => {
-        val = val.replace(/[\\\^\$\*\+\?\.\(\)\|\{\}\[\]]/g, '\\$&'); //Escape regex special characters
-        return new RegExp(val, 'i').test(option.label);
-      },
+      hideGroupsWithoutOptions: true,
       disabled: false,
     };
   },
@@ -88,64 +102,58 @@ const SearchSelect = React.createClass({
     };
   },
 
-  //Prop Helpers: isFocused
+  fireFilterChange(value) {
+    if (this.props.onFilterChange) {
+      this.props.onFilterChange(value);
+    }
+  },
 
+  //Prop Helpers: isFocused
   _focus() {
     this.setState({isFocused: true});
   },
-
   _blur() {
     this.setState({isFocused: false});
   },
 
   //Prop Helpers: isListOpen
-
   _openList() {
     this.setState({isListOpen: true});
   },
-
   _closeList() {
     this.setState({isListOpen: false});
   },
 
   //Prop Helpers: value
-
   _selectOption(optionId) {
     this.requestChange({ $set: optionId });
   },
-
   _getSelectedOptionId(props) {
     return this.getValue(props);
   },
 
   //State Helpers: openGroupsId
-
   _isGroupOpen(group) {
     let {openGroupsId} = this.state;
     return _.contains(openGroupsId, group.id);
   },
-
   _toggleGroupOpenState(group) {
     let isOpened = this._isGroupOpen(group);
-
     if (isOpened) {
       this._closeGroup(group);
     } else {
       this._openGroup(group);
     }
   },
-
   _openGroup(group) {
     let { openGroupsId } = this.state;
     this.setState({ openGroupsId: update(openGroupsId, {$push: [group.id]}) });
   },
-
   _closeGroup(group) {
     let { openGroupsId } = this.state;
     let index = _.findIndex(openGroupsId, (id) => id === group.id);
     this.setState({ openGroupsId: update(openGroupsId, {$splice: [[index, 1]]}) });
   },
-
   _openParentGroupIfNot(optionId) {
     let { options } = this.props;
 
@@ -154,38 +162,34 @@ const SearchSelect = React.createClass({
       this._openGroup(suggestedGroup);
     }
   },
-
   _openAllGroups() {
     let {options} = this.props;
     let allGroupsIds = _.pluck(_.filter(options, 'isGroup'), 'id');
     this.setState({ openGroupsId: allGroupsIds });
   },
-
   _closeAllGroups() {
     this.setState({ openGroupsId: [] });
   },
 
   //State Helpers: filterValue
-
-  _updateFilterValue(newFilterValue) {
+  _updateFilterValue(newFilterValue, fireChange = true) {
     this.setState({filterValue: newFilterValue});
+    if (fireChange) {
+      this.fireFilterChange(newFilterValue);
+    }
   },
-
-  _clearFilterValue() {
-    this._updateFilterValue('');
+  _clearFilterValue(fireChange) {
+    this._updateFilterValue('', fireChange);
   },
 
   //State Helpers: suggestedOptionId
-
   _suggestFirstOption() {
     let suggestion = this._getOptionsIterator()[0];
     this._setSuggestedOption(suggestion);
   },
-
   _suggestPreviousOption() {
     this._moveSuggestion(-1);
   },
-
   _suggestNextOption() {
     this._moveSuggestion(1);
   },
@@ -204,58 +208,25 @@ const SearchSelect = React.createClass({
 
     this._setSuggestedOption(optionsIterator[movedSuggestionIndex]);
   },
-
   _setSuggestedOption(option) {
     this._setSuggestedOptionId(option ? option.id : null);
   },
-
   _setSuggestedOptionId(optionId) {
     this.setState({suggestedOptionId: optionId});
   },
-
   _clearSuggestedOption() {
     this._setSuggestedOptionId(null);
   },
 
   //Prop Helpers: options
-
   _getOption(optionId) {
-    return _.find(this._getOptionsIterator(false), {id: optionId});
+    return _.find(this._getOptionsIterator(), {id: optionId});
   },
-
-  _getOptionsIterator(filtered = true) {
-    let options = filtered ? this._getFilteredOptions() : this.props.options;
-    return _.flatten(_.map(options, (option) => option.isGroup ? option.options : option));
-  },
-
-  _getFilteredOptions() {
-    let {options, filterOption, hideGroupsWithNoMatch} = this.props;
-    let {filterValue} = this.state;
-
-    //Filter grouped options
-    options = _.map(options, (group) => {
-      if (!group.isGroup) {
-        return group;
-      }
-      return {
-        ...group,
-        options: _.filter(group.options, (option) => !filterValue || filterOption(filterValue, option, group)),
-      };
-    });
-
-    //Remove empty groups if hideGroupsWithNoMatch == true
-    if (hideGroupsWithNoMatch) {
-      options = _.reject(options, (option) => option.isGroup && option.options.length === 0);
-    }
-
-    //Filter non grouped options
-    options = _.filter(options, (option) => option.isGroup || (!filterValue || filterOption(filterValue, option)));
-
-    return options;
+  _getOptionsIterator(options = this.props.options) {
+    return _.flatten(_.map(options, (option) => option.isGroup ? this._getOptionsIterator(option.options) : option));
   },
 
   //Elements Listeners
-
   _onInputContainerClick(e) {
     this._focus();
     //Open the list as list might be already open.
@@ -291,9 +262,6 @@ const SearchSelect = React.createClass({
 
   _onFilterInputChange(e) {
     let value = e.target.value;
-    if (this.props.onQueryChange) {
-      this.props.onQueryChange(value);
-    }
     this._updateFilterValue(value);
   },
 
@@ -323,7 +291,7 @@ const SearchSelect = React.createClass({
     }
   },
 
-  _onGroupClick(group, e) {
+  _onToggleGroupOpen(group, e) {
     this._toggleGroupOpenState(group);
   },
 
@@ -352,7 +320,7 @@ const SearchSelect = React.createClass({
     if (previousSelectedOptionId !== selectedOptionId) {
 
       if (selectedOptionId) {
-        this._clearFilterValue();
+        this._clearFilterValue(false);
         this._closeAllGroups();
         this._closeList();
         this._setSuggestedOptionId(selectedOptionId);
@@ -367,15 +335,15 @@ const SearchSelect = React.createClass({
 
     if (prevState.filterValue !== filterValue) {
 
-      if (!filterValue && !selectedOptionId) {
+      /*if (!filterValue && !selectedOptionId) {
         this._clearSuggestedOption();
-      }
+      }*/
 
       //Select first option if not setted whereas filterValue is not empty
       // and remove selection (clear value) when the filtreValue change
-      if (filterValue) {
+      /*if (filterValue) {
         this._suggestFirstOption(filterValue);
-      }
+      }*/
 
       //Open all groups if filterValue was empty
       let filterValueWasEmpty = prevState.filterValue.length === 0 && filterValue.length > 0;
@@ -406,11 +374,7 @@ const SearchSelect = React.createClass({
   //Renders
 
   render() {
-    let {
-      className,
-      placeHolder,
-      disabled,
-    } = this.props;
+    let { className, placeHolder, disabled, options } = this.props;
     let { isFocused, isListOpen, filterValue } = this.state;
 
     let selectedOptionId = this._getSelectedOptionId();
@@ -419,18 +383,18 @@ const SearchSelect = React.createClass({
     return (
       <div
         className={classNames(
-          'SearchSelect',
-          isFocused && 'SearchSelect--focused',
-          disabled && 'SearchSelect--disabled',
+          'SuggestSelect',
+          isFocused && 'SuggestSelect--focused',
+          disabled && 'SuggestSelect--disabled',
           className
         )}
         onMouseDown={!disabled && this._handleMouseDown}
       >
-        <div className="SearchSelect-inputContainer"
+        <div className="SuggestSelect-inputContainer"
           onClick={!disabled && this._onInputContainerClick}
         >
           <input
-            className={classNames('SearchSelect-filterInput', !filterValue && 'SearchSelect-filterInput--empty')}
+            className={classNames('SuggestSelect-filterInput', !filterValue && 'SuggestSelect-filterInput--empty')}
             type="text"
             ref="searchInput"
             disabled={disabled}
@@ -442,16 +406,16 @@ const SearchSelect = React.createClass({
           />
           {!filterValue &&
             (selectedOption ?
-              <span className="SearchSelect-valueSpan">{selectedOption.label}</span> :
-              <span className="SearchSelect-placeholder">{placeHolder}</span>
+              <span className="SuggestSelect-valueSpan">{selectedOption.labelSelected || selectedOption.label}</span> :
+              <span className="SuggestSelect-placeholder">{placeHolder}</span>
             )
           }
         </div>
         {isListOpen &&
           <div
-            className="SearchSelect-optionsList"
+            className="SuggestSelect-optionsList"
           >
-            {_.map(this._getFilteredOptions(), (option, i) => {
+            {_.map(options, (option) => {
               let render = option.isGroup ? this._renderGroup : this._renderOption;
               return render(option);
             })}
@@ -462,29 +426,42 @@ const SearchSelect = React.createClass({
   },
 
   _renderGroup(group) {
+    let { optionRender: OptionRender, hideGroupsWithoutOptions } = this.props;
+    let { filterValue, suggestedOptionId } = this.state;
+    let isSuggested = suggestedOptionId === group.id;
+
+    if (hideGroupsWithoutOptions && (!group.options || group.options.length === 0)) {
+      return false;
+    }
+
     return (
-      <SearchSelectGroup
+      <SuggestSelectGroup
         key={group.id}
-        label={group.label}
+        group={group}
         isOpen={this._isGroupOpen(group)}
-        onClick={this._onGroupClick.bind(null, group)}
+        isSuggested={isSuggested}
+        optionRender={OptionRender}
+        filter={filterValue}
+        isGroupSelectable={!group.isNotSelectable}
+        onToggleOpen={this._onToggleGroupOpen.bind(null, group)}
+        onOptionSelect={this._onOptionSelect.bind(null, group)}
       >
-        {_.map(group.options, this._renderOption)}
-      </SearchSelectGroup>
+        {_.map(group.options, (option) => {
+          let render = option.isGroup ? this._renderGroup : this._renderOption;
+          return render(option);
+        })}
+      </SuggestSelectGroup>
     );
   },
 
   _renderOption(option) {
-    let {
-      optionRender: OptionRender,
-    } = this.props;
+    let { optionRender: OptionRender } = this.props;
     let { filterValue, suggestedOptionId } = this.state;
-
     let isSuggested = suggestedOptionId === option.id;
 
     return (
       <OptionRender
-        className={classNames('SearchSelectOption', isSuggested && 'SearchSelectOption--suggested')}
+        className={classNames('SuggestSelectOption', isSuggested && 'SuggestSelectOption--suggested')}
         key={option.id}
         option={option}
         filter={filterValue}
@@ -495,32 +472,39 @@ const SearchSelect = React.createClass({
 
 });
 
-const SearchSelectGroup = React.createClass({
+const SuggestSelectGroup = React.createClass({
 
-  displayName: 'SearchSelectGroup',
+  displayName: 'SuggestSelectGroup',
 
   propTypes: {
-    label: PropTypes.string.isRequired,
+    group: Select.PropTypes.optionGroupOf(Select.PropTypes.option),
     isOpen: PropTypes.bool.isRequired,
-    onClick: PropTypes.func.isRequired,
+    isSuggested: PropTypes.bool.isRequired,
+    optionRender: PropTypes.func.isRequired,
+    filter: PropTypes.string.isRequired,
+    isGroupSelectable: PropTypes.bool.isRequired,
+    onToggleOpen: PropTypes.func.isRequired,
+    onOptionSelect: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
   },
 
   render() {
-    let {label, isOpen, onClick, children, ...otherProps} = this.props;
+    let {group, isOpen, isSuggested, optionRender: OptionRender, filter, isGroupSelectable, onToggleOpen, onOptionSelect, children, ...otherProps} = this.props;
     return (
       <div
-        className={classNames('SearchSelectGroup', `SearchSelectGroup--${isOpen ? 'open' : 'closed'}`)}
+        className={classNames('SuggestSelectGroup', `SuggestSelectGroup--${isOpen ? 'open' : 'closed'}`, isSuggested && 'SuggestSelectGroup--suggested')}
         {...otherProps}
       >
-        <div
-          className="SearchSelectGroup-header"
-          onClick={onClick}
-        >
-          <i className={`SearchSelectGroup-headerIcon SearchSelectGroup-headerIcon--${isOpen ? 'open' : 'closed'}`} />
-          <span className="SearchSelectGroup-headerLabel">{label}</span>
+        <div className="SuggestSelectGroup-header">
+          <i className={`SuggestSelectGroup-headerIcon SuggestSelectGroup-headerIcon--${isOpen ? 'open' : 'closed'}`} onClick={onToggleOpen} />
+          <OptionRender
+            className="SuggestSelectGroup-headerLabel"
+            option={group}
+            filter={filter}
+            onClick={isGroupSelectable ? onOptionSelect : onToggleOpen}
+          />
         </div>
-        <div className="SearchSelectGroup-options">
+        <div className="SuggestSelectGroup-options">
           {children}
         </div>
       </div>
@@ -529,6 +513,10 @@ const SearchSelectGroup = React.createClass({
 
 });
 
-SearchSelect.PropTypes = Select.PropTypes;
+SuggestSelect.PropTypes = {
+  options: optionsPropType,
+  optionGroup: optionGroupPropType,
+  option: optionPropType,
+};
 
-export default SearchSelect;
+export default SuggestSelect;
