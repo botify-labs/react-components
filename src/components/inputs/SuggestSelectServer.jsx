@@ -2,13 +2,14 @@ import React, { PropTypes } from 'react';
 import cx from 'classnames';
 import _ from 'lodash';
 
-import SearchSelect from './SearchSelect';
+import SuggestSelectBase from './SuggestSelectBase';
 import InputMixin from '../../mixins/InputMixin';
 
+const EMPTY_OPTIONS = [];
 
-const AutocompleteSelect = React.createClass({
+const SuggestSelectServer = React.createClass({
 
-  displayName: 'AutocompleteSelect',
+  displayName: 'SuggestSelectServer',
 
   propTypes: {
     className: PropTypes.string,
@@ -25,7 +26,7 @@ const AutocompleteSelect = React.createClass({
 
   getInitialState() {
     return {
-      options: [],
+      options: EMPTY_OPTIONS,
     };
   },
 
@@ -51,11 +52,10 @@ const AutocompleteSelect = React.createClass({
     let { feedOptions, debounce, className, ...otherProps } = this.props;
     let { options } = this.state;
     return (
-      <SearchSelect
-        className={cx('AutocompleteSelect', className)}
+      <SuggestSelectBase
+        className={cx('SuggestSelectServer', className)}
         options={options}
-        placeHolder=""
-        onQueryChange={this.feedOptions}
+        onFilterChange={this.feedOptions}
         { ...otherProps }
       />
     );
@@ -63,4 +63,4 @@ const AutocompleteSelect = React.createClass({
 
 });
 
-export default AutocompleteSelect;
+export default SuggestSelectServer;
