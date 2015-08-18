@@ -41,9 +41,6 @@ const SuggestSelectServer = React.createClass({
   },
 
   feedOptions(newValue) {
-    this.setState({
-      options: EMPTY_OPTIONS,
-    });
     this.props.feedOptions(newValue, (err, options) => {
       if (!err) {
         this.setState({ options });

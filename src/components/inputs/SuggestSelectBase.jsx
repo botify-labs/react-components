@@ -1,7 +1,7 @@
 import React, { PropTypes, addons } from 'react/addons';
 const { update } = addons;
 import _ from 'lodash';
-import classNames from 'classnames';
+import cx from 'classnames';
 
 import Select from './Select';
 import InputMixin from '../../mixins/InputMixin';
@@ -109,167 +109,170 @@ const SuggestSelect = React.createClass({
   },
 
   //Prop Helpers: isFocused
-  _focus() {
+  focus() {
     this.setState({isFocused: true});
   },
-  _blur() {
+  blur() {
     this.setState({isFocused: false});
   },
 
   //Prop Helpers: isListOpen
-  _openList() {
+  openList() {
     this.setState({isListOpen: true});
   },
-  _closeList() {
+  closeList() {
     this.setState({isListOpen: false});
   },
 
   //Prop Helpers: value
-  _selectOption(optionId) {
+  selectOption(optionId) {
     this.requestChange({ $set: optionId });
   },
-  _getSelectedOptionId(props) {
+  getSelectedOptionId(props) {
     return this.getValue(props);
   },
 
   //State Helpers: openGroupsId
-  _isGroupOpen(group) {
+  isGroupOpen(group) {
     let {openGroupsId} = this.state;
     return _.contains(openGroupsId, group.id);
   },
-  _toggleGroupOpenState(group) {
-    let isOpened = this._isGroupOpen(group);
+  toggleGroupOpenState(group) {
+    let isOpened = this.isGroupOpen(group);
     if (isOpened) {
-      this._closeGroup(group);
+      this.closeGroup(group);
     } else {
-      this._openGroup(group);
+      this.openGroup(group);
     }
   },
-  _openGroup(group) {
+  openGroup(group) {
     let { openGroupsId } = this.state;
     this.setState({ openGroupsId: update(openGroupsId, {$push: [group.id]}) });
   },
-  _closeGroup(group) {
+  closeGroup(group) {
     let { openGroupsId } = this.state;
     let index = _.findIndex(openGroupsId, (id) => id === group.id);
     this.setState({ openGroupsId: update(openGroupsId, {$splice: [[index, 1]]}) });
   },
-  _openParentGroupIfNot(optionId) {
-    let { options } = this.props;
-
-    let suggestedGroup = _.find(options, (group) => group.isGroup && _.contains(_.pluck(group.options, 'id'), optionId));
-    if (suggestedGroup && !this._isGroupOpen(suggestedGroup)) {
-      this._openGroup(suggestedGroup);
+  openParentsGroupIfNot(optionId) {
+    let option = _.find(this.getOptionsIterator(), opt => opt.id === optionId);
+    while (option && option.parent && !this.isGroupOpen(option.parent)) {
+      this.openGroup(option.parent);
+      option = option.parent;
     }
   },
-  _openAllGroups() {
-    let {options} = this.props;
-    let allGroupsIds = _.pluck(_.filter(options, 'isGroup'), 'id');
+  openAllGroups() {
+    let allGroupsIds = _.pluck(_.filter(this.getOptionsIterator(), 'isGroup'), 'id');
     this.setState({ openGroupsId: allGroupsIds });
   },
-  _closeAllGroups() {
+  closeAllGroups() {
     this.setState({ openGroupsId: [] });
   },
 
   //State Helpers: filterValue
-  _updateFilterValue(newFilterValue, fireChange = true) {
+  updateFilterValue(newFilterValue) {
     this.setState({filterValue: newFilterValue});
-    if (fireChange) {
-      this.fireFilterChange(newFilterValue);
-    }
+    this.fireFilterChange(newFilterValue);
   },
-  _clearFilterValue(fireChange) {
-    this._updateFilterValue('', fireChange);
+  clearFilterValue() {
+    this.updateFilterValue('');
   },
 
   //State Helpers: suggestedOptionId
-  _suggestFirstOption() {
-    let suggestion = this._getOptionsIterator()[0];
-    this._setSuggestedOption(suggestion);
+  suggestFirstOption() {
+    let suggestion = this.getOptionsIterator()[0];
+    this.setSuggestedOption(suggestion);
   },
-  _suggestPreviousOption() {
-    this._moveSuggestion(-1);
+  suggestPreviousOption() {
+    this.moveSuggestion(-1);
   },
-  _suggestNextOption() {
-    this._moveSuggestion(1);
+  suggestNextOption() {
+    this.moveSuggestion(1);
   },
-
   /**
    * @param  {Integer} n
    */
-  _moveSuggestion(n) {
+  moveSuggestion(n) {
     let {suggestedOptionId} = this.state;
-    let optionsIterator = this._getOptionsIterator();
+    let optionsIterator = this.getOptionsIterator();
 
-    let currentSuggestionIndex = suggestedOptionId ? _.findIndex(optionsIterator, (option) => option.id === suggestedOptionId) : -1;
+    let currentSuggestionIndex = suggestedOptionId ? _.findIndex(optionsIterator, option => option.id === suggestedOptionId) : -1;
     let movedSuggestionIndex = currentSuggestionIndex + n;
 
     movedSuggestionIndex = Math.min(Math.max(movedSuggestionIndex, 0), optionsIterator.length - 1);
 
-    this._setSuggestedOption(optionsIterator[movedSuggestionIndex]);
+    this.setSuggestedOption(optionsIterator[movedSuggestionIndex]);
   },
-  _setSuggestedOption(option) {
-    this._setSuggestedOptionId(option ? option.id : null);
+  setSuggestedOption(option) {
+    this.setSuggestedOptionId(option ? option.id : null);
   },
-  _setSuggestedOptionId(optionId) {
+  setSuggestedOptionId(optionId) {
     this.setState({suggestedOptionId: optionId});
   },
-  _clearSuggestedOption() {
-    this._setSuggestedOptionId(null);
+  clearSuggestedOption() {
+    this.setSuggestedOptionId(null);
   },
 
   //Prop Helpers: options
-  _getOption(optionId) {
-    return _.find(this._getOptionsIterator(), {id: optionId});
+  getOption(optionId) {
+    return _.find(this.getOptionsIterator(), {id: optionId});
   },
-  _getOptionsIterator(options = this.props.options) {
-    return _.flatten(_.map(options, (option) => option.isGroup ? this._getOptionsIterator(option.options) : option));
+  getOptionsIterator() {
+    return this._getOptionsIterator(this.props.options);
+  },
+  _getOptionsIterator(options, parentOption) {
+    return _.flatten(_.map(options, (option) => {
+      option = {...option, parent: parentOption};
+      return []
+        .concat(option.isNotSelectable ? [] : option)
+        .concat(this._getOptionsIterator(option.options, option) || []);
+    }));
   },
 
   //Elements Listeners
-  _onInputContainerClick(e) {
-    this._focus();
+  onInputContainerClick(e) {
+    this.focus();
     //Open the list as list might be already open.
-    this._openList();
+    this.openList();
   },
 
-  _handleMouseDown(e) {
+  handleMouseDown(e) {
     if (e.button === 0 && this.state.isFocused) {
       // Only cancel blur on left click
       this._ignoreNextBlur = true;
     }
   },
 
-  _onFilterInputBlur(e) {
+  onFilterInputBlur(e) {
     if (this._ignoreNextBlur) {
       this._ignoreNextBlur = false;
     } else {
-      this._blur();
-      this._closeList();
+      this.blur();
+      this.closeList();
     }
   },
 
-  _onFilterInputFocus(e) {
+  onFilterInputFocus(e) {
     let {isListOpen, isFocused} = this.state;
 
     if (!isFocused) {
-      this._focus();
+      this.focus();
     }
     if (!isListOpen) {
-      this._openList();
+      this.openList();
     }
   },
 
-  _onFilterInputChange(e) {
+  onFilterInputChange(e) {
     let value = e.target.value;
-    this._updateFilterValue(value);
+    this.updateFilterValue(value);
   },
 
-  _onFilterInputKeyDown(e) {
+  onFilterInputKeyDown(e) {
     let {isListOpen, suggestedOptionId} = this.state;
 
     if (!isListOpen) {
-      this._openList();
+      this.openList();
       return;
     }
 
@@ -277,42 +280,42 @@ const SuggestSelect = React.createClass({
     case KEY_CODES.ENTER:
     case KEY_CODES.TAB:
       if (suggestedOptionId) {
-        this._selectOption(suggestedOptionId);
+        this.selectOption(suggestedOptionId);
       }
       break;
     case KEY_CODES.ARROW_UP:
       e.preventDefault();
-      this._suggestPreviousOption();
+      this.suggestPreviousOption();
       break;
     case KEY_CODES.ARROW_DOWN:
       e.preventDefault();
-      this._suggestNextOption();
+      this.suggestNextOption();
       break;
     }
   },
 
-  _onToggleGroupOpen(group, e) {
-    this._toggleGroupOpenState(group);
+  onToggleGroupOpen(group, e) {
+    this.toggleGroupOpenState(group);
   },
 
-  _onOptionSelect(option, e) {
-    this._selectOption(option.id);
+  onOptionSelect(option, e) {
+    this.selectOption(option.id);
   },
 
   componentDidUpdate(prevProps, prevState) {
     let {isFocused, suggestedOptionId, filterValue} = this.state;
-    let selectedOptionId = this._getSelectedOptionId(),
-        previousSelectedOptionId = this._getSelectedOptionId(prevProps);
+    let selectedOptionId = this.getSelectedOptionId(),
+        previousSelectedOptionId = this.getSelectedOptionId(prevProps);
 
     if (prevState.isFocused !== isFocused) {
       if (isFocused) {
         //If became focused, open the list
-        this._openList();
+        this.openList();
       } else {
         //If became blurred, clear the select
-        this._clearFilterValue();
-        this._closeAllGroups();
-        this._closeList();
+        this.clearFilterValue();
+        this.closeAllGroups();
+        this.closeList();
       }
     }
 
@@ -320,47 +323,45 @@ const SuggestSelect = React.createClass({
     if (previousSelectedOptionId !== selectedOptionId) {
 
       if (selectedOptionId) {
-        this._clearFilterValue(false);
-        this._closeAllGroups();
-        this._closeList();
-        this._setSuggestedOptionId(selectedOptionId);
+        this.clearFilterValue(false);
+        this.closeAllGroups();
+        this.closeList();
+        this.setSuggestedOptionId(selectedOptionId);
       }
     }
 
     if (prevProps.options !== this.props.options) {
       if (filterValue) {
-        this._suggestFirstOption(filterValue);
+        this.suggestFirstOption();
       }
     }
 
     if (prevState.filterValue !== filterValue) {
-
-      /*if (!filterValue && !selectedOptionId) {
-        this._clearSuggestedOption();
-      }*/
+      if (!filterValue && !selectedOptionId) {
+        this.clearSuggestedOption();
+      }
 
       //Select first option if not setted whereas filterValue is not empty
-      // and remove selection (clear value) when the filtreValue change
-      /*if (filterValue) {
-        this._suggestFirstOption(filterValue);
-      }*/
+      if (filterValue && !selectedOptionId) {
+        this.suggestFirstOption();
+      }
 
       //Open all groups if filterValue was empty
       let filterValueWasEmpty = prevState.filterValue.length === 0 && filterValue.length > 0;
       if (filterValueWasEmpty) {
-        this._openAllGroups();
+        this.openAllGroups();
       }
 
       //Close all groups if filterValue become empty
       let filterValueBecomeEmpty = prevState.filterValue.length > 0 && filterValue.length === 0;
       if (filterValueBecomeEmpty) {
-        this._closeAllGroups();
+        this.closeAllGroups();
       }
     }
 
     //Open Suggested Group
     if (suggestedOptionId) {
-      this._openParentGroupIfNot(suggestedOptionId);
+      this.openParentsGroupIfNot(suggestedOptionId);
     }
 
     //Focus input is state isFocused
@@ -377,32 +378,32 @@ const SuggestSelect = React.createClass({
     let { className, placeHolder, disabled, options } = this.props;
     let { isFocused, isListOpen, filterValue } = this.state;
 
-    let selectedOptionId = this._getSelectedOptionId();
-    let selectedOption = this._getOption(selectedOptionId);
+    let selectedOptionId = this.getSelectedOptionId();
+    let selectedOption = this.getOption(selectedOptionId);
 
     return (
       <div
-        className={classNames(
+        className={cx(
           'SuggestSelect',
           isFocused && 'SuggestSelect--focused',
           disabled && 'SuggestSelect--disabled',
           className
         )}
-        onMouseDown={!disabled && this._handleMouseDown}
+        onMouseDown={!disabled && this.handleMouseDown}
       >
         <div className="SuggestSelect-inputContainer"
-          onClick={!disabled && this._onInputContainerClick}
+          onClick={!disabled && this.onInputContainerClick}
         >
           <input
-            className={classNames('SuggestSelect-filterInput', !filterValue && 'SuggestSelect-filterInput--empty')}
+            className={cx('SuggestSelect-filterInput', !filterValue && 'SuggestSelect-filterInput--empty')}
             type="text"
             ref="searchInput"
             disabled={disabled}
             value={filterValue}
-            onBlur={this._onFilterInputBlur}
-            onChange={this._onFilterInputChange}
-            onKeyDown={this._onFilterInputKeyDown}
-            onFocus={this._onFilterInputFocus}
+            onBlur={this.onFilterInputBlur}
+            onChange={this.onFilterInputChange}
+            onKeyDown={this.onFilterInputKeyDown}
+            onFocus={this.onFilterInputFocus}
           />
           {!filterValue &&
             (selectedOption ?
@@ -438,13 +439,13 @@ const SuggestSelect = React.createClass({
       <SuggestSelectGroup
         key={group.id}
         group={group}
-        isOpen={this._isGroupOpen(group)}
+        isOpen={this.isGroupOpen(group)}
         isSuggested={isSuggested}
         optionRender={OptionRender}
         filter={filterValue}
         isGroupSelectable={!group.isNotSelectable}
-        onToggleOpen={this._onToggleGroupOpen.bind(null, group)}
-        onOptionSelect={this._onOptionSelect.bind(null, group)}
+        onToggleOpen={this.onToggleGroupOpen.bind(null, group)}
+        onOptionSelect={this.onOptionSelect.bind(null, group)}
       >
         {_.map(group.options, (option) => {
           let render = option.isGroup ? this._renderGroup : this._renderOption;
@@ -461,11 +462,11 @@ const SuggestSelect = React.createClass({
 
     return (
       <OptionRender
-        className={classNames('SuggestSelectOption', isSuggested && 'SuggestSelectOption--suggested')}
+        className={cx('SuggestSelectOption', isSuggested && 'SuggestSelectOption--suggested')}
         key={option.id}
         option={option}
         filter={filterValue}
-        onClick={this._onOptionSelect.bind(null, option)}
+        onClick={this.onOptionSelect.bind(null, option)}
       />
     );
   },
@@ -492,10 +493,10 @@ const SuggestSelectGroup = React.createClass({
     let {group, isOpen, isSuggested, optionRender: OptionRender, filter, isGroupSelectable, onToggleOpen, onOptionSelect, children, ...otherProps} = this.props;
     return (
       <div
-        className={classNames('SuggestSelectGroup', `SuggestSelectGroup--${isOpen ? 'open' : 'closed'}`, isSuggested && 'SuggestSelectGroup--suggested')}
+        className={cx('SuggestSelectGroup', `SuggestSelectGroup--${isOpen ? 'open' : 'closed'}`)}
         {...otherProps}
       >
-        <div className="SuggestSelectGroup-header">
+        <div className={cx('SuggestSelectGroup-header', isSuggested && 'SuggestSelectGroup--suggested')}>
           <i className={`SuggestSelectGroup-headerIcon SuggestSelectGroup-headerIcon--${isOpen ? 'open' : 'closed'}`} onClick={onToggleOpen} />
           <OptionRender
             className="SuggestSelectGroup-headerLabel"
