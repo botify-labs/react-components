@@ -418,7 +418,7 @@ const SuggestSelect = React.createClass({
           >
             {_.map(options, (option) => {
               let render = option.isGroup ? this._renderGroup : this._renderOption;
-              return render(option);
+              return render(option, 0);
             })}
           </div>
         }
@@ -426,7 +426,7 @@ const SuggestSelect = React.createClass({
     );
   },
 
-  _renderGroup(group) {
+  _renderGroup(group, depth) {
     let { optionRender: OptionRender, hideGroupsWithoutOptions } = this.props;
     let { filterValue, suggestedOptionId } = this.state;
     let isSuggested = suggestedOptionId === group.id;
@@ -437,6 +437,7 @@ const SuggestSelect = React.createClass({
 
     return (
       <SuggestSelectGroup
+        className={`SuggestSelectGroup--depth${depth}`}
         key={group.id}
         group={group}
         isOpen={this.isGroupOpen(group)}
@@ -449,20 +450,20 @@ const SuggestSelect = React.createClass({
       >
         {_.map(group.options, (option) => {
           let render = option.isGroup ? this._renderGroup : this._renderOption;
-          return render(option);
+          return render(option, depth + 1);
         })}
       </SuggestSelectGroup>
     );
   },
 
-  _renderOption(option) {
+  _renderOption(option, depth) {
     let { optionRender: OptionRender } = this.props;
     let { filterValue, suggestedOptionId } = this.state;
     let isSuggested = suggestedOptionId === option.id;
 
     return (
       <OptionRender
-        className={cx('SuggestSelectOption', isSuggested && 'SuggestSelectOption--suggested')}
+        className={cx('SuggestSelectOption', isSuggested && 'SuggestSelectOption--suggested', `SuggestSelectOption--depth${depth}`)}
         key={option.id}
         option={option}
         filter={filterValue}
@@ -478,6 +479,7 @@ const SuggestSelectGroup = React.createClass({
   displayName: 'SuggestSelectGroup',
 
   propTypes: {
+    className: PropTypes.string,
     group: Select.PropTypes.optionGroupOf(Select.PropTypes.option),
     isOpen: PropTypes.bool.isRequired,
     isSuggested: PropTypes.bool.isRequired,
@@ -490,10 +492,11 @@ const SuggestSelectGroup = React.createClass({
   },
 
   render() {
-    let {group, isOpen, isSuggested, optionRender: OptionRender, filter, isSelectable, onToggleOpen, onOptionSelect, children, ...otherProps} = this.props;
+    let {group, isOpen, isSuggested, optionRender: OptionRender, className,
+      filter, isSelectable, onToggleOpen, onOptionSelect, children, ...otherProps} = this.props;
     return (
       <div
-        className={cx('SuggestSelectGroup', `SuggestSelectGroup--${isOpen ? 'open' : 'closed'}`)}
+        className={cx(className, 'SuggestSelectGroup', `SuggestSelectGroup--${isOpen ? 'open' : 'closed'}`)}
         {...otherProps}
       >
         <div className={cx('SuggestSelectGroup-header', isSuggested && 'SuggestSelectGroup--suggested', isSelectable && 'SuggestSelectGroup--selectable')}>
