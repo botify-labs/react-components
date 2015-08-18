@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react';
 
 import 'font-awesome/css/font-awesome.css';
-import SearchSelect from '../src/components/inputs/SearchSelect';
+import SuggestSelectClient from '../src/components/inputs/SuggestSelectClient';
 
-import './SearchSelect.scss';
+import './SuggestSelectClient.scss';
 
 
 let options = [
@@ -73,7 +73,7 @@ let render = (value) => {
   React.render(
     <div>
       <input type="text"/>
-      <SearchSelect
+      <SuggestSelectClient
         placeHolder="Search a field"
         options={options}
         optionRender={OptionExample}
