@@ -3,7 +3,6 @@ const { update } = addons;
 import _ from 'lodash';
 import cx from 'classnames';
 
-import Select from './Select';
 import InputMixin from '../../mixins/InputMixin';
 
 
@@ -480,7 +479,7 @@ const SuggestSelectGroup = React.createClass({
 
   propTypes: {
     className: PropTypes.string,
-    group: Select.PropTypes.optionGroupOf(Select.PropTypes.option),
+    group: optionGroupPropType,
     isOpen: PropTypes.bool.isRequired,
     isSuggested: PropTypes.bool.isRequired,
     isSelectable: PropTypes.bool.isRequired,
