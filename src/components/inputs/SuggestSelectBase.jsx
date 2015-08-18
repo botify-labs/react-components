@@ -441,9 +441,9 @@ const SuggestSelect = React.createClass({
         group={group}
         isOpen={this.isGroupOpen(group)}
         isSuggested={isSuggested}
+        isSelectable={!group.isNotSelectable}
         optionRender={OptionRender}
         filter={filterValue}
-        isGroupSelectable={!group.isNotSelectable}
         onToggleOpen={this.onToggleGroupOpen.bind(null, group)}
         onOptionSelect={this.onOptionSelect.bind(null, group)}
       >
@@ -481,28 +481,31 @@ const SuggestSelectGroup = React.createClass({
     group: Select.PropTypes.optionGroupOf(Select.PropTypes.option),
     isOpen: PropTypes.bool.isRequired,
     isSuggested: PropTypes.bool.isRequired,
+    isSelectable: PropTypes.bool.isRequired,
     optionRender: PropTypes.func.isRequired,
     filter: PropTypes.string.isRequired,
-    isGroupSelectable: PropTypes.bool.isRequired,
     onToggleOpen: PropTypes.func.isRequired,
     onOptionSelect: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
   },
 
   render() {
-    let {group, isOpen, isSuggested, optionRender: OptionRender, filter, isGroupSelectable, onToggleOpen, onOptionSelect, children, ...otherProps} = this.props;
+    let {group, isOpen, isSuggested, optionRender: OptionRender, filter, isSelectable, onToggleOpen, onOptionSelect, children, ...otherProps} = this.props;
     return (
       <div
         className={cx('SuggestSelectGroup', `SuggestSelectGroup--${isOpen ? 'open' : 'closed'}`)}
         {...otherProps}
       >
-        <div className={cx('SuggestSelectGroup-header', isSuggested && 'SuggestSelectGroup--suggested')}>
-          <i className={`SuggestSelectGroup-headerIcon SuggestSelectGroup-headerIcon--${isOpen ? 'open' : 'closed'}`} onClick={onToggleOpen} />
+        <div className={cx('SuggestSelectGroup-header', isSuggested && 'SuggestSelectGroup--suggested', isSelectable && 'SuggestSelectGroup--selectable')}>
+          <i
+            className={`SuggestSelectGroup-headerIcon SuggestSelectGroup-headerIcon--${isOpen ? 'open' : 'closed'}`}
+            onClick={onToggleOpen}
+          />
           <OptionRender
             className="SuggestSelectGroup-headerLabel"
             option={group}
             filter={filter}
-            onClick={isGroupSelectable ? onOptionSelect : onToggleOpen}
+            onClick={isSelectable ? onOptionSelect : null}
           />
         </div>
         <div className="SuggestSelectGroup-options">

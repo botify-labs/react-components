@@ -6,7 +6,6 @@ import SuggestSelectBase from './SuggestSelectBase';
 import InputMixin from '../../mixins/InputMixin';
 
 
-const EMPTY_OPTIONS = [];
 const DEFAULT_PLACEHOLDER = 'Search option';
 
 const SuggestSelectClient = React.createClass({
