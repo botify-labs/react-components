@@ -32,7 +32,7 @@ const SuggestSelectClient = React.createClass({
 
   getInitialState() {
     return {
-      filteredOptions: this.props.options,
+      filterValue: '',
     };
   },
 
@@ -44,9 +44,7 @@ const SuggestSelectClient = React.createClass({
   ],
 
   handleFilterChange(filterValue) {
-    this.setState({
-      filteredOptions: this.filterOptions(filterValue),
-    });
+    this.setState({ filterValue });
   },
 
   filterOptions(filterValue) {
@@ -68,7 +66,8 @@ const SuggestSelectClient = React.createClass({
 
   render() {
     let { options, filterOption, className, ...otherProps } = this.props;
-    let { filteredOptions } = this.state;
+    let filteredOptions = this.filterOptions(this.state.filterValue);
+
     return (
       <SuggestSelectBase
         className={cx('SuggestSelectClient', className)}
