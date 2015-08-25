@@ -18,10 +18,7 @@ const SuggestSelectServer = React.createClass({
   },
 
   mixins: [
-    InputMixin(React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
-    ])),
+    InputMixin(SuggestSelectBase.PropTypes.optionId),
   ],
 
   getInitialState() {

@@ -6,20 +6,24 @@ import cx from 'classnames';
 import InputMixin from '../../mixins/InputMixin';
 
 
+const optionIdPropType = React.PropTypes.oneOfType([
+  React.PropTypes.string,
+  React.PropTypes.number,
+]);
 
 const optionPropType = PropTypes.shape({
-  id: PropTypes.string.isRequired,
+  id: optionIdPropType.isRequired,
   label: PropTypes.string.isRequired,
   labelSelected: PropTypes.string, //Label displayed when selected
 });
 
 const optionGroupPropType = PropTypes.oneOfType([
   PropTypes.shape({
-    isGroup: PropTypes.bool.isRequired,
-    id: PropTypes.string.isRequired,
+    id: optionIdPropType.isRequired,
     label: PropTypes.string.isRequired,
     labelSelected: PropTypes.string, //Label displayed when selected
     options: PropTypes.arrayOf(optionPropType).isRequired,
+    isGroup: PropTypes.bool.isRequired,
     isNotSelectable: PropTypes.bool,
   }),
   optionPropType,
@@ -523,6 +527,7 @@ SuggestSelect.PropTypes = {
   options: optionsPropType,
   optionGroup: optionGroupPropType,
   option: optionPropType,
+  optionId: optionIdPropType,
 };
 
 export default SuggestSelect;
