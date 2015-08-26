@@ -433,6 +433,7 @@ const SuggestSelect = React.createClass({
     let { optionRender: OptionRender, hideGroupsWithoutOptions } = this.props;
     let { filterValue, suggestedOptionId } = this.state;
     let isSuggested = suggestedOptionId === group.id;
+    let isOpen = this.isGroupOpen(group);
 
     if (hideGroupsWithoutOptions && (!group.options || group.options.length === 0)) {
       return false;
@@ -443,7 +444,7 @@ const SuggestSelect = React.createClass({
         className={`SuggestSelectGroup--depth${depth}`}
         key={group.id}
         group={group}
-        isOpen={this.isGroupOpen(group)}
+        isOpen={isOpen}
         isSuggested={isSuggested}
         isSelectable={!group.isNotSelectable}
         optionRender={OptionRender}
@@ -451,7 +452,7 @@ const SuggestSelect = React.createClass({
         onToggleOpen={this.onToggleGroupOpen.bind(null, group)}
         onOptionSelect={this.onOptionSelect.bind(null, group)}
       >
-        {_.map(group.options, (option) => {
+        {isOpen && _.map(group.options, (option) => {
           let render = option.isGroup ? this._renderGroup : this._renderOption;
           return render(option, depth + 1);
         })}
