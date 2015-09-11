@@ -512,8 +512,16 @@ const SuggestSelectGroup = React.createClass({
             className="SuggestSelectGroup-headerLabel"
             option={group}
             filter={filter}
-            onClick={isSelectable ? onOptionSelect : null}
+            onClick={onToggleOpen}
           />
+          {isSelectable &&
+            <span
+              className="SuggestSelectGroup-headerSelect"
+              onClick={onOptionSelect}
+            >
+              Select
+            </span>
+          }
         </div>
         <div className="SuggestSelectGroup-options">
           {children}
