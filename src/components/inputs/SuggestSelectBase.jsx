@@ -325,7 +325,7 @@ const SuggestSelect = React.createClass({
     //If new value, Clear select without bluring
     if (previousSelectedOptionId !== selectedOptionId) {
 
-      if (selectedOptionId) {
+      if (selectedOptionId !== null && selectedOptionId !== undefined) {
         this.clearFilterValue();
         this.closeAllGroups();
         this.closeList();
