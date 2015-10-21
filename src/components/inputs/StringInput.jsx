@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
-import classNames from 'classnames';
-import Input from './Input';
+import cx from 'classnames';
+
+import InputMixin from '../../mixins/InputMixin';
+
 
 const StringInput = React.createClass({
 
@@ -10,13 +12,17 @@ const StringInput = React.createClass({
     className: PropTypes.string,
   },
 
+  mixins: [
+    InputMixin(PropTypes.string),
+  ],
+
   render() {
     let { className, ...otherProps } = this.props;
 
     return (
-      <Input
+      <input
         {...otherProps}
-        className={classNames('StringInput', className)}
+        className={cx('StringInput', className)}
         type="text"
         />
     );
