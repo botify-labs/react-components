@@ -13,7 +13,6 @@ const optionIdPropType = React.PropTypes.oneOfType([
 
 const optionPropType = PropTypes.shape({
   id: optionIdPropType.isRequired,
-  label: PropTypes.string.isRequired,
 });
 
 const optionsPropType = PropTypes.arrayOf(optionPropType);
@@ -35,13 +34,13 @@ const DefaultOption = React.createClass({
 
   render() {
     let {
-      option: {label},
+      option: {id},
       ...otherProps,
     } = this.props;
 
     return (
       <div className="Option" {...otherProps}>
-        <span>{label}</span>
+        <span>{id}</span>
       </div>
     );
   },
@@ -204,8 +203,6 @@ const SuggestInput = React.createClass({
     const { className, input: Input, options, disabled } = this.props;
     const { isFocused, isListOpen } = this.state;
     const value = this.getValue();
-    const relatedOption = _.find(options, ({id}) => id === value);
-    const inputValue = relatedOption ? relatedOption.label || relatedOption.selectedLabel : String(value);
 
     return (
       <div
@@ -222,7 +219,7 @@ const SuggestInput = React.createClass({
           onBlur={this.onInputBlur}
           onFocus={this.onInputFocus}
           onKeyDown={this.onInputKeyDown}
-          valueLink={this.link(inputValue, this.onInputChange)}
+          valueLink={this.link(value, this.onInputChange)}
         />
         {isListOpen &&
           <div

@@ -27,9 +27,8 @@ const SuggestClient = React.createClass({
 
   getDefaultProps() {
     return {
-      placeHolder: DEFAULT_PLACEHOLDER,
       filterOption: (val, option, parent) => {
-        val = val.replace(/[\\\^\$\*\+\?\.\(\)\|\{\}\[\]]/g, '\\$&'); //Escape regex special characters
+        val = String(val).replace(/[\\\^\$\*\+\?\.\(\)\|\{\}\[\]]/g, '\\$&'); //Escape regex special characters
         return new RegExp(val, 'i').test(option.label);
       },
     };
