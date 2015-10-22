@@ -243,7 +243,7 @@ const SuggestInput = React.createClass({
 
     return (
       <OptionRender
-        className={cx('SuggestInputSuggestion', isSuggested && 'SuggestInputSuggestion--suggested')}
+        className={cx('SuggestInputOption', isSuggested && 'SuggestInputOption--suggested')}
         key={option.id}
         option={option}
         filter={filterValue}
