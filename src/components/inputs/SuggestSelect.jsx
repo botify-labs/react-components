@@ -122,6 +122,7 @@ const SuggestSelect = React.createClass({
   //Prop Helpers: value
   selectOption(optionId) {
     this.requestChange({ $set: optionId });
+    this.blur();
   },
   getSelectedOptionId(props) {
     return this.getValue(props);
@@ -203,6 +204,7 @@ const SuggestSelect = React.createClass({
   },
   setSuggestedOptionId(optionId) {
     this.setState({suggestedOptionId: optionId});
+    this.openParentsGroupIfNot(optionId);
   },
   clearSuggestedOption() {
     this.setSuggestedOptionId(null);
@@ -306,6 +308,7 @@ const SuggestSelect = React.createClass({
       if (isFocused) {
         //If became focused, open the list
         this.openList();
+        this.openParentsGroupIfNot(suggestedOptionId);
       } else {
         //If became blurred, clear the select
         this.clearFilterValue();
@@ -349,11 +352,6 @@ const SuggestSelect = React.createClass({
       if (filterValueBecomeEmpty) {
         this.closeAllGroups();
       }
-    }
-
-    //Open Suggested Group
-    if (suggestedOptionId) {
-      this.openParentsGroupIfNot(suggestedOptionId);
     }
 
     //Focus input is state isFocused
