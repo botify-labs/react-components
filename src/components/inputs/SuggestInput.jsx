@@ -20,8 +20,6 @@ const optionsPropType = PropTypes.arrayOf(optionPropType);
 const KEY_CODES = {
   TAB: 9,
   ENTER: 13,
-  ARROW_UP: 38,
-  ARROW_DOWN: 40,
 };
 
 const DefaultOption = React.createClass({
@@ -77,7 +75,6 @@ const SuggestInput = React.createClass({
 
   getInitialState() {
     return {
-      suggestionId: this.getValue(),
       isFocused: false,
       isListOpen: false,
     };
@@ -103,39 +100,6 @@ const SuggestInput = React.createClass({
     this.setState({isListOpen: false});
   },
 
-  suggestFirstOption() {
-    let option = this.props.options[0];
-    if (option) {
-      this.setSuggestion(option);
-    }
-  },
-
-  suggestPreviousOption() {
-    this.moveSuggestion(-1);
-  },
-
-  suggestNextOption() {
-    this.moveSuggestion(1);
-  },
-
-  /**
-   * @param  {Integer} n
-   */
-  moveSuggestion(n) {
-    const { options } = this.props;
-    const { suggestion } = this.state;
-
-    const currentSuggestionIndex = suggestion ? _.findIndex(options, option => option === suggestion) : -1;
-    let movedSuggestionIndex = currentSuggestionIndex + n;
-    movedSuggestionIndex = Math.min(Math.max(movedSuggestionIndex, 0), options.length - 1);
-
-    this.setSuggestion(options[movedSuggestionIndex]);
-  },
-
-  setSuggestion(suggestion) {
-    this.setState({ suggestionId: suggestion.id });
-  },
-
   onInputKeyDown(e) {
     const {isListOpen} = this.state;
 
@@ -149,20 +113,6 @@ const SuggestInput = React.createClass({
     case KEY_CODES.TAB:
       this.blur();
       break;
-    case KEY_CODES.ARROW_UP:
-      e.preventDefault();
-      this.suggestPreviousOption();
-      break;
-    case KEY_CODES.ARROW_DOWN:
-      e.preventDefault();
-      this.suggestNextOption();
-      break;
-    }
-  },
-
-  componentWillReceiveProps(prevProps) {
-    if (prevProps.options !== this.props.options) {
-      this.suggestFirstOption();
     }
   },
 
@@ -238,12 +188,11 @@ const SuggestInput = React.createClass({
    */
   renderOption(option) {
     let { optionRender: OptionRender } = this.props;
-    let { filterValue, suggestedOptionId } = this.state;
-    let isSuggested = suggestedOptionId === option.id;
+    let { filterValue } = this.state;
 
     return (
       <OptionRender
-        className={cx('SuggestInputOption', isSuggested && 'SuggestInputOption--suggested')}
+        className={cx('SuggestInputOption')}
         key={option.id}
         option={option}
         filter={filterValue}
