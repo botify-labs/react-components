@@ -6,8 +6,6 @@ import SuggestSelect from './SuggestSelect';
 import InputMixin from '../../mixins/InputMixin';
 
 
-const DEFAULT_PLACEHOLDER = 'Search option';
-
 const SuggestClient = React.createClass({
 
   displayName: 'SuggestClient',

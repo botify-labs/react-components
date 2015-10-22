@@ -4,6 +4,7 @@ import InputMixin from '../../mixins/InputMixin';
 
 /**
  * Request Change only on child input Blur
+ * @param {Component} input component to differ change
  * <!> Only Child must implement InputMixin
  */
 const DifferChange = ComposedComponent => React.createClass({
