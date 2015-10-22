@@ -2,23 +2,25 @@ import React, { PropTypes } from 'react';
 import cx from 'classnames';
 import _ from 'lodash';
 
-import SuggestSelectBase from './SuggestSelectBase';
+import SuggestSelect from './SuggestSelect';
 import InputMixin from '../../mixins/InputMixin';
+
 
 const EMPTY_OPTIONS = [];
 
-const SuggestSelectServer = React.createClass({
+const SuggestServer = React.createClass({
 
-  displayName: 'SuggestSelectServer',
+  displayName: 'SuggestServer',
 
   propTypes: {
+    suggestComponent: PropTypes.func.isRequired, //Component to render. either SuggestSelect or SuggestInput
     className: PropTypes.string,
     feedOptions: PropTypes.func.isRequired, //Function called with (value: String, callback: Function) to feed suggestion
     debounce: PropTypes.number, //number of milliseconds to wait after last change to feed options
   },
 
   mixins: [
-    InputMixin(SuggestSelectBase.PropTypes.optionId),
+    InputMixin(SuggestSelect.PropTypes.optionId),
   ],
 
   getInitialState() {
@@ -46,11 +48,11 @@ const SuggestSelectServer = React.createClass({
   },
 
   render() {
-    let { feedOptions, debounce, className, ...otherProps } = this.props;
+    let { suggestComponent: SuggestComponent, feedOptions, debounce, className, ...otherProps } = this.props;
     let { options } = this.state;
     return (
-      <SuggestSelectBase
-        className={cx('SuggestSelectServer', className)}
+      <SuggestComponent
+        className={cx('SuggestServer', className)}
         options={options}
         onFilterChange={this.feedOptions}
         { ...otherProps }
@@ -60,4 +62,4 @@ const SuggestSelectServer = React.createClass({
 
 });
 
-export default SuggestSelectServer;
+export default SuggestServer;

@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
-import classNames from 'classnames';
+import cx from 'classnames';
+
 import InputMixin from '../../mixins/InputMixin';
-import Input from './Input';
+
 
 const NumberInput = React.createClass({
 
@@ -11,22 +12,33 @@ const NumberInput = React.createClass({
     InputMixin(PropTypes.number),
   ],
 
+  getInitialState() {
+    return {
+      trailingPoint: false,
+    };
+  },
+
   propTypes: {
     className: PropTypes.string,
   },
 
-  _handleChange(value) {
+  handleChange(value) {
+    this.setState({
+      trailingPoint: value[value.length - 1] === '.',
+    });
     this.requestChange({ $set: parseFloat(value) });
   },
 
   render() {
-    let { className, ...otherProps } = this.props;
+    const { className, ...otherProps } = this.props;
+    const { trailingPoint } = this.state;
+    const value = `${this.getValue()}${trailingPoint ? '.' : ''}`;
 
     return (
-      <Input
+      <input
         {...otherProps}
-        className={classNames('NumberInput', className)}
-        valueLink={this.link(this.getValue() + '', this._handleChange)}
+        className={cx('NumberInput', className)}
+        valueLink={this.link(value, this.handleChange)}
         type="number"
       />
     );

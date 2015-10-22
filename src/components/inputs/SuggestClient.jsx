@@ -2,30 +2,33 @@ import React, { PropTypes } from 'react';
 import cx from 'classnames';
 import _ from 'lodash';
 
-import SuggestSelectBase from './SuggestSelectBase';
+import SuggestSelect from './SuggestSelect';
 import InputMixin from '../../mixins/InputMixin';
 
 
-const DEFAULT_PLACEHOLDER = 'Search option';
+const SuggestClient = React.createClass({
 
-const SuggestSelectClient = React.createClass({
-
-  displayName: 'SuggestSelectClient',
+  displayName: 'SuggestClient',
 
   propTypes: {
+    suggestComponent: PropTypes.func.isRequired, //Component to render. either SuggestSelect or SuggestInput
     className: PropTypes.string,
     placeHolder: PropTypes.string,
-    options: SuggestSelectBase.PropTypes.options.isRequired,
+    options: SuggestSelect.PropTypes.options.isRequired,
     //(val, option, parent) => Boolean. Return true to keep.
     filterOption: PropTypes.func, //By default filter option by their label.
   },
 
+  mixins: [
+    InputMixin(SuggestSelect.PropTypes.optionId),
+  ],
+
   getDefaultProps() {
     return {
-      placeHolder: DEFAULT_PLACEHOLDER,
       filterOption: (val, option, parent) => {
-        val = val.replace(/[\\\^\$\*\+\?\.\(\)\|\{\}\[\]]/g, '\\$&'); //Escape regex special characters
-        return new RegExp(val, 'i').test(option.label);
+        val = String(val).replace(/[\\\^\$\*\+\?\.\(\)\|\{\}\[\]]/g, '\\$&'); //Escape regex special characters
+        const regex = new RegExp(val, 'i');
+        return regex.test(option.label) || parent && regex.test(parent.label);
       },
     };
   },
@@ -35,10 +38,6 @@ const SuggestSelectClient = React.createClass({
       filterValue: '',
     };
   },
-
-  mixins: [
-    InputMixin(SuggestSelectBase.PropTypes.optionId),
-  ],
 
   handleFilterChange(filterValue) {
     this.setState({ filterValue });
@@ -62,12 +61,12 @@ const SuggestSelectClient = React.createClass({
   },
 
   render() {
-    let { options, filterOption, className, ...otherProps } = this.props;
+    let { suggestComponent: SuggestComponent, options, filterOption, className, ...otherProps } = this.props;
     let filteredOptions = this.filterOptions(this.state.filterValue);
 
     return (
-      <SuggestSelectBase
-        className={cx('SuggestSelectClient', className)}
+      <SuggestComponent
+        className={cx('SuggestClient', className)}
         options={filteredOptions}
         onFilterChange={this.handleFilterChange}
         { ...otherProps }
@@ -77,4 +76,4 @@ const SuggestSelectClient = React.createClass({
 
 });
 
-export default SuggestSelectClient;
+export default SuggestClient;

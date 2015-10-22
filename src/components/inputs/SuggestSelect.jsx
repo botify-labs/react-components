@@ -68,10 +68,7 @@ const SuggestSelect = React.createClass({
   displayName: 'SuggestSelect',
 
   mixins: [
-    InputMixin(React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
-    ])),
+    InputMixin(optionIdPropType),
   ],
 
   propTypes: {
@@ -92,6 +89,7 @@ const SuggestSelect = React.createClass({
       optionRender: OptionDefault,
       hideGroupsWithoutOptions: true,
       disabled: false,
+      onFilterChange: (query) => {},
     };
   },
 
@@ -103,12 +101,6 @@ const SuggestSelect = React.createClass({
       isListOpen: false,
       openGroupsId: [],
     };
-  },
-
-  fireFilterChange(value) {
-    if (this.props.onFilterChange) {
-      this.props.onFilterChange(value);
-    }
   },
 
   //Prop Helpers: isFocused
@@ -130,6 +122,7 @@ const SuggestSelect = React.createClass({
   //Prop Helpers: value
   selectOption(optionId) {
     this.requestChange({ $set: optionId });
+    this.blur();
   },
   getSelectedOptionId(props) {
     return this.getValue(props);
@@ -175,7 +168,7 @@ const SuggestSelect = React.createClass({
   //State Helpers: filterValue
   updateFilterValue(newFilterValue) {
     this.setState({filterValue: newFilterValue});
-    this.fireFilterChange(newFilterValue);
+    this.props.onFilterChange(newFilterValue);
   },
   clearFilterValue() {
     this.updateFilterValue('');
@@ -211,6 +204,7 @@ const SuggestSelect = React.createClass({
   },
   setSuggestedOptionId(optionId) {
     this.setState({suggestedOptionId: optionId});
+    this.openParentsGroupIfNot(optionId);
   },
   clearSuggestedOption() {
     this.setSuggestedOptionId(null);
@@ -314,6 +308,7 @@ const SuggestSelect = React.createClass({
       if (isFocused) {
         //If became focused, open the list
         this.openList();
+        this.openParentsGroupIfNot(suggestedOptionId);
       } else {
         //If became blurred, clear the select
         this.clearFilterValue();
@@ -324,13 +319,10 @@ const SuggestSelect = React.createClass({
 
     //If new value, Clear select without bluring
     if (previousSelectedOptionId !== selectedOptionId) {
-
-      if (selectedOptionId !== null) {
-        this.clearFilterValue();
-        this.closeAllGroups();
-        this.closeList();
-        this.setSuggestedOptionId(selectedOptionId);
-      }
+      this.clearFilterValue();
+      this.closeAllGroups();
+      this.closeList();
+      this.setSuggestedOptionId(selectedOptionId);
     }
 
     if (prevProps.options !== this.props.options) {
@@ -360,11 +352,6 @@ const SuggestSelect = React.createClass({
       if (filterValueBecomeEmpty) {
         this.closeAllGroups();
       }
-    }
-
-    //Open Suggested Group
-    if (suggestedOptionId) {
-      this.openParentsGroupIfNot(suggestedOptionId);
     }
 
     //Focus input is state isFocused
