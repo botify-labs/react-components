@@ -17,6 +17,15 @@
     "new-cap": [2, { "capIsNew": false }],   //Allow uppercase-started functions to be called without new operator (for ImmutableJS, etc).
     "no-use-before-define": [2, "nofunc"],   //Allow func to call funcs defined later in order to improve code readability
     "no-unused-vars": [2, {"args": "none"}], //Allow unused argument definition in order to keep functions signatures self documented.
+    "react/sort-comp": [2, {
+      'order': [
+        'lifecycle',
+        'everything-else',
+        '/^_?(on|handle).+$/',
+        'render',
+        '/^_?render.+$/'
+      ]
+    }],
     "quote-props": [2, "as-needed"],         //Disallow to quote properties (of object) when it's not requiered.
   },
 
