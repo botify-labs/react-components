@@ -31,7 +31,7 @@ let Positioned = React.createClass({
   componentDidMount() {
     let node = ReactDOM.findDOMNode(this);
 
-    this.setState({
+    this.setState({ // eslint-disable-line react/no-did-mount-set-state
       width: node.offsetWidth,
       height: node.offsetHeight,
     });
@@ -43,7 +43,7 @@ let Positioned = React.createClass({
     let height = node.offsetHeight;
 
     if (width !== prevState.width || height !== prevState.height) {
-      this.setState({
+      this.setState({ // eslint-disable-line react/no-did-update-set-state
         width: node.offsetWidth,
         height: node.offsetHeight,
       });
