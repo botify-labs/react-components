@@ -89,10 +89,10 @@ class ChartDataGoogleDataAdapter{
   }
 
   _getGoogleValuesArray(filters) {
-    let googleValuesArray = this._getEmptyGoogleValuesArray(),
-        data = this.chartData.filterData(filters),
-        categories = this._getCategories(),
-        series = this._getSeries();
+    let googleValuesArray = this._getEmptyGoogleValuesArray();
+    let data = this.chartData.filterData(filters);
+    let categories = this._getCategories();
+    let series = this._getSeries();
 
     // Iterate on each data and set it's value in the proper cell
     data.map((value, key) => {
