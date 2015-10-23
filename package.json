@@ -4,7 +4,7 @@
   "description": "ReactJS components",
   "author": "Botify <labs@botify.com>",
   "scripts": {
-    "lint:js": "eslint .",
+    "lint:js": "eslint --ext .js --ext .jsx .",
     "lint": "npm run lint:js",
     "gulp": "gulp",
     "start": "gulp server",
