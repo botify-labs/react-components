@@ -47,7 +47,7 @@ describe('ResourceText', () => {
     let helpTooltipInstance = TestUtils.findRenderedComponentWithType(rtInstance, HelpTooltip);
 
     expect(helpTooltipInstance.props.className).toBe('ResourceText-helpTooltip');
-    /*expect(helpTooltipInstance.props.children).toBe(
+    /* expect(helpTooltipInstance.props.children).toBe(
       <span dangerouslySetInnerHTML={{__html: resourceText.description}} />
     );*/
   });
