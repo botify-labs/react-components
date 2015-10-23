@@ -5,7 +5,7 @@ import { List, Map } from 'immutable';
  * @property {Map} _axes Map of axes relative dimension key
  * @param {[type]} chartData [description]
  */
-class ChartDataGoogleDataAdapter{
+class ChartDataGoogleDataAdapter {
   constructor(chartData) {
     this.chartData = chartData;
     this._axesKey = Map();
