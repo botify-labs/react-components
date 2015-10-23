@@ -28,7 +28,7 @@ import { isNumber } from 'lodash';
  * @property {Map<DataKeys, Number>}    rawData
  * @property {OrderMap<Any, Dimension>} dimensions
  */
-class ChartData{
+class ChartData {
 
   constructor() {
     this.rawData = Map();
@@ -43,10 +43,10 @@ class ChartData{
     this._testDataKeys(keys);
     this._testDataValue(value);
 
-    //Add data
+    // Add data
     this.rawData = this.rawData.set(keys, value);
 
-    //Add dimensions or/and groups if not exist
+    // Add dimensions or/and groups if not exist
     keys.forEach((groupKey, dimKey) => {
       if (!this.hasDimensionGroup(dimKey, groupKey)) {
         this.addDimensionGroup(dimKey, groupKey);

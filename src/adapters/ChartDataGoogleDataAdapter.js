@@ -29,7 +29,7 @@ class ChartDataGoogleDataAdapter{
 
     let [categoriesLabels, seriesLabels] = this._getAxesLabels();
 
-    //Merge valuesArray and labels in the google shitty way
+    // Merge valuesArray and labels in the google shitty way
     //                     series
     //                S1 S2 S3 S4 S5 S6
     //            C1  X  X  X  X  X  X
@@ -94,7 +94,7 @@ class ChartDataGoogleDataAdapter{
         categories = this._getCategories(),
         series = this._getSeries();
 
-    //Iterate on each data and set it's value in the proper cell
+    // Iterate on each data and set it's value in the proper cell
     data.map((value, key) => {
       let xIndex = categories.get('groupKeys').indexOf(key.get(categories.get('key')));
       let yIndex = series.get('groupKeys').indexOf(key.get(series.get('key')));
@@ -104,7 +104,7 @@ class ChartDataGoogleDataAdapter{
 
       googleValuesArray = googleValuesArray.setIn(
         [xIndex, yIndex],
-        value + googleValuesArray.getIn([xIndex, yIndex])  //Add to existing value
+        value + googleValuesArray.getIn([xIndex, yIndex])  // Add to existing value
       );
     });
     return googleValuesArray;
@@ -148,13 +148,15 @@ class ChartDataGoogleDataAdapter{
   }
 
 
-  /*_getAxisInfo(dimensionKey){
+  /*
+  _getAxisInfo(dimensionKey){
     let info = Map();
     info = info.set('key', dimensionKey);
     info = info.set('value', this.chartData.getDimension(dimensionKey));
     info = info.set('groupKeys', info.get('value').get('groups').keySeq());
     return info;
-  }*/
+  }
+  */
   _getAxesLabels() {
     return [
       this._getCategories().get('groups').map((group, key) => group.get('label') || key).toList(),
