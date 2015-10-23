@@ -62,7 +62,7 @@ const SuggestInput = React.createClass({
     onFilterChange: PropTypes.func,
   },
 
-  //Life Cycle methods
+  // Life Cycle methods
 
   getDefaultProps() {
     return {
@@ -80,7 +80,7 @@ const SuggestInput = React.createClass({
     };
   },
 
-  //Prop Helpers: isFocused
+  // Prop Helpers: isFocused
   focus() {
     this.setState({isFocused: true});
     this.openList();
@@ -91,7 +91,7 @@ const SuggestInput = React.createClass({
     this.closeList();
   },
 
-  //Prop Helpers: isListOpen
+  // Prop Helpers: isListOpen
   openList() {
     this.setState({isListOpen: true});
   },

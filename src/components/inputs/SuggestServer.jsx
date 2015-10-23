@@ -13,10 +13,10 @@ const SuggestServer = React.createClass({
   displayName: 'SuggestServer',
 
   propTypes: {
-    suggestComponent: PropTypes.func.isRequired, //Component to render. either SuggestSelect or SuggestInput
+    suggestComponent: PropTypes.func.isRequired, // Component to render. either SuggestSelect or SuggestInput
     className: PropTypes.string,
-    feedOptions: PropTypes.func.isRequired, //Function called with (value: String, callback: Function) to feed suggestion
-    debounce: PropTypes.number, //number of milliseconds to wait after last change to feed options
+    feedOptions: PropTypes.func.isRequired, // Function called with (value: String, callback: Function) to feed suggestion
+    debounce: PropTypes.number, // number of milliseconds to wait after last change to feed options
   },
 
   mixins: [
@@ -31,9 +31,9 @@ const SuggestServer = React.createClass({
 
   componentWillMount() {
     let { debounce } = this.props;
-    //First options populate
+    // First options populate
     this.feedOptions(this.getValue());
-    //Debouce feedOptions function
+    // Debouce feedOptions function
     if (debounce) {
       this.feedOptions = _.debounce(this.feedOptions, debounce);
     }

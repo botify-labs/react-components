@@ -15,14 +15,14 @@ const optionIdPropType = React.PropTypes.oneOfType([
 const optionPropType = PropTypes.shape({
   id: optionIdPropType.isRequired,
   label: PropTypes.string.isRequired,
-  labelSelected: PropTypes.string, //Label displayed when selected
+  labelSelected: PropTypes.string, // Label displayed when selected
 });
 
 const optionGroupPropType = PropTypes.oneOfType([
   PropTypes.shape({
     id: optionIdPropType.isRequired,
     label: PropTypes.string.isRequired,
-    labelSelected: PropTypes.string, //Label displayed when selected
+    labelSelected: PropTypes.string, // Label displayed when selected
     options: PropTypes.arrayOf(optionPropType).isRequired,
     isGroup: PropTypes.bool.isRequired,
     isNotSelectable: PropTypes.bool,
@@ -79,10 +79,10 @@ const SuggestSelect = React.createClass({
     optionRender: PropTypes.func,
     hideGroupsWithoutOptions: PropTypes.bool,
     disabled: PropTypes.bool,
-    onFilterChange: PropTypes.func, //Called when input value (query) change. Whereas valueLink.requestChange is called when an option is selected.
+    onFilterChange: PropTypes.func, // Called when input value (query) change. Whereas valueLink.requestChange is called when an option is selected.
   },
 
-  //Life Cycle methods
+  // Life Cycle methods
 
   getDefaultProps() {
     return {
@@ -104,7 +104,7 @@ const SuggestSelect = React.createClass({
     };
   },
 
-  //Prop Helpers: isFocused
+  // Prop Helpers: isFocused
   focus() {
     this.setState({isFocused: true});
   },
@@ -112,7 +112,7 @@ const SuggestSelect = React.createClass({
     this.setState({isFocused: false});
   },
 
-  //Prop Helpers: isListOpen
+  // Prop Helpers: isListOpen
   openList() {
     this.setState({isListOpen: true});
   },
@@ -120,7 +120,7 @@ const SuggestSelect = React.createClass({
     this.setState({isListOpen: false});
   },
 
-  //Prop Helpers: value
+  // Prop Helpers: value
   selectOption(optionId) {
     this.requestChange({ $set: optionId });
     this.blur();
@@ -129,7 +129,7 @@ const SuggestSelect = React.createClass({
     return this.getValue(props);
   },
 
-  //State Helpers: openGroupsId
+  // State Helpers: openGroupsId
   isGroupOpen(group) {
     let {openGroupsId} = this.state;
     return _.contains(openGroupsId, group.id);
@@ -166,7 +166,7 @@ const SuggestSelect = React.createClass({
     this.setState({ openGroupsId: [] });
   },
 
-  //State Helpers: filterValue
+  // State Helpers: filterValue
   updateFilterValue(newFilterValue) {
     this.setState({filterValue: newFilterValue});
     this.props.onFilterChange(newFilterValue);
@@ -175,7 +175,7 @@ const SuggestSelect = React.createClass({
     this.updateFilterValue('');
   },
 
-  //State Helpers: suggestedOptionId
+  // State Helpers: suggestedOptionId
   suggestFirstOption() {
     let suggestion = this.getOptionsIterator()[0];
     this.setSuggestedOption(suggestion);
@@ -211,7 +211,7 @@ const SuggestSelect = React.createClass({
     this.setSuggestedOptionId(null);
   },
 
-  //Prop Helpers: options
+  // Prop Helpers: options
   getOption(optionId) {
     return _.find(this.getOptionsIterator(), {id: optionId});
   },
@@ -227,16 +227,16 @@ const SuggestSelect = React.createClass({
     }));
   },
 
-  //Elements Listeners
+  // Elements Listeners
   onInputContainerClick(e) {
     this.focus();
-    //Open the list as list might be already open.
+    // Open the list as list might be already open.
     this.openList();
   },
 
   handleMouseDown(e) {
     if (e.button === 0 && this.state.isFocused) {
-      // Only cancel blur on left click
+      //  Only cancel blur on left click
       this._ignoreNextBlur = true;
     }
   },
@@ -307,18 +307,18 @@ const SuggestSelect = React.createClass({
 
     if (prevState.isFocused !== isFocused) {
       if (isFocused) {
-        //If became focused, open the list
+        // If became focused, open the list
         this.openList();
         this.openParentsGroupIfNot(suggestedOptionId);
       } else {
-        //If became blurred, clear the select
+        // If became blurred, clear the select
         this.clearFilterValue();
         this.closeAllGroups();
         this.closeList();
       }
     }
 
-    //If new value, Clear select without bluring
+    // If new value, Clear select without bluring
     if (previousSelectedOptionId !== selectedOptionId) {
       this.clearFilterValue();
       this.closeAllGroups();
@@ -337,33 +337,33 @@ const SuggestSelect = React.createClass({
         this.clearSuggestedOption();
       }
 
-      //Select first option if not setted whereas filterValue is not empty
+      // Select first option if not setted whereas filterValue is not empty
       if (filterValue && !selectedOptionId) {
         this.suggestFirstOption();
       }
 
-      //Open all groups if filterValue was empty
+      // Open all groups if filterValue was empty
       let filterValueWasEmpty = prevState.filterValue.length === 0 && filterValue.length > 0;
       if (filterValueWasEmpty) {
         this.openAllGroups();
       }
 
-      //Close all groups if filterValue become empty
+      // Close all groups if filterValue become empty
       let filterValueBecomeEmpty = prevState.filterValue.length > 0 && filterValue.length === 0;
       if (filterValueBecomeEmpty) {
         this.closeAllGroups();
       }
     }
 
-    //Focus input is state isFocused
-    //Note: I cannot be done in the setstate callback as when the user clicks somewhere on the list,
-    //      the input is blurred, so we need to refocus it.
+    // Focus input is state isFocused
+    // Note: I cannot be done in the setstate callback as when the user clicks somewhere on the list,
+    //       the input is blurred, so we need to refocus it.
     if (isFocused) {
       ReactDOM.findDOMNode(this.refs.searchInput).focus();
     }
   },
 
-  //Renders
+  // Renders
 
   render() {
     let { className, placeHolder, disabled, options } = this.props;

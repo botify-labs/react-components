@@ -11,12 +11,12 @@ const SuggestClient = React.createClass({
   displayName: 'SuggestClient',
 
   propTypes: {
-    suggestComponent: PropTypes.func.isRequired, //Component to render. either SuggestSelect or SuggestInput
+    suggestComponent: PropTypes.func.isRequired, // Component to render. either SuggestSelect or SuggestInput
     className: PropTypes.string,
     placeHolder: PropTypes.string,
     options: SuggestSelect.PropTypes.options.isRequired,
-    //(val, option, parent) => Boolean. Return true to keep.
-    filterOption: PropTypes.func, //By default filter option by their label.
+    // (val, option, parent) => Boolean. Return true to keep.
+    filterOption: PropTypes.func, // By default filter option by their label.
   },
 
   mixins: [
@@ -26,7 +26,7 @@ const SuggestClient = React.createClass({
   getDefaultProps() {
     return {
       filterOption: (val, option, parent) => {
-        val = String(val).replace(/[\\\^\$\*\+\?\.\(\)\|\{\}\[\]]/g, '\\$&'); //Escape regex special characters
+        val = String(val).replace(/[\\\^\$\*\+\?\.\(\)\|\{\}\[\]]/g, '\\$&'); // Escape regex special characters
         const regex = new RegExp(val, 'i');
         return regex.test(option.label) || parent && regex.test(parent.label);
       },
@@ -51,7 +51,7 @@ const SuggestClient = React.createClass({
 
   _filterOptions(filterOption, filterValue, options, parentOption) {
     return _.compact(_.map(options, option => {
-      //Keep if option not selectable or filterOption function return true.
+      // Keep if option not selectable or filterOption function return true.
       let keepOption = option.isNotSelectable || filterOption(filterValue, option, parentOption);
       return keepOption && {
         ...option,

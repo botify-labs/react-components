@@ -9,7 +9,7 @@ import VennData from '../src/models/VennData';
 import Immutable from 'immutable';
 import Color from 'color';
 
-let COLORS = {}; //#lol
+let COLORS = {}; // #lol
 
 let chartData = new ChartData();
 
