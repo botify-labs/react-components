@@ -113,6 +113,7 @@ const SuggestInput = React.createClass({
     case KEY_CODES.TAB:
       this.blur();
       break;
+    default: break;
     }
   },
 

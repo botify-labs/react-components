@@ -353,6 +353,7 @@ const SuggestSelect = React.createClass({
       e.preventDefault();
       this.suggestNextOption();
       break;
+    default: break;
     }
   },
 
