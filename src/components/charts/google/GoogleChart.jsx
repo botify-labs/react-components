@@ -24,7 +24,7 @@ let GoogleChart = React.createClass({
     // Called when chart data is not hovered anymore
     onChartMouseOut: React.PropTypes.func,
     // Subclass of google.visualization.CoreChart
-    googleChart: React.PropTypes.func,
+    GoogleChart: React.PropTypes.func,
     // Chart data
     chartData: React.PropTypes.instanceOf(ChartData),
     // Chart options
@@ -58,8 +58,7 @@ let GoogleChart = React.createClass({
    */
   _initializeChart() {
     this.adapter = new ChartDataGoogleDataAdapter(this.props.chartData);
-
-    this.chart = new this.props.googleChart(ReactDOM.findDOMNode(this));
+    this.chart = new this.props.GoogleChart(ReactDOM.findDOMNode(this));
 
     this._bindChartEvents();
     this._drawChart();
