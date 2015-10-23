@@ -8,7 +8,6 @@ import HelpTooltip from '../src/components/resource/HelpTooltip';
 import AdminMenu from '../src/components/resource/AdminMenu';
 
 describe('ResourceText', () => {
-
   it('should create a ResourceText Component', () => {
     let resourceText = {};
     let rtInstance = render(<ResourceText resourceText={resourceText} />);
@@ -78,5 +77,4 @@ describe('ResourceText', () => {
     let adminMenuInstance = TestUtils.scryRenderedComponentsWithType(rtInstance, AdminMenu);
     expect(adminMenuInstance.length).toBe(0);
   });
-
 });

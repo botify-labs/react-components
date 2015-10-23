@@ -7,7 +7,6 @@ import Positioned from '../src/components/misc/Positioned';
 import FollowCursor from '../src/components/misc/FollowCursor';
 
 describe('FollowCursor', () => {
-
   it('should not render its Positioned when `hasOverlay` prop is false', () => {
     const followCursor = render(
       <FollowCursor
@@ -42,5 +41,4 @@ describe('FollowCursor', () => {
     expect(positioned.props.position.top).toBe(100);
     expect(positioned.props.position.left).toBe(100);
   });
-
 });

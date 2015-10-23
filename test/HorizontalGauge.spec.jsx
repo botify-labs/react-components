@@ -7,7 +7,6 @@ import HorizontalGauge from '../src/components/gauges/HorizontalGauge';
 import Positioned from '../src/components/misc/Positioned';
 
 describe('HorizontalGauge', () => {
-
   let stacks = [
     {
       label: 'Stack 1',
@@ -93,5 +92,4 @@ describe('HorizontalGauge', () => {
     });
     unmount(gauge);
   });
-
 });

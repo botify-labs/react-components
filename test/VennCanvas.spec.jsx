@@ -52,4 +52,24 @@ describe('VennCanvas', () => {
     unmount(vennCanvas);
   });
 
+  it('should call its `onClick` handler prop when a set is clicked on', () => {
+    let props = {
+      vennData,
+      onClick(set, idx) { },
+    };
+    let spy = expect.spyOn(props, 'onClick');
+    let vennCanvas = render(<VennCanvas {...props} />);
+
+    // Find React base DOM components (div, span, etc.) which have been assigned a onClick handler,
+    // and simulate a click on them.
+    TestUtils.findAllInRenderedTree(vennCanvas, (component) => {
+      return (TestUtils.isDOMComponent(component) && component.props.onClick);
+    }).forEach((component) => TestUtils.Simulate.click(component));
+
+    expect(spy.calls.length).toBe(testSets.length + testIntersections.length);
+    testSets.forEach((set, idx) => expect(spy.calls[idx].arguments[0]).toBe(set));
+    testIntersections.forEach((inter, idx) => expect(spy.calls[testSets.length + idx].arguments[0]).toBe(inter.intersection));
+
+    unmount(vennCanvas);
+  });
 });
