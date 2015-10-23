@@ -38,20 +38,20 @@ chartData.addDimensionGroup('content_type', 'javascript', Immutable.Map({color: 
 chartData.addDimensionGroup('content_type', 'not_set', Immutable.Map({label: 'Not Set', color: COLORS.VERY_BAD}));
 
 chartData.setData(Immutable.Map({
-  'delay': 'fast',
-  'content_type': 'text_html',
+  delay: 'fast',
+  content_type: 'text_html',
 }), Immutable.List([1]));
 chartData.setData(Immutable.Map({
-  'delay': 'medium',
-  'content_type': 'text_html',
+  delay: 'medium',
+  content_type: 'text_html',
 }), Immutable.List([3]));
 chartData.setData(Immutable.Map({
-  'delay': 'medium',
-  'content_type': 'text_css',
+  delay: 'medium',
+  content_type: 'text_css',
 }), Immutable.List([4]));
 chartData.setData(Immutable.Map({
-  'delay': 'slowest',
-  'content_type': 'javascript',
+  delay: 'slowest',
+  content_type: 'javascript',
 }), Immutable.List([4]));
 
 let newUrls = 100;
