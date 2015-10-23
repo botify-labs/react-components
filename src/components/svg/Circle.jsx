@@ -72,7 +72,7 @@ const CircleDifference = React.createClass({
   render() {
     let {c1, c2, fill} = this.props;
 
-    let clipPath = <Circle inverse={true} {...c2} />;
+    let clipPath = <Circle inverse {...c2} />;
 
     return (
       <ClipPath path={clipPath} {..._.omit(this.props, 'fill', 'c1', 'c2')}>
