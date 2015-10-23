@@ -82,7 +82,7 @@ let render = (value) => {
           requestChange(newValue) {
             render(newValue);
           },
-       }}
+        }}
       />
       <span>Text below Select</span>
     </div>

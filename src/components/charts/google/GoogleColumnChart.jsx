@@ -21,12 +21,12 @@ let GoogleColumnChart = React.createClass({
   _getOptions() {
     return {
       legend: {
-          position: 'right',
-          alignment: 'center',
+        position: 'right',
+        alignment: 'center',
       },
       chartArea: {
-          width: '60%',
-          height: '80%',
+        width: '60%',
+        height: '80%',
       },
       fontSize: 14,
     };

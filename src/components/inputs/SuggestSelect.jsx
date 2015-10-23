@@ -107,7 +107,7 @@ const SuggestSelect = React.createClass({
   componentDidUpdate(prevProps, prevState) {
     let {isFocused, suggestedOptionId, filterValue} = this.state;
     let selectedOptionId = this.getSelectedOptionId(),
-        previousSelectedOptionId = this.getSelectedOptionId(prevProps);
+      previousSelectedOptionId = this.getSelectedOptionId(prevProps);
 
     if (prevState.isFocused !== isFocused) {
       if (isFocused) {
