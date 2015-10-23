@@ -4,6 +4,8 @@
   "description": "ReactJS components",
   "author": "Botify <labs@botify.com>",
   "scripts": {
+    "lint:js": "eslint .",
+    "lint": "npm run lint:js",
     "gulp": "gulp",
     "start": "gulp server",
     "test": "karma start"
