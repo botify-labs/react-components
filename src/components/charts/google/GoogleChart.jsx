@@ -32,23 +32,11 @@ let GoogleChart = React.createClass({
     options: React.PropTypes.object,
   },
 
-  /**
-   * Returns underlying chart's image URI representation
-   * @return {String}
-   */
-  getImageURI() {
-    return this.chart.getImageURI();
-  },
-
   componentDidMount() {
     this._initializeChart();
 
     // Redraw the chart whenever the window is resized
     window.addEventListener('resize', this._drawChart);
-  },
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this._drawChart);
   },
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -60,10 +48,8 @@ let GoogleChart = React.createClass({
     this._drawChart();
   },
 
-  render() {
-    return (
-      <div {..._.omit(this.props, 'children', 'options', 'chartData', 'chart', 'onChartMouseOut', 'onChartMouseOver')} />
-    );
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._drawChart);
   },
 
   /**
@@ -87,6 +73,35 @@ let GoogleChart = React.createClass({
     google.visualization.events.addListener(this.chart, 'select', this._handleChartSelect);
     google.visualization.events.addListener(this.chart, 'onmouseover', this._handleChartMouseOver);
     google.visualization.events.addListener(this.chart, 'onmouseout', this._handleChartMouseOut);
+  },
+
+  /**
+   * Returns the google chart options
+   * @return {Object}
+   */
+  _getOptions() {
+    return {
+      tooltip: {
+        trigger: 'none',
+      },
+      ...this.adapter.toGoogleOptions(),
+      ...this.props.options,
+    };
+  },
+
+  /**
+   * Redraws the chart with data and options props.
+   */
+  _drawChart() {
+    this.chart.draw(this.adapter.toGoogleDataArray(), this._getOptions());
+  },
+
+  /**
+   * Returns underlying chart's image URI representation
+   * @return {String}
+   */
+  getImageURI() {
+    return this.chart.getImageURI();
   },
 
   /**
@@ -142,25 +157,10 @@ let GoogleChart = React.createClass({
     this.props.onChartMouseOut();
   },
 
-  /**
-   * Returns the google chart options
-   * @return {Object}
-   */
-  _getOptions() {
-    return {
-      tooltip: {
-        trigger: 'none',
-      },
-      ...this.adapter.toGoogleOptions(),
-      ...this.props.options,
-    };
-  },
-
-  /**
-   * Redraws the chart with data and options props.
-   */
-  _drawChart() {
-    this.chart.draw(this.adapter.toGoogleDataArray(), this._getOptions());
+  render() {
+    return (
+      <div {..._.omit(this.props, 'children', 'options', 'chartData', 'chart', 'onChartMouseOut', 'onChartMouseOver')} />
+    );
   },
 
 });

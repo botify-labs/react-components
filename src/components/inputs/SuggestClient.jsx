@@ -39,10 +39,6 @@ const SuggestClient = React.createClass({
     };
   },
 
-  handleFilterChange(filterValue) {
-    this.setState({ filterValue });
-  },
-
   filterOptions(filterValue) {
     let {options, filterOption} = this.props;
     let filteredOptions = !filterValue ? options : this._filterOptions(filterOption, filterValue, options);
@@ -58,6 +54,10 @@ const SuggestClient = React.createClass({
         options: option.isGroup ? this._filterOptions(filterOption, filterValue, option.options, option) : null,
       };
     }));
+  },
+
+  handleFilterChange(filterValue) {
+    this.setState({ filterValue });
   },
 
   render() {

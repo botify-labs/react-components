@@ -7,19 +7,27 @@ const Input = React.createClass({
 
   displayName: 'Input',
 
-  mixins: [
-    InputMixin(PropTypes.string),
-  ],
-
   propTypes: {
     className: PropTypes.string,
   },
+
+  mixins: [
+    InputMixin(PropTypes.string),
+  ],
 
   getInitialState() {
     return {
       hasFocus: false,
       value: null,
     };
+  },
+
+  _getTemporaryValue() {
+    let { hasFocus, value } = this.state;
+    if (hasFocus) {
+      return value;
+    }
+    return this.getValue();
   },
 
   _handleFocus() {
@@ -40,14 +48,6 @@ const Input = React.createClass({
 
   _handleChange(value) {
     this.setState({ value });
-  },
-
-  _getTemporaryValue() {
-    let { hasFocus, value } = this.state;
-    if (hasFocus) {
-      return value;
-    }
-    return this.getValue();
   },
 
   render() {

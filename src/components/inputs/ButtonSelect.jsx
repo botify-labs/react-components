@@ -8,10 +8,6 @@ const ButtonSelect = React.createClass({
 
   displayName: 'ButtonSelect',
 
-  mixins: [
-    InputMixin(PropTypes.string),
-  ],
-
   propTypes: {
     className: PropTypes.string,
     // List of select options `{ id, label }`
@@ -21,6 +17,10 @@ const ButtonSelect = React.createClass({
     // Once an option is selected, can it be unselected?
     allowUnselect: PropTypes.bool,
   },
+
+  mixins: [
+    InputMixin(PropTypes.string),
+  ],
 
   getDefaultProps() {
     return {

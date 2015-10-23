@@ -50,17 +50,6 @@ let Positioned = React.createClass({
     }
   },
 
-  render() {
-    let { style, children, ...otherProps } = this.props;
-    style = { ...this._getCommonStyle(), ...this._getPositionStyle(), ...style };
-
-    return (
-      <div {...otherProps} className="Positioned" style={style}>
-        {children}
-      </div>
-    );
-  },
-
   _getCommonStyle() {
     return { position: 'fixed', pointerEvents: 'none' };
   },
@@ -95,6 +84,17 @@ let Positioned = React.createClass({
     }
 
     return positionStyle;
+  },
+
+  render() {
+    let { style, children, ...otherProps } = this.props;
+    style = { ...this._getCommonStyle(), ...this._getPositionStyle(), ...style };
+
+    return (
+      <div {...otherProps} className="Positioned" style={style}>
+        {children}
+      </div>
+    );
   },
 
 });

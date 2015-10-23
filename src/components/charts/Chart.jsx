@@ -23,6 +23,16 @@ let Chart = React.createClass({
     return this.refs.chart.getImageURI();
   },
 
+  _handleChartMouseOver(data) {
+    // Show the tooltip when a chart element is hovered
+    this.setState({hoveredData: data});
+  },
+
+  _handleChartMouseOut() {
+    // Hide the tooltip when a chart element stops being hovered
+    this.setState({hoveredData: null});
+  },
+
   render() {
     return (
       <FollowCursor
@@ -62,16 +72,6 @@ let Chart = React.createClass({
         {data.toJS()}
       </Tooltip>
     );
-  },
-
-  _handleChartMouseOver(data) {
-    // Show the tooltip when a chart element is hovered
-    this.setState({hoveredData: data});
-  },
-
-  _handleChartMouseOut() {
-    // Hide the tooltip when a chart element stops being hovered
-    this.setState({hoveredData: null});
   },
 
 });

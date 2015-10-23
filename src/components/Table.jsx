@@ -41,20 +41,11 @@ let Table = React.createClass({
     },
   },
 
-  exportTable() {
-  },
-
   componentDidMount() {
     $(ReactDOM.findDOMNode(this)).dataTable(this._getOptions());
   },
 
-  render() {
-    return (
-      <div className="Table">
-        <table ref="table" className="table table-striped table-bordered dataTable no-footer">
-        </table>
-      </div>
-    );
+  exportTable() {
   },
 
   _getData() {
@@ -100,6 +91,15 @@ let Table = React.createClass({
         this.forceUpdate();
       },
     };
+  },
+
+  render() {
+    return (
+      <div className="Table">
+        <table ref="table" className="table table-striped table-bordered dataTable no-footer">
+        </table>
+      </div>
+    );
   },
 
 });

@@ -39,6 +39,14 @@ const VennDiagram = React.createClass({
     };
   },
 
+  _handleMouseOver(thing) {
+    this.setState({activeSet: thing});
+  },
+
+  _handleMouseOut(thing) {
+    this.setState({activeSet: null});
+  },
+
   render() {
     let {vennData, inclusive, onClick, ...otherProps} = this.props;
     let {activeSet} = this.state;
@@ -66,14 +74,6 @@ const VennDiagram = React.createClass({
         </div>
       </FollowCursor>
     );
-  },
-
-  _handleMouseOver(thing) {
-    this.setState({activeSet: thing});
-  },
-
-  _handleMouseOut(thing) {
-    this.setState({activeSet: null});
   },
 
   _renderTooltip() {

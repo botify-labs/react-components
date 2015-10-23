@@ -68,10 +68,6 @@ const SuggestSelect = React.createClass({
 
   displayName: 'SuggestSelect',
 
-  mixins: [
-    InputMixin(optionIdPropType),
-  ],
-
   propTypes: {
     className: PropTypes.string,
     placeHolder: PropTypes.string,
@@ -81,6 +77,10 @@ const SuggestSelect = React.createClass({
     disabled: PropTypes.bool,
     onFilterChange: PropTypes.func, // Called when input value (query) change. Whereas valueLink.requestChange is called when an option is selected.
   },
+
+  mixins: [
+    InputMixin(optionIdPropType),
+  ],
 
   // Life Cycle methods
 
@@ -102,6 +102,69 @@ const SuggestSelect = React.createClass({
       isListOpen: false,
       openGroupsId: [],
     };
+  },
+
+  componentDidUpdate(prevProps, prevState) {
+    let {isFocused, suggestedOptionId, filterValue} = this.state;
+    let selectedOptionId = this.getSelectedOptionId(),
+        previousSelectedOptionId = this.getSelectedOptionId(prevProps);
+
+    if (prevState.isFocused !== isFocused) {
+      if (isFocused) {
+        // If became focused, open the list
+        this.openList();
+        this.openParentsGroupIfNot(suggestedOptionId);
+      } else {
+        // If became blurred, clear the select
+        this.clearFilterValue();
+        this.closeAllGroups();
+        this.closeList();
+      }
+    }
+
+    // If new value, Clear select without bluring
+    if (previousSelectedOptionId !== selectedOptionId) {
+      this.clearFilterValue();
+      this.closeAllGroups();
+      this.closeList();
+      this.setSuggestedOptionId(selectedOptionId);
+    }
+
+    if (prevProps.options !== this.props.options) {
+      if (filterValue) {
+        this.suggestFirstOption();
+      }
+    }
+
+    if (prevState.filterValue !== filterValue) {
+      if (!filterValue && !selectedOptionId) {
+        this.clearSuggestedOption();
+      }
+
+      // Select first option if not setted whereas filterValue is not empty
+      if (filterValue && !selectedOptionId) {
+        this.suggestFirstOption();
+      }
+
+      // Open all groups if filterValue was empty
+      let filterValueWasEmpty = prevState.filterValue.length === 0 && filterValue.length > 0;
+      if (filterValueWasEmpty) {
+        this.openAllGroups();
+      }
+
+      // Close all groups if filterValue become empty
+      let filterValueBecomeEmpty = prevState.filterValue.length > 0 && filterValue.length === 0;
+      if (filterValueBecomeEmpty) {
+        this.closeAllGroups();
+      }
+    }
+
+    // Focus input is state isFocused
+    // Note: I cannot be done in the setstate callback as when the user clicks somewhere on the list,
+    //       the input is blurred, so we need to refocus it.
+    if (isFocused) {
+      React.findDOMNode(this.refs.searchInput).focus();
+    }
   },
 
   // Prop Helpers: isFocused
@@ -227,6 +290,7 @@ const SuggestSelect = React.createClass({
     }));
   },
 
+
   // Elements Listeners
   onInputContainerClick(e) {
     this.focus();
@@ -298,69 +362,6 @@ const SuggestSelect = React.createClass({
 
   onOptionSelect(option, e) {
     this.selectOption(option.id);
-  },
-
-  componentDidUpdate(prevProps, prevState) {
-    let {isFocused, suggestedOptionId, filterValue} = this.state;
-    let selectedOptionId = this.getSelectedOptionId(),
-        previousSelectedOptionId = this.getSelectedOptionId(prevProps);
-
-    if (prevState.isFocused !== isFocused) {
-      if (isFocused) {
-        // If became focused, open the list
-        this.openList();
-        this.openParentsGroupIfNot(suggestedOptionId);
-      } else {
-        // If became blurred, clear the select
-        this.clearFilterValue();
-        this.closeAllGroups();
-        this.closeList();
-      }
-    }
-
-    // If new value, Clear select without bluring
-    if (previousSelectedOptionId !== selectedOptionId) {
-      this.clearFilterValue();
-      this.closeAllGroups();
-      this.closeList();
-      this.setSuggestedOptionId(selectedOptionId);
-    }
-
-    if (prevProps.options !== this.props.options) {
-      if (filterValue) {
-        this.suggestFirstOption();
-      }
-    }
-
-    if (prevState.filterValue !== filterValue) {
-      if (!filterValue && !selectedOptionId) {
-        this.clearSuggestedOption();
-      }
-
-      // Select first option if not setted whereas filterValue is not empty
-      if (filterValue && !selectedOptionId) {
-        this.suggestFirstOption();
-      }
-
-      // Open all groups if filterValue was empty
-      let filterValueWasEmpty = prevState.filterValue.length === 0 && filterValue.length > 0;
-      if (filterValueWasEmpty) {
-        this.openAllGroups();
-      }
-
-      // Close all groups if filterValue become empty
-      let filterValueBecomeEmpty = prevState.filterValue.length > 0 && filterValue.length === 0;
-      if (filterValueBecomeEmpty) {
-        this.closeAllGroups();
-      }
-    }
-
-    // Focus input is state isFocused
-    // Note: I cannot be done in the setstate callback as when the user clicks somewhere on the list,
-    //       the input is blurred, so we need to refocus it.
-    if (isFocused) {
-      ReactDOM.findDOMNode(this.refs.searchInput).focus();
-    }
   },
 
   // Renders

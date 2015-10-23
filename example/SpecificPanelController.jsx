@@ -118,17 +118,6 @@ let SpecificPanelController = React.createClass({
 
   displayName: 'SpecificPanelController',
 
-  render() {
-    return (
-      <Panel
-        title="Hello world"
-        defaultDisplayModeId="vennDiagram"
-        displayModes={this._getDisplayModes()}
-        actions={this._getActions()}
-      />
-    );
-  },
-
   _getDisplayModes() {
     return [
       {
@@ -157,6 +146,41 @@ let SpecificPanelController = React.createClass({
         callback: this._exportChart,
       },
     ];
+  },
+
+  _exportChart() {
+    let div = document.createElement('div');
+    document.body.appendChild(div);
+
+    let style = {
+      width: 1000,
+      height: 500,
+    };
+
+    let chart = React.render(
+      <ChartRenderer
+        style={style}
+        getImageURI={() => this.refs.chart.getImageURI()}
+      >
+        {this._renderChart()}
+      </ChartRenderer>
+    , div);
+
+    let imageURI = chart.getImageURI();
+    window.open(imageURI);
+
+    document.body.removeChild(div);
+  },
+
+  render() {
+    return (
+      <Panel
+        title="Hello world"
+        defaultDisplayModeId="vennDiagram"
+        displayModes={this._getDisplayModes()}
+        actions={this._getActions()}
+      />
+    );
   },
 
   _renderChart() {
@@ -191,30 +215,6 @@ let SpecificPanelController = React.createClass({
         chartData={chartData}
       />
     );
-  },
-
-  _exportChart() {
-    let div = document.createElement('div');
-    document.body.appendChild(div);
-
-    let style = {
-      width: 1000,
-      height: 500,
-    };
-
-    let chart = React.render(
-      <ChartRenderer
-        style={style}
-        getImageURI={() => this.refs.chart.getImageURI()}
-      >
-        {this._renderChart()}
-      </ChartRenderer>
-    , div);
-
-    let imageURI = chart.getImageURI();
-    window.open(imageURI);
-
-    document.body.removeChild(div);
   },
 
 });

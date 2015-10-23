@@ -49,10 +49,6 @@ const SuggestInput = React.createClass({
 
   displayName: 'SuggestInput',
 
-  mixins: [
-    InputMixin(optionIdPropType),
-  ],
-
   propTypes: {
     className: PropTypes.string,
     input: PropTypes.func,
@@ -61,6 +57,10 @@ const SuggestInput = React.createClass({
     disabled: PropTypes.bool,
     onFilterChange: PropTypes.func,
   },
+
+  mixins: [
+    InputMixin(optionIdPropType),
+  ],
 
   // Life Cycle methods
 

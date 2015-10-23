@@ -14,12 +14,6 @@ const Circle = React.createClass({
     radius: React.PropTypes.number.isRequired,
   },
 
-  render() {
-    return (
-      <Path d={this._getCircleShape()} {..._.omit(this.props, 'x', 'y', 'radius')}/>
-    );
-  },
-
   _getCircleShape() {
     let {x, y, radius} = this.props;
 
@@ -31,6 +25,12 @@ const Circle = React.createClass({
       `a ${radius}\,${radius} 0 1,0 ${-radius * 2}\,0`,
       `Z`,
     ].join(' ');
+  },
+
+  render() {
+    return (
+      <Path d={this._getCircleShape()} {..._.omit(this.props, 'x', 'y', 'radius')}/>
+    );
   },
 
 });

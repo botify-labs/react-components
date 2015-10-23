@@ -15,19 +15,6 @@ let TooltipTable = React.createClass({
     metrics: React.PropTypes.arrayOf(React.PropTypes.array),
   },
 
-  _renderRow(row, idx) {
-    return (
-      <tr key={idx} className="TooltipTable-cell">
-        <td className="TooltipTable-cell-label">
-          {row[0]}
-        </td>
-        <td className="TooltipTable-cell-value">
-          {row[1]}
-        </td>
-      </tr>
-    );
-  },
-
   render() {
     return (
       <div className="TooltipTable">
@@ -40,6 +27,19 @@ let TooltipTable = React.createClass({
           </tbody>
         </table>
       </div>
+    );
+  },
+
+  _renderRow(row, idx) {
+    return (
+      <tr key={idx} className="TooltipTable-cell">
+        <td className="TooltipTable-cell-label">
+          {row[0]}
+        </td>
+        <td className="TooltipTable-cell-value">
+          {row[1]}
+        </td>
+      </tr>
     );
   },
 

@@ -5,14 +5,14 @@ const ClipPath = React.createClass({
 
   displayName: 'ClipPath',
 
-  mixins: [UniqueIdMixin],
-
   propTypes: {
     // Shape used to clip the ClipPath's children
     path: PropTypes.element,
     children: PropTypes.node,
     style: PropTypes.object,
   },
+
+  mixins: [UniqueIdMixin],
 
   render() {
     let { path, children, style, ...otherProps } = this.props;

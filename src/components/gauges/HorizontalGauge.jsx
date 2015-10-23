@@ -58,18 +58,6 @@ const HorizontalGauge = React.createClass({
     });
   },
 
-  _renderTooltip() {
-    let { stacks, all, formatAllValue, formatStackValue } = this.props;
-    return (
-      <Tooltip className="HorizontalGauge-tooltip">
-        <TooltipTable
-          groups={[[all.label, formatAllValue(all.value)]]}
-          metrics={stacks.map((stack) => [stack.label, formatStackValue(stack.value)])}
-        />
-      </Tooltip>
-    );
-  },
-
   render() {
     let { stacks, all, style, renderTooltip, className, ...otherProps } = this.props;
     let { hasTooltip } = this.state;
@@ -110,7 +98,18 @@ const HorizontalGauge = React.createClass({
         </div>
       </FollowCursor>
     );
+  },
 
+  _renderTooltip() {
+    let { stacks, all, formatAllValue, formatStackValue } = this.props;
+    return (
+      <Tooltip className="HorizontalGauge-tooltip">
+        <TooltipTable
+          groups={[[all.label, formatAllValue(all.value)]]}
+          metrics={stacks.map((stack) => [stack.label, formatStackValue(stack.value)])}
+        />
+      </Tooltip>
+    );
   },
 
 });

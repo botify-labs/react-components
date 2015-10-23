@@ -11,19 +11,27 @@ const DifferChange = ComposedComponent => React.createClass({
 
   displayName: 'DifferChange',
 
-  mixins: [
-    InputMixin(PropTypes.any),
-  ],
-
   propTypes: {
     className: PropTypes.string,
   },
+
+  mixins: [
+    InputMixin(PropTypes.any),
+  ],
 
   getInitialState() {
     return {
       hasFocus: false,
       tempValue: null,
     };
+  },
+
+  getDifferedValue() {
+    const { hasFocus, tempValue } = this.state;
+    if (hasFocus) {
+      return tempValue;
+    }
+    return this.getValue();
   },
 
   handleFocus() {
@@ -44,14 +52,6 @@ const DifferChange = ComposedComponent => React.createClass({
 
   handleChange(value) {
     this.setState({ tempValue: value });
-  },
-
-  getDifferedValue() {
-    const { hasFocus, tempValue } = this.state;
-    if (hasFocus) {
-      return tempValue;
-    }
-    return this.getValue();
   },
 
   render() {
