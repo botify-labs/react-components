@@ -19,7 +19,6 @@ describe('VennData', () => {
   let inter1 = set(3);
 
   describe('addSet', () => {
-
     it('should add a set to the list of sets', () => {
       vennData.addSet(set1);
       expect(vennData.getSets().contains(set1)).toBe(true);
@@ -29,11 +28,9 @@ describe('VennData', () => {
       let fakeSet = {};
       expect(() => vennData.addSet(fakeSet)).toThrow();
     });
-
   });
 
   describe('addIntersection', () => {
-
     it('should add an intersection to the map of intersections', () => {
       vennData.addSet(set1);
       vennData.addSet(set2);
@@ -65,11 +62,9 @@ describe('VennData', () => {
       let fakeIntersection = {};
       expect(() => vennData.addIntersection(sets, fakeIntersection)).toThrow();
     });
-
   });
 
   describe('getSizeOf()', () => {
-
     let set100 = set(100);
     let set200 = set(200);
     let set300 = set(300);
@@ -139,16 +134,12 @@ describe('VennData', () => {
       expect(vennData.getSizeOf(set200, false)).toBe(85);
       expect(vennData.getSizeOf(set300, false)).toBe(160);
     });
-
   });
 
   describe('_testSet', () => {
-
     it('should throw if the `set` argument does not match the structure of a set', () => {
       let fakeSet = { size: 100 };
       expect(() => vennData._testSet(fakeSet)).toThrow();
     });
-
   });
-
 });
