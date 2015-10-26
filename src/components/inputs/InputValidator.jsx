@@ -54,7 +54,7 @@ const InputValidator = (Input, validator) => React.createClass({
 
 });
 
-InputValidator.isInputValidator = function(type) {
+InputValidator.isInputValidator = (type) => {
   return type.__isInputValidator;
 };
 
