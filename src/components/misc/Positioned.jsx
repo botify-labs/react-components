@@ -87,7 +87,8 @@ const Positioned = React.createClass({
   },
 
   render() {
-    const { style, children, ...otherProps } = this.props;
+    let { style } = this.props;
+    const { children, ...otherProps } = this.props;
     style = { ...this._getCommonStyle(), ...this._getPositionStyle(), ...style };
 
     return (

@@ -22,8 +22,8 @@ const Path = React.createClass({
   },
 
   render() {
-    const { d, inverse, style = {}, ...otherProps } = this.props;
-
+    const { inverse, ...otherProps } = this.props;
+    let { d, style = {} } = this.props;
     if (inverse) {
       d = fullShape + d;
       style = { ...style, fillRule: 'evenodd' };
