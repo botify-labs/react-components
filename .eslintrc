@@ -7,7 +7,6 @@
 
   "rules": {
     "block-scoped-var": 0,    //OK: Doesn't work with ES6
-    "func-names": 0,          //TODO: Would be great for stack traces but it code need to be refactored with ES classes to do it right.
     "id-length": 0,           //OK: There is no point to disallow declaring variable as short as `x` or `y`.
     "no-nested-ternary": 0,   //OK: Nested ternary are fine for conditionnal adffectation if indented properly.
     "react/no-multi-comp": 0, //OK: Private components can be defined in the same file.
