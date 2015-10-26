@@ -31,7 +31,7 @@ const DefaultOption = React.createClass({
   },
 
   render() {
-    let {
+    const {
       option: {id},
       ...otherProps,
     } = this.props;
@@ -188,8 +188,8 @@ const SuggestInput = React.createClass({
    * @return {ReactClass}
    */
   renderOption(option) {
-    let { optionRender: OptionRender } = this.props;
-    let { filterValue } = this.state;
+    const { optionRender: OptionRender } = this.props;
+    const { filterValue } = this.state;
 
     return (
       <OptionRender

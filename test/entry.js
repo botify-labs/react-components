@@ -16,5 +16,5 @@ Function.prototype.bind = Function.prototype.bind || function(thisp, ...args) {
 /*eslint-enable*/
 
 // Run all tests that match the GREP RegExp
-let tests = require.context('.', true, GREP);
+const tests = require.context('.', true, GREP);
 tests.keys().forEach(tests);

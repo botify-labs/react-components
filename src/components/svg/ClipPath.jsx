@@ -15,7 +15,7 @@ const ClipPath = React.createClass({
   mixins: [UniqueIdMixin],
 
   render() {
-    let { path, children, style, ...otherProps } = this.props;
+    const { path, children, style, ...otherProps } = this.props;
 
     return (
       <g>

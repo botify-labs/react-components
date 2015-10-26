@@ -47,7 +47,7 @@ const Select = React.createClass({
     getOption(options, optionId) {
       let found;
       for (let i = 0; i < options.length; i++) {
-        let option = options[i];
+        const option = options[i];
         // Option groups are identified by an `isGroup` property set to `true`
         if (option.isGroup) {
           found = Select.getOption(option.options, optionId);
@@ -68,8 +68,8 @@ const Select = React.createClass({
   },
 
   render() {
-    let { options, className, nullLabel, ...otherProps } = this.props;
-    let selectedOptionId = this.getValue();
+    const { options, className, nullLabel, ...otherProps } = this.props;
+    const selectedOptionId = this.getValue();
 
     return (
       <select

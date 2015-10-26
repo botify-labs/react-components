@@ -22,7 +22,7 @@ const Path = React.createClass({
   },
 
   render() {
-    let { d, inverse, style = {}, ...otherProps } = this.props;
+    const { d, inverse, style = {}, ...otherProps } = this.props;
 
     if (inverse) {
       d = fullShape + d;

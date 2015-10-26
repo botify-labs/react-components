@@ -15,7 +15,7 @@ const Circle = React.createClass({
   },
 
   _getCircleShape() {
-    let {x, y, radius} = this.props;
+    const {x, y, radius} = this.props;
 
     // `\,` are a @WORKAROUND: See https://github.com/babel/babel-eslint/issues/31
     return [
@@ -46,9 +46,9 @@ const CircleIntersection = React.createClass({
   },
 
   render() {
-    let {c1, c2, fill} = this.props;
+    const {c1, c2, fill} = this.props;
 
-    let clipPath = <Circle {...c2} />;
+    const clipPath = <Circle {...c2} />;
 
     return (
       <ClipPath path={clipPath} {..._.omit(this.props, 'fill', 'c1', 'c2')}>
@@ -70,9 +70,9 @@ const CircleDifference = React.createClass({
   },
 
   render() {
-    let {c1, c2, fill} = this.props;
+    const {c1, c2, fill} = this.props;
 
-    let clipPath = <Circle inverse {...c2} />;
+    const clipPath = <Circle inverse {...c2} />;
 
     return (
       <ClipPath path={clipPath} {..._.omit(this.props, 'fill', 'c1', 'c2')}>
@@ -95,9 +95,9 @@ const CircleIntersectionStroke = React.createClass({
   },
 
   render() {
-    let {c1, c2, width, fill} = this.props;
+    const {c1, c2, width, fill} = this.props;
 
-    let mask = (
+    const mask = (
       <g>
         <CircleIntersection
           c1={c1}
@@ -137,9 +137,9 @@ const CircleDifferenceStroke = React.createClass({
   },
 
   render() {
-    let {c1, c2, width, fill} = this.props;
+    const {c1, c2, width, fill} = this.props;
 
-    let mask = (
+    const mask = (
       <g>
         <CircleDifference
           c1={c1}
@@ -179,7 +179,7 @@ const CircleDifferenceInterior = React.createClass({
   },
 
   render() {
-    let {c1, c2, width, fill} = this.props;
+    const {c1, c2, width, fill} = this.props;
 
     return (
       <CircleDifference
@@ -210,7 +210,7 @@ const CircleIntersectionInterior = React.createClass({
   },
 
   render() {
-    let {c1, c2, width, fill} = this.props;
+    const {c1, c2, width, fill} = this.props;
 
     return (
       <CircleIntersection

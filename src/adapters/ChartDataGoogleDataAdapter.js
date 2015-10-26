@@ -25,9 +25,9 @@ class ChartDataGoogleDataAdapter {
    */
   toGoogleDataArray(options = Map()) {
     this._setAxes(options.get('axes'));
-    let valuesArray = this._getGoogleValuesArray(options.get('filters'));
+    const valuesArray = this._getGoogleValuesArray(options.get('filters'));
 
-    let [categoriesLabels, seriesLabels] = this._getAxesLabels();
+    const [categoriesLabels, seriesLabels] = this._getAxesLabels();
 
     // Merge valuesArray and labels in the google shitty way
     //                     series
@@ -37,7 +37,7 @@ class ChartDataGoogleDataAdapter {
     // categories C3  X  ValuesArray X
     //            C4  X              X
     //            C5  X  X  X  X  X  X
-    let googleDataArray = List();
+    const googleDataArray = List();
     googleDataArray = googleDataArray.push(seriesLabels.unshift(''));
     categoriesLabels.forEach((label, i) => {
       googleDataArray = googleDataArray.push(valuesArray.get(i).unshift(label));
@@ -47,7 +47,7 @@ class ChartDataGoogleDataAdapter {
   }
 
   toGoogleOptions() {
-    let googleOptions = {
+    const googleOptions = {
       series: [],
     };
 
@@ -69,12 +69,12 @@ class ChartDataGoogleDataAdapter {
     let filter = Map();
 
     // Series are indexed starting from 1, while categories are indexed starting from 0
-    let series = this._getSeries();
-    let serieKey = series.get('groups').keySeq().get(column - 1);
+    const series = this._getSeries();
+    const serieKey = series.get('groups').keySeq().get(column - 1);
     filter = filter.set(series.get('key'), serieKey);
     if (row !== null) {
-      let categories = this._getCategories();
-      let categoryKey = categories.get('groups').keySeq().get(row);
+      const categories = this._getCategories();
+      const categoryKey = categories.get('groups').keySeq().get(row);
       filter = filter.set(categories.get('key'), categoryKey);
     }
 
@@ -90,14 +90,14 @@ class ChartDataGoogleDataAdapter {
 
   _getGoogleValuesArray(filters) {
     let googleValuesArray = this._getEmptyGoogleValuesArray();
-    let data = this.chartData.filterData(filters);
-    let categories = this._getCategories();
-    let series = this._getSeries();
+    const data = this.chartData.filterData(filters);
+    const categories = this._getCategories();
+    const series = this._getSeries();
 
     // Iterate on each data and set it's value in the proper cell
     data.map((value, key) => {
-      let xIndex = categories.get('groupKeys').indexOf(key.get(categories.get('key')));
-      let yIndex = series.get('groupKeys').indexOf(key.get(series.get('key')));
+      const xIndex = categories.get('groupKeys').indexOf(key.get(categories.get('key')));
+      const yIndex = series.get('groupKeys').indexOf(key.get(series.get('key')));
       if (xIndex === -1 || yIndex === -1) {
         throw new Error('data [' + key + ',' + value + '] have a dimension group\'s key undefined');
       }
@@ -141,7 +141,7 @@ class ChartDataGoogleDataAdapter {
    * @return {Dimension}
    */
   _getAxis(axisKey) {
-    let dimension = this.chartData.getDimension(axisKey);
+    const dimension = this.chartData.getDimension(axisKey);
     return dimension
       .set('key', axisKey)
       .set('groupKeys', dimension.get('groups').keySeq());

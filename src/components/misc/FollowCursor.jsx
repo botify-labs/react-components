@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import Positioned from './Positioned';
 import Append from './Append';
 
-let FollowCursor = React.createClass({
+const FollowCursor = React.createClass({
 
   displayName: 'FollowCursor',
 
@@ -33,7 +33,7 @@ let FollowCursor = React.createClass({
   },
 
   render() {
-    let { hasOverlay, renderOverlay, children, style, appendTo, ...otherProps } = this.props;
+    const { hasOverlay, renderOverlay, children, style, appendTo, ...otherProps } = this.props;
 
     let overlay;
     if (hasOverlay) {

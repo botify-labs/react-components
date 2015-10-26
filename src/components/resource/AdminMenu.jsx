@@ -18,7 +18,7 @@ const AdminMenu = React.createClass({
   },
 
   render() {
-    let title = <i className="fa fa-puzzle-piece"></i>;
+    const title = <i className="fa fa-puzzle-piece"></i>;
     return (
       <DropdownButton
         id="AdminMenu"

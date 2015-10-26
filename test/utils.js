@@ -13,13 +13,13 @@ export function renderEach(element, callback) {
 }
 
 export function render(element) {
-  let node = document.createElement('div');
+  const node = document.createElement('div');
   document.body.appendChild(node);
   return ReactDOM.render(element, node);
 }
 
 export function unmount(component) {
-  let node = ReactDOM.findDOMNode(component).parentNode;
+  const node = ReactDOM.findDOMNode(component).parentNode;
   ReactDOM.unmountComponentAtNode(node);
   document.body.removeChild(node);
 }

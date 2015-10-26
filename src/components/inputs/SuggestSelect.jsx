@@ -50,7 +50,7 @@ const OptionDefault = React.createClass({
   },
 
   render() {
-    let {
+    const {
       option: {label},
       ...otherProps,
     } = this.props;
@@ -105,9 +105,9 @@ const SuggestSelect = React.createClass({
   },
 
   componentDidUpdate(prevProps, prevState) {
-    let {isFocused, suggestedOptionId, filterValue} = this.state;
-    let selectedOptionId = this.getSelectedOptionId();
-    let previousSelectedOptionId = this.getSelectedOptionId(prevProps);
+    const {isFocused, suggestedOptionId, filterValue} = this.state;
+    const selectedOptionId = this.getSelectedOptionId();
+    const previousSelectedOptionId = this.getSelectedOptionId(prevProps);
 
     if (prevState.isFocused !== isFocused) {
       if (isFocused) {
@@ -147,13 +147,13 @@ const SuggestSelect = React.createClass({
       }
 
       // Open all groups if filterValue was empty
-      let filterValueWasEmpty = prevState.filterValue.length === 0 && filterValue.length > 0;
+      const filterValueWasEmpty = prevState.filterValue.length === 0 && filterValue.length > 0;
       if (filterValueWasEmpty) {
         this.openAllGroups();
       }
 
       // Close all groups if filterValue become empty
-      let filterValueBecomeEmpty = prevState.filterValue.length > 0 && filterValue.length === 0;
+      const filterValueBecomeEmpty = prevState.filterValue.length > 0 && filterValue.length === 0;
       if (filterValueBecomeEmpty) {
         this.closeAllGroups();
       }
@@ -194,11 +194,11 @@ const SuggestSelect = React.createClass({
 
   // State Helpers: openGroupsId
   isGroupOpen(group) {
-    let {openGroupsId} = this.state;
+    const {openGroupsId} = this.state;
     return _.contains(openGroupsId, group.id);
   },
   toggleGroupOpenState(group) {
-    let isOpened = this.isGroupOpen(group);
+    const isOpened = this.isGroupOpen(group);
     if (isOpened) {
       this.closeGroup(group);
     } else {
@@ -206,12 +206,12 @@ const SuggestSelect = React.createClass({
     }
   },
   openGroup(group) {
-    let { openGroupsId } = this.state;
+    const { openGroupsId } = this.state;
     this.setState({ openGroupsId: update(openGroupsId, {$push: [group.id]}) });
   },
   closeGroup(group) {
-    let { openGroupsId } = this.state;
-    let index = _.findIndex(openGroupsId, (id) => id === group.id);
+    const { openGroupsId } = this.state;
+    const index = _.findIndex(openGroupsId, (id) => id === group.id);
     this.setState({ openGroupsId: update(openGroupsId, {$splice: [[index, 1]]}) });
   },
   openParentsGroupIfNot(optionId) {
@@ -222,7 +222,7 @@ const SuggestSelect = React.createClass({
     }
   },
   openAllGroups() {
-    let allGroupsIds = _.pluck(_.filter(this.getOptionsIterator(), 'isGroup'), 'id');
+    const allGroupsIds = _.pluck(_.filter(this.getOptionsIterator(), 'isGroup'), 'id');
     this.setState({ openGroupsId: allGroupsIds });
   },
   closeAllGroups() {
@@ -240,7 +240,7 @@ const SuggestSelect = React.createClass({
 
   // State Helpers: suggestedOptionId
   suggestFirstOption() {
-    let suggestion = this.getOptionsIterator()[0];
+    const suggestion = this.getOptionsIterator()[0];
     this.setSuggestedOption(suggestion);
   },
   suggestPreviousOption() {
@@ -253,10 +253,10 @@ const SuggestSelect = React.createClass({
    * @param  {Integer} n
    */
   moveSuggestion(n) {
-    let {suggestedOptionId} = this.state;
-    let optionsIterator = this.getOptionsIterator();
+    const {suggestedOptionId} = this.state;
+    const optionsIterator = this.getOptionsIterator();
 
-    let currentSuggestionIndex = suggestedOptionId ? _.findIndex(optionsIterator, option => option.id === suggestedOptionId) : -1;
+    const currentSuggestionIndex = suggestedOptionId ? _.findIndex(optionsIterator, option => option.id === suggestedOptionId) : -1;
     let movedSuggestionIndex = currentSuggestionIndex + n;
 
     movedSuggestionIndex = Math.min(Math.max(movedSuggestionIndex, 0), optionsIterator.length - 1);
@@ -315,7 +315,7 @@ const SuggestSelect = React.createClass({
   },
 
   onFilterInputFocus(e) {
-    let {isListOpen, isFocused} = this.state;
+    const {isListOpen, isFocused} = this.state;
 
     if (!isFocused) {
       this.focus();
@@ -326,12 +326,12 @@ const SuggestSelect = React.createClass({
   },
 
   onFilterInputChange(e) {
-    let value = e.target.value;
+    const value = e.target.value;
     this.updateFilterValue(value);
   },
 
   onFilterInputKeyDown(e) {
-    let {isListOpen, suggestedOptionId} = this.state;
+    const {isListOpen, suggestedOptionId} = this.state;
 
     if (!isListOpen) {
       this.openList();
@@ -368,11 +368,11 @@ const SuggestSelect = React.createClass({
   // Renders
 
   render() {
-    let { className, placeHolder, disabled, options } = this.props;
-    let { isFocused, isListOpen, filterValue } = this.state;
+    const { className, placeHolder, disabled, options } = this.props;
+    const { isFocused, isListOpen, filterValue } = this.state;
 
-    let selectedOptionId = this.getSelectedOptionId();
-    let selectedOption = this.getOption(selectedOptionId);
+    const selectedOptionId = this.getSelectedOptionId();
+    const selectedOption = this.getOption(selectedOptionId);
 
     return (
       <div
@@ -410,7 +410,7 @@ const SuggestSelect = React.createClass({
             className="SuggestSelect-optionsList"
           >
             {_.map(options, (option) => {
-              let render = option.isGroup ? this._renderGroup : this._renderOption;
+              const render = option.isGroup ? this._renderGroup : this._renderOption;
               return render(option, 0);
             })}
           </div>
@@ -420,10 +420,10 @@ const SuggestSelect = React.createClass({
   },
 
   _renderGroup(group, depth) {
-    let { optionRender: OptionRender, hideGroupsWithoutOptions } = this.props;
-    let { filterValue, suggestedOptionId } = this.state;
-    let isSuggested = suggestedOptionId === group.id;
-    let isOpen = this.isGroupOpen(group);
+    const { optionRender: OptionRender, hideGroupsWithoutOptions } = this.props;
+    const { filterValue, suggestedOptionId } = this.state;
+    const isSuggested = suggestedOptionId === group.id;
+    const isOpen = this.isGroupOpen(group);
 
     if (hideGroupsWithoutOptions && (!group.options || group.options.length === 0)) {
       return false;
@@ -443,7 +443,7 @@ const SuggestSelect = React.createClass({
         onOptionSelect={this.onOptionSelect.bind(null, group)}
       >
         {isOpen && _.map(group.options, (option) => {
-          let render = option.isGroup ? this._renderGroup : this._renderOption;
+          const render = option.isGroup ? this._renderGroup : this._renderOption;
           return render(option, depth + 1);
         })}
       </SuggestSelectGroup>
@@ -451,9 +451,9 @@ const SuggestSelect = React.createClass({
   },
 
   _renderOption(option, depth) {
-    let { optionRender: OptionRender } = this.props;
-    let { filterValue, suggestedOptionId } = this.state;
-    let isSuggested = suggestedOptionId === option.id;
+    const { optionRender: OptionRender } = this.props;
+    const { filterValue, suggestedOptionId } = this.state;
+    const isSuggested = suggestedOptionId === option.id;
 
     return (
       <OptionRender
@@ -486,7 +486,7 @@ const SuggestSelectGroup = React.createClass({
   },
 
   render() {
-    let {group, isOpen, isSuggested, optionRender: OptionRender, className,
+    const {group, isOpen, isSuggested, optionRender: OptionRender, className,
       filter, isSelectable, onToggleOpen, onOptionSelect, children, ...otherProps} = this.props;
     return (
       <div

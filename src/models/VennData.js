@@ -52,7 +52,7 @@ class VennData {
           }
         });
       } else if (this.intersections.contains(set)) {
-        let sets = this.intersections.findKey((other) => other === set);
+        const sets = this.intersections.findKey((other) => other === set);
         this.intersections.forEach((otherIntersection, otherSets) => {
           if (otherIntersection !== set && sets.isSubset(otherSets)) {
             size -= this.getSizeOf(otherIntersection, false);

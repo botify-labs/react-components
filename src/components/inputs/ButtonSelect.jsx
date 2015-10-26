@@ -34,13 +34,13 @@ const ButtonSelect = React.createClass({
   },
 
   render() {
-    let { options, className, disabled, allowUnselect } = this.props;
-    let selectedOptionId = this.getValue();
+    const { options, className, disabled, allowUnselect } = this.props;
+    const selectedOptionId = this.getValue();
 
     return (
       <div className={classNames('ButtonSelect', className)}>
         {options.map((option) => {
-          let isActive = option.id === selectedOptionId;
+          const isActive = option.id === selectedOptionId;
           let onClick;
           if (isActive) {
             if (allowUnselect) {

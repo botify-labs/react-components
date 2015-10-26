@@ -14,7 +14,7 @@ describe('FollowCursor', () => {
         renderOverlay={() => null}
       />
     );
-    let content = TestUtils.scryRenderedComponentsWithType(followCursor, Positioned);
+    const content = TestUtils.scryRenderedComponentsWithType(followCursor, Positioned);
     expect(content.length).toBe(0);
   });
 
@@ -25,7 +25,7 @@ describe('FollowCursor', () => {
         renderOverlay={() => null}
       />
     );
-    let content = TestUtils.scryRenderedComponentsWithType(followCursor, Positioned);
+    const content = TestUtils.scryRenderedComponentsWithType(followCursor, Positioned);
     expect(content.length).toBe(1);
   });
 
@@ -37,7 +37,7 @@ describe('FollowCursor', () => {
       />
     );
     TestUtils.Simulate.mouseMove(ReactDOM.findDOMNode(followCursor), { pageX: 100, pageY: 100});
-    let positioned = TestUtils.findRenderedComponentWithType(followCursor, Positioned);
+    const positioned = TestUtils.findRenderedComponentWithType(followCursor, Positioned);
     expect(positioned.props.position.top).toBe(100);
     expect(positioned.props.position.left).toBe(100);
   });

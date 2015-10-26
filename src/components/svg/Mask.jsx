@@ -15,7 +15,7 @@ const Mask = React.createClass({
   mixins: [UniqueIdMixin],
 
   render() {
-    let { mask, children, style, ...otherProps } = this.props;
+    const { mask, children, style, ...otherProps } = this.props;
 
     return (
       <g>

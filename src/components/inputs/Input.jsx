@@ -23,7 +23,7 @@ const Input = React.createClass({
   },
 
   _getTemporaryValue() {
-    let { hasFocus, value } = this.state;
+    const { hasFocus, value } = this.state;
     if (hasFocus) {
       return value;
     }
@@ -38,7 +38,7 @@ const Input = React.createClass({
   },
 
   _handleBlur() {
-    let { value } = this.state;
+    const { value } = this.state;
     this.setState({
       hasFocus: false,
       value: null,
@@ -51,7 +51,7 @@ const Input = React.createClass({
   },
 
   render() {
-    let { className, ...otherProps } = this.props;
+    const { className, ...otherProps } = this.props;
 
     return (
       <input

@@ -6,7 +6,7 @@ import SuggestSelectClient from '../src/components/inputs/SuggestSelectClient';
 import './SuggestSelectClient.scss';
 
 
-let options = [
+const options = [
   {
     id: 'foo',
     label: 'foo',
@@ -32,7 +32,7 @@ let options = [
   {id: 'boo', label: 'boo', type: 'string', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'},
 ];
 
-let OptionExample = React.createClass({
+const OptionExample = React.createClass({
 
   displayName: 'OptionExample',
 
@@ -47,7 +47,7 @@ let OptionExample = React.createClass({
   },
 
   render() {
-    let {
+    const {
       className,
       option: {label, type, description},
       ...otherProps,
@@ -67,9 +67,9 @@ let OptionExample = React.createClass({
 });
 
 
-let defaultValue = null;
+const defaultValue = null;
 
-let render = (value) => {
+const render = (value) => {
   React.render(
     <div>
       <input type="text"/>

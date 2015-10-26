@@ -22,7 +22,7 @@ const Tabs = React.createClass({
   },
 
   render() {
-    let {
+    const {
       className,
       tabs,
       selectedTabId = tabs[0].id,

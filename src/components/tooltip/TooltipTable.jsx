@@ -4,7 +4,7 @@ import React from 'react';
  * Renders a 2xN table from its props
  * Primary purpose is to represent chart data in tooltips
  */
-let TooltipTable = React.createClass({
+const TooltipTable = React.createClass({
 
   displayName: 'TooltipTable',
 

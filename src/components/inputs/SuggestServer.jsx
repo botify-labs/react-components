@@ -30,7 +30,7 @@ const SuggestServer = React.createClass({
   },
 
   componentWillMount() {
-    let { debounce } = this.props;
+    const { debounce } = this.props;
     // First options populate
     this.feedOptions(this.getValue());
     // Debouce feedOptions function
@@ -48,8 +48,8 @@ const SuggestServer = React.createClass({
   },
 
   render() {
-    let { suggestComponent: SuggestComponent, feedOptions, debounce, className, ...otherProps } = this.props;
-    let { options } = this.state;
+    const { suggestComponent: SuggestComponent, feedOptions, debounce, className, ...otherProps } = this.props;
+    const { options } = this.state;
     return (
       <SuggestComponent
         className={cx('SuggestServer', className)}

@@ -48,8 +48,8 @@ const VennDiagram = React.createClass({
   },
 
   render() {
-    let {vennData, inclusive, onClick, ...otherProps} = this.props;
-    let {activeSet} = this.state;
+    const {vennData, inclusive, onClick, ...otherProps} = this.props;
+    const {activeSet} = this.state;
     return (
       <FollowCursor
         hasOverlay={!!activeSet}
@@ -77,8 +77,8 @@ const VennDiagram = React.createClass({
   },
 
   _renderTooltip() {
-    let {setLabel, sizeLabel, formatSize, vennData, inclusive} = this.props;
-    let {activeSet} = this.state;
+    const {setLabel, sizeLabel, formatSize, vennData, inclusive} = this.props;
+    const {activeSet} = this.state;
     return (
       <Tooltip className="VennChart-tooltip">
         <TooltipTable

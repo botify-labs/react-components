@@ -53,7 +53,7 @@ describe('Positioned', () => {
 
   it('should always be at least `margin`px from the right boundary of the page', () => {
     let rect;
-    let documentWidth = document.body.offsetWidth;
+    const documentWidth = document.body.offsetWidth;
 
     let positioned = render(
       <Positioned

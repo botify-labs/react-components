@@ -30,8 +30,8 @@ export default {
   },
 
   _addHistoryEntry(newState, isInitial) {
-    let currentState = this.getCurrentHistoryState();
-    let history = this.state.history.slice(0, this.state.historyIndex + 1);
+    const currentState = this.getCurrentHistoryState();
+    const history = this.state.history.slice(0, this.state.historyIndex + 1);
     history.push({
       isInitial,
       state: update(currentState, { $merge: newState }),
