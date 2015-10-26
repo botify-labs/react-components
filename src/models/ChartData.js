@@ -99,8 +99,8 @@ class ChartData {
   }
 
   getDimensionKeyByIndex(index, fromEnd) {
-    index = fromEnd ? (this.dimensions.count() - 1) - index : index;
-    return this.dimensions.keySeq().get(index);
+    const i = fromEnd ? (this.dimensions.count() - 1) - index : index;
+    return this.dimensions.keySeq().get(i);
   }
 
   /**

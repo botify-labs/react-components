@@ -26,8 +26,8 @@ const SuggestClient = React.createClass({
   getDefaultProps() {
     return {
       filterOption: (val, option, parent) => {
-        val = String(val).replace(/[\\\^\$\*\+\?\.\(\)\|\{\}\[\]]/g, '\\$&'); // Escape regex special characters
-        const regex = new RegExp(val, 'i');
+        const value = String(val).replace(/[\\\^\$\*\+\?\.\(\)\|\{\}\[\]]/g, '\\$&'); // Escape regex special characters
+        const regex = new RegExp(value, 'i');
         return regex.test(option.label) || parent && regex.test(parent.label);
       },
     };

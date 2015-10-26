@@ -283,10 +283,10 @@ const SuggestSelect = React.createClass({
   },
   _getOptionsIterator(options, parentOption) {
     return _.flatten(_.map(options, (option) => {
-      option = {...option, parent: parentOption};
+      const optionIterator = {...option, parent: parentOption};
       return []
-        .concat(option.isNotSelectable ? [] : option)
-        .concat(this._getOptionsIterator(option.options, option) || []);
+        .concat(optionIterator.isNotSelectable ? [] : optionIterator)
+        .concat(this._getOptionsIterator(optionIterator.options, optionIterator) || []);
     }));
   },
 
