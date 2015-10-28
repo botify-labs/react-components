@@ -87,12 +87,11 @@ const Positioned = React.createClass({
   },
 
   render() {
-    let { style } = this.props;
-    const { children, ...otherProps } = this.props;
-    style = { ...this._getCommonStyle(), ...this._getPositionStyle(), ...style };
+    const { children, style, ...otherProps } = this.props;
+    const enhancedStyle = { ...this._getCommonStyle(), ...this._getPositionStyle(), ...style };
 
     return (
-      <div {...otherProps} className="Positioned" style={style}>
+      <div {...otherProps} className="Positioned" style={enhancedStyle}>
         {children}
       </div>
     );

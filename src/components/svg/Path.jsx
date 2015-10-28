@@ -22,14 +22,15 @@ const Path = React.createClass({
   },
 
   render() {
-    const { inverse, ...otherProps } = this.props;
-    let { d, style = {} } = this.props;
+    const { inverse, d, style = {}, ...otherProps } = this.props;
+    let pathStyle = style;
+    let move = d;
     if (inverse) {
-      d = fullShape + d;
-      style = { ...style, fillRule: 'evenodd' };
+      move = fullShape + move;
+      pathStyle = { ...pathStyle, fillRule: 'evenodd' };
     }
 
-    return <path {...otherProps} d={d} style={style}/>;
+    return <path {...otherProps} d={move} style={pathStyle}/>;
   },
 
 });

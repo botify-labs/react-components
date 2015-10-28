@@ -58,8 +58,8 @@ const GoogleChart = React.createClass({
    */
   _initializeChart() {
     this.adapter = new ChartDataGoogleDataAdapter(this.props.chartData);
-    const { googleChart: GoogleColumnChart } = this.props;
-    this.chart = new GoogleColumnChart(ReactDOM.findDOMNode(this));
+    const { googleChart: GoogleChartClass } = this.props;
+    this.chart = new GoogleChartClass(ReactDOM.findDOMNode(this));
 
     this._bindChartEvents();
     this._drawChart();
