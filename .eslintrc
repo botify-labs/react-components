@@ -25,4 +25,8 @@
     }],
     "quote-props": [2, "as-needed"],         //Disallow to quote properties (of object) when it's not requiered.
   },
+
+  "globals": {
+    "google": true,
+  },
 }
