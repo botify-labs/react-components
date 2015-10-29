@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import venn from 'venn.js';
 import Immutable from 'immutable';
 
@@ -39,7 +40,7 @@ const VennCanvas = React.createClass({
    * Recalculate the venn diagram so that it fits into the canvas
    */
   _scale() {
-    let {width, height} = React.findDOMNode(this).getBoundingClientRect();
+    let {width, height} = ReactDOM.findDOMNode(this).getBoundingClientRect();
 
     if (width !== this.state.width || height !== this.state.height) {
       this.setState({width, height});

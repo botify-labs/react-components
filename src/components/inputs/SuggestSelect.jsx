@@ -1,5 +1,6 @@
-import React, { PropTypes, addons } from 'react/addons';
-const { update } = addons;
+import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom';
+import update from 'react-addons-update';
 import _ from 'lodash';
 import cx from 'classnames';
 
@@ -358,7 +359,7 @@ const SuggestSelect = React.createClass({
     //Note: I cannot be done in the setstate callback as when the user clicks somewhere on the list,
     //      the input is blurred, so we need to refocus it.
     if (isFocused) {
-      React.findDOMNode(this.refs.searchInput).focus();
+      ReactDOM.findDOMNode(this.refs.searchInput).focus();
     }
   },
 

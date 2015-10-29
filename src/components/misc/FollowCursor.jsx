@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react/addons';
+import React, { PropTypes } from 'react';
 
 import Positioned from './Positioned';
 import Append from './Append';

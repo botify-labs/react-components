@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react/addons';
+import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom';
+
 
 const Append = React.createClass({
 
@@ -15,11 +17,11 @@ const Append = React.createClass({
   },
 
   componentDidMount() {
-    React.render(this.props.children, this._container);
+    ReactDOM.render(this.props.children, this._container);
   },
 
   componentDidUpdate() {
-    React.render(this.props.children, this._container);
+    ReactDOM.render(this.props.children, this._container);
   },
 
   componentWillUnmount() {

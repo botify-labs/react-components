@@ -14,15 +14,17 @@
     "url": "git://github.com/botify-labs/react-components.git"
   },
   "dependencies": {
-    "classnames": "^1.1.4",
-    "color": "^0.8.0",
-    "datatables": "^1.10.5",
-    "immutable": "^3.6.2",
-    "jquery": "^1.0.0",
-    "lodash": "^2.4.1",
-    "react": "^0.13.1",
-    "react-bootstrap": "^0.15.1",
-    "react-controllables": "^0.3.3",
+    "classnames": "~2.2.0",
+    "color": "~0.8.0",
+    "datatables": "~1.10.6",
+    "immutable": "~3.6.2",
+    "jquery": "~1.11.1",
+    "lodash": "~2.4.1",
+    "react": "~0.14.1",
+    "react-addons-update": "~0.14.1",
+    "react-bootstrap": "~0.27.3",
+    "react-controllables": "~0.6.0",
+    "react-dom": "~0.14.1",
     "venn.js": "botify-labs/venn.js#3307268434935e8e2e61d85677b2c5b6c7b442c1"
   },
   "devDependencies": {
