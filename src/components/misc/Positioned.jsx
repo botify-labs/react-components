@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react/addons';
+import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
 let Positioned = React.createClass({
 
@@ -28,7 +29,7 @@ let Positioned = React.createClass({
   },
 
   componentDidMount() {
-    let node = React.findDOMNode(this);
+    let node = ReactDOM.findDOMNode(this);
 
     this.setState({
       width: node.offsetWidth,
@@ -37,7 +38,7 @@ let Positioned = React.createClass({
   },
 
   componentDidUpdate(prevProps, prevState) {
-    let node = React.findDOMNode(this);
+    let node = ReactDOM.findDOMNode(this);
     let width = node.offsetWidth;
     let height = node.offsetHeight;
 

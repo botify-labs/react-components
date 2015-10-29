@@ -12,7 +12,7 @@ const HelpTooltip = React.createClass({
   },
 
   render() {
-    let tooltip = <Tooltip>{this.props.children}</Tooltip>;
+    let tooltip = <Tooltip id="HelpTooltip">{this.props.children}</Tooltip>;
 
     return (
       //@TODO tooltip trigger should be hover and should stayed visible when user mouse is over the tooltip.

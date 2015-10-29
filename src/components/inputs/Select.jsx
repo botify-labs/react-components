@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react/addons';
+import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 
 import InputMixin from '../../mixins/InputMixin';

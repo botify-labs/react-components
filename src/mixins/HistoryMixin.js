@@ -1,5 +1,5 @@
-import { addons } from 'react/addons';
-const { update } = addons;
+import update from 'react-addons-update';
+
 
 /**
  * Mixin that provides a layer on top of a component state for storing an history of states.

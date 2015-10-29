@@ -1,5 +1,6 @@
-import { PropTypes, addons } from 'react/addons';
-const { update } = addons;
+import { PropTypes } from 'react';
+import update from 'react-addons-update';
+
 
 /**
  * Mixin that helps with implementing the controlled input interface.

@@ -80,10 +80,13 @@ let PanelMenu = React.createClass({
     });
 
     return (
-      <DropdownButton noCaret
-                      pullRight
-                      className={classNames(this.props.className, 'PanelMenu')}
-                      title={<i className="fa fa-gear"/>}>
+      <DropdownButton
+        id="PanelMenu"
+        noCaret
+        pullRight
+        className={classNames(this.props.className, 'PanelMenu')}
+        title={<i className="fa fa-gear"/>}
+      >
         {displayModes}
         {displayModes.length > 0 && actions.length > 0 ? <MenuItem divider/> : null}
         {actions}

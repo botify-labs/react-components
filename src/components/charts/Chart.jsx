@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React, { PropTypes } from 'react';
 
 import FollowCursor from '../misc/FollowCursor';
 import Tooltip from '../tooltip/Tooltip';
@@ -10,7 +10,7 @@ let Chart = React.createClass({
   displayName: 'Chart',
 
   propTypes: {
-    chartData: React.PropTypes.instanceOf(ChartData),
+    chartData: PropTypes.instanceOf(ChartData),
   },
 
   getInitialState() {
