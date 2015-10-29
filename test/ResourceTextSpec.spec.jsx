@@ -1,5 +1,6 @@
-import React, { addons } from 'react/addons';
-const { TestUtils } = addons;
+import React from 'react';
+import ReactDOM from 'react-dom';
+import TestUtils from 'react-addons-test-utils';
 import { render } from './utils';
 
 import ResourceText from '../src/components/resource/ResourceText';
@@ -11,7 +12,7 @@ describe('ResourceText', () => {
   it('should create a ResourceText Component', () => {
     let resourceText = {};
     let rtInstance = render(<ResourceText resourceText={resourceText} />);
-    let rtNode = React.findDOMNode(rtInstance);
+    let rtNode = ReactDOM.findDOMNode(rtInstance);
 
     expect(TestUtils.isCompositeComponentWithType(rtInstance, ResourceText)).toBe(true);
     expect(rtNode.nodeName).toBe('DIV');
@@ -24,7 +25,7 @@ describe('ResourceText', () => {
     let rtInstance = render(<ResourceText resourceText={resourceText} />);
 
     let textInstance = TestUtils.findRenderedDOMComponentWithClass(rtInstance, 'ResourceText-text');
-    let textNode = React.findDOMNode(textInstance);
+    let textNode = ReactDOM.findDOMNode(textInstance);
 
     expect(textNode.nodeName).toBe('SPAN');
     expect(textNode.innerHTML).toBe(resourceText.text);

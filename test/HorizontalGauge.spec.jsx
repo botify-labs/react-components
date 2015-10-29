@@ -1,5 +1,6 @@
-import React, { addons } from 'react/addons';
-const { TestUtils } = addons;
+import React from 'react';
+import ReactDOM from 'react-dom';
+import TestUtils from 'react-addons-test-utils';
 
 import { render, unmount } from './utils';
 import HorizontalGauge from '../src/components/gauges/HorizontalGauge';
@@ -27,7 +28,7 @@ describe('HorizontalGauge', () => {
 
   it('should render a tooltip on hover', () => {
     let gauge = render(<HorizontalGauge stacks={stacks} all={all} />);
-    let gaugeNode = React.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge'));
+    let gaugeNode = ReactDOM.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge'));
     let tooltips;
     // TestUtils.Simulate.{mouseEnter, mouseLeave} don't work (yet)
     // See https://github.com/facebook/react/issues/1297
@@ -48,13 +49,13 @@ describe('HorizontalGauge', () => {
         formatStackValue={v => <div className="formatted">{v.toFixed(2)}</div>}
         />
     );
-    let gaugeNode = React.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge'));
+    let gaugeNode = ReactDOM.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge'));
     TestUtils.SimulateNative.mouseOver(gaugeNode);
     let formatted = TestUtils.scryRenderedDOMComponentsWithClass(gauge, 'formatted');
     expect(formatted.length).toBe(2);
-    let formattedNode1 = React.findDOMNode(formatted[0]);
+    let formattedNode1 = ReactDOM.findDOMNode(formatted[0]);
     expect(formattedNode1.innerText).toBe('25.00');
-    let formattedNode2 = React.findDOMNode(formatted[1]);
+    let formattedNode2 = ReactDOM.findDOMNode(formatted[1]);
     expect(formattedNode2.innerText).toBe('50.00');
     unmount(gauge);
   });
@@ -68,23 +69,23 @@ describe('HorizontalGauge', () => {
         formatAllValue={v => <div className="formatted">{v.toFixed(2)}</div>}
         />
     );
-    let gaugeNode = React.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge'));
+    let gaugeNode = ReactDOM.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge'));
     TestUtils.SimulateNative.mouseOver(gaugeNode);
     let formatted = TestUtils.scryRenderedDOMComponentsWithClass(gauge, 'formatted');
     expect(formatted.length).toBe(1);
-    let formattedNode = React.findDOMNode(formatted[0]);
+    let formattedNode = ReactDOM.findDOMNode(formatted[0]);
     expect(formattedNode.innerText).toBe('100.00');
     unmount(gauge);
   });
 
   it('should render stacks with a width relative their values and with the provided color', () => {
     let gauge = render(<HorizontalGauge stacks={stacks} all={all} />);
-    let allNode = React.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge-all'));
+    let allNode = ReactDOM.findDOMNode(TestUtils.findRenderedDOMComponentWithClass(gauge, 'HorizontalGauge-all'));
     expect(allNode.style.backgroundColor).toBe(all.color);
     let stacksComponents = TestUtils.scryRenderedDOMComponentsWithClass(gauge, 'HorizontalGauge-stack');
     expect(stacksComponents.length).toBe(stacks.length);
     stacks.forEach((stack, idx) => {
-      let node = React.findDOMNode(stacksComponents[idx]);
+      let node = ReactDOM.findDOMNode(stacksComponents[idx]);
       expect(node.style.backgroundColor).toBe(stack.color);
       let observedWidth = Math.round(node.offsetWidth);
       let expectedWidth = Math.round(stack.value / all.value * allNode.offsetWidth);
