@@ -17,7 +17,7 @@
     "classnames": "~2.2.0",
     "color": "~0.8.0",
     "datatables": "~1.10.6",
-    "immutable": "~3.6.2",
+    "immutable": "~3.7.5",
     "jquery": "~1.11.1",
     "lodash": "~2.4.1",
     "react": "~0.14.1",
