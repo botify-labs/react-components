@@ -44,7 +44,7 @@ let Table = React.createClass({
   },
 
   componentDidMount() {
-    $(this.refs.table.getDOMNode()).dataTable(this._getOptions());
+    $(ReactDOM.findDOMNode(this)).dataTable(this._getOptions());
   },
 
   render() {

@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import _ from 'lodash';
 
 import ChartData from '../../../models/ChartData';
@@ -72,7 +73,7 @@ let GoogleChart = React.createClass({
   _initializeChart() {
     this.adapter = new ChartDataGoogleDataAdapter(this.props.chartData);
 
-    this.chart = new this.props.googleChart(this.getDOMNode());
+    this.chart = new this.props.googleChart(ReactDOM.findDOMNode(this));
 
     this._bindChartEvents();
     this._drawChart();
