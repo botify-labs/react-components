@@ -1,23 +1,17 @@
-
-import {List, Map, OrderedMap} from 'immutable';
+import { Map, OrderedMap } from 'immutable';
+import { isNumber } from 'lodash';
 
 /**
  * @structure DataKeys
- * Map<Any,Any>  //<dimension key, group key>
- */
-
-/**
- * @structure DataValues
- * List<Any>
+ * Map<Any,Any>  =>  <dimension key, group key>
  */
 
 /**
  * @structure Dimension
  * Map({
- *   label: String,
- *   render: function(data),
- *   Any: Any
  *   groups: OrderMap<Any, DimensionGroup>
+ *   label: String,
+ *   ...
  * })
  */
 
@@ -26,33 +20,31 @@ import {List, Map, OrderedMap} from 'immutable';
  * Map({
  *   label: String,
  *   color: String,
- *   Any: Any
+ *   ...
  * })
  */
 
 /**
- * @property {Map<DataKeys, DataValues>}  rawData
- * @property {OrderMap<Any, Dimension>}   dimensions
- * @property {List<Metric>}               metrics
+ * @property {Map<DataKeys, Number>}    rawData
+ * @property {OrderMap<Any, Dimension>} dimensions
  */
 class ChartData{
 
   constructor() {
     this.rawData = Map();
     this.dimensions = OrderedMap();
-    this.metrics = List();
   }
 
   /**
    * @param {DataKeys} keys
-   * @param {DataValues} values
+   * @param {Number}   value
    */
-  setData(keys, values) {
+  setData(keys, value) {
     this._testDataKeys(keys);
-    this._testDataValues(values);
+    this._testDataValue(value);
 
     //Add data
-    this.rawData = this.rawData.set(keys, values);
+    this.rawData = this.rawData.set(keys, value);
 
     //Add dimensions or/and groups if not exist
     keys.forEach((groupKey, dimKey) => {
@@ -67,9 +59,9 @@ class ChartData{
       throw new TypeError('DataKeys is not an Map');
     }
   }
-  _testDataValues(values) {
-    if (!List.isList(values)) {
-      throw new TypeError('DataValues is not a List');
+  _testDataValue(value) {
+    if (!isNumber(value)) {
+      throw new TypeError('Value is not a number');
     }
   }
 
@@ -91,32 +83,6 @@ class ChartData{
       return this.rawData;
     }
     return this.rawData.filter((value, key) => filters.isSubset(key));
-  }
-
-  /**
-   * @param {Map} metricMetadata
-   */
-  addMetric(metricMetadata = Map()) {
-    if (!Map.isMap(metricMetadata)) {
-      throw new TypeError('metricMetadata is not a Map');
-    }
-    this.metrics = this.metrics.push(metricMetadata);
-  }
-
-  /**
-   * @param   {Number} index
-   * @return  {Map}
-   */
-  getMetric(index) {
-    return this.metrics.get(index);
-  }
-
-  /**
-   * @param   {Number} index
-   * @return  {Boolean}
-   */
-  hasMetric(index) {
-    return this.metrics.has(index);
   }
 
   /**

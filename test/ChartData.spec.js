@@ -124,78 +124,34 @@ describe('ChartData', () => {
 
   });
 
-  describe('addMetric()', () => {
-
-    it('should validate the type of its arguments', () => {
-      let metricMetadata = Map({ label: 'count' });
-      let invalidMetricMetadata = { label: 'count' };
-      expect(() => chartData.addMetric(invalidMetricMetadata)).toThrow();
-      expect(() => chartData.addMetric(metricMetadata)).toNotThrow();
-    });
-
-    it('should add a metric to the list of metrics', () => {
-      let metricMetadata = Map({ label: 'count' });
-      chartData.addMetric(metricMetadata);
-      expect(chartData.metrics.contains(metricMetadata)).toBe(true);
-    });
-
-  });
-
-  describe('getMetric()', () => {
-
-    it('should return a metric from an insertion index', () => {
-      let metricMetadata1 = Map({ label: 'count' });
-      let metricMetadata2 = Map({ label: 'avg' });
-      let metricMetadata3 = Map({ label: 'diff' });
-      chartData.addMetric(metricMetadata1);
-      chartData.addMetric(metricMetadata2);
-      chartData.addMetric(metricMetadata3);
-      expect(chartData.metrics.get(0)).toBe(metricMetadata1);
-      expect(chartData.metrics.get(1)).toBe(metricMetadata2);
-      expect(chartData.metrics.get(2)).toBe(metricMetadata3);
-    });
-
-  });
-
-  describe('hasMetric()', () => {
-
-    it('should return true if a metric index exists, false otherwise', () => {
-      let metricMetadata = Map({ label: 'count' });
-      expect(chartData.hasMetric(0)).toBe(false);
-      chartData.addMetric(metricMetadata);
-      expect(chartData.hasMetric(0)).toBe(true);
-    });
-
-  });
-
   describe('setData()', () => {
 
     it('should validate the type of its arguments', () => {
       let invalidKeys = { speed: 'fast' };
-      let invalidValues = [0, 1, 2, 3];
+      let invalidValue = List.of(0, 1, 2, 3);
       let keys = Map({ speed: 'fast' });
-      let values = List.of(0, 1, 2, 3);
+      let value = 1;
       chartData.addDimension('speed', Map({ label: 'speed' }));
-      expect(() => chartData.setData(invalidKeys, values)).toThrow();
-      expect(() => chartData.setData(keys, invalidValues)).toThrow();
-      expect(() => chartData.setData(invalidKeys, invalidValues)).toThrow();
-      expect(() => chartData.setData(keys, values)).toNotThrow();
+      expect(() => chartData.setData(invalidKeys, value)).toThrow();
+      expect(() => chartData.setData(keys, invalidValue)).toThrow();
+      expect(() => chartData.setData(invalidKeys, invalidValue)).toThrow();
+      expect(() => chartData.setData(keys, value)).toNotThrow();
     });
 
     it('should throw if `dataKeys` refers to an unknown dimension', () => {
       let keys = Map({ speed: 'fast' });
-      let values = List.of(0, 1, 2, 3);
-      expect(() => chartData.setData(keys, values)).toThrow();
+      let value = 0;
+      expect(() => chartData.setData(keys, value)).toThrow();
     });
 
     it('should automatically add new dimension groups if they didn\'t exist before', () => {
       let keys1 = Map({ speed: 'fast' });
       let keys2 = Map({ speed: 'slow', hello: 'world' });
-      let values = List.of(0, 1, 2, 3);
+      let value = 0;
       chartData.addDimension('speed', Map({ label: 'speed' }));
       chartData.addDimension('hello', Map({ label: 'hello' }));
-      chartData.setData(keys1, values);
-      chartData.setData(keys2, values);
+      chartData.setData(keys1, value);
+      chartData.setData(keys2, value);
       expect(chartData.getDimensionGroup('speed', 'fast')).toExist();
       expect(chartData.getDimensionGroup('speed', 'slow')).toExist();
       expect(chartData.getDimensionGroup('hello', 'world')).toExist();
@@ -203,10 +159,10 @@ describe('ChartData', () => {
 
     it('should add data to the map of data', () => {
       let keys = Map({ speed: 'fast' });
-      let values = List.of(0, 1, 2, 3);
+      let value = 0;
       chartData.addDimension('speed', Map({ label: 'speed' }));
-      chartData.setData(keys, values);
-      expect(chartData.rawData.get(keys)).toBe(values);
+      chartData.setData(keys, value);
+      expect(chartData.rawData.get(keys)).toBe(value);
     });
 
   });
@@ -217,12 +173,12 @@ describe('ChartData', () => {
       let keys1 = Map({ speed: 'fast' });
       let keys2 = Map({ speed: 'slow' });
       chartData.addDimension('speed', Map({ label: 'speed' }));
-      let values1 = List.of(0, 1, 2, 3);
-      let values2 = List.of(3, 2, 1, 0);
-      chartData.setData(keys1, values1);
-      chartData.setData(keys2, values2);
-      expect(chartData.getData(keys1)).toBe(values1);
-      expect(chartData.getData(keys2)).toBe(values2);
+      let value1 = 1;
+      let value2 = 2;
+      chartData.setData(keys1, value1);
+      chartData.setData(keys2, value2);
+      expect(chartData.getData(keys1)).toBe(value1);
+      expect(chartData.getData(keys2)).toBe(value2);
     });
 
   });
@@ -255,7 +211,7 @@ describe('ChartData', () => {
       chartData.addDimension('type', Map({ label: 'type '}));
       let keysByDepth = createDataKeys(dimensions);
       keysByDepth[1].forEach((dataKeys) => {
-        chartData.setData(dataKeys, List());
+        chartData.setData(dataKeys, 1);
       });
       let superKeys1 = Map({ speed: 'fast' });
       let filter1 = chartData.filterData(superKeys1);
