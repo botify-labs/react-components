@@ -3,8 +3,8 @@ set -e # Any subsequent(*) commands which fail will cause the shell script to ex
 
 cd "$(dirname $0)/.."
 
-echo -e "Linting..."
-./node_modules/.bin/eslint --ext .jsx --ext .js .
+echo -e "Checking the syntax..."
+npm run lint
 
 echo "SUCCESS"
 exit 0

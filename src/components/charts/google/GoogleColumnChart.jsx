@@ -6,7 +6,7 @@ import GoogleChart from './GoogleChart';
  * Wrapper around google.visualization.ColumnChart
  * https://developers.google.com/chart/interactive/docs/gallery/columnchart
  */
-let GoogleColumnChart = React.createClass({
+const GoogleColumnChart = React.createClass({
 
   displayName: 'GoogleColumnChart',
 
@@ -21,12 +21,12 @@ let GoogleColumnChart = React.createClass({
   _getOptions() {
     return {
       legend: {
-          position: 'right',
-          alignment: 'center',
+        position: 'right',
+        alignment: 'center',
       },
       chartArea: {
-          width: '60%',
-          height: '80%',
+        width: '60%',
+        height: '80%',
       },
       fontSize: 14,
     };

@@ -12,7 +12,7 @@ import ChartDataGoogleDataAdapter from '../../../adapters/ChartDataGoogleDataAda
  *   chart: google.visualization.PieChart
  * })
  */
-let GoogleChart = React.createClass({
+const GoogleChart = React.createClass({
 
   displayName: 'GoogleChart',
 
@@ -32,23 +32,11 @@ let GoogleChart = React.createClass({
     options: React.PropTypes.object,
   },
 
-  /**
-   * Returns underlying chart's image URI representation
-   * @return {String}
-   */
-  getImageURI() {
-    return this.chart.getImageURI();
-  },
-
   componentDidMount() {
     this._initializeChart();
 
     // Redraw the chart whenever the window is resized
     window.addEventListener('resize', this._drawChart);
-  },
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this._drawChart);
   },
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -60,10 +48,8 @@ let GoogleChart = React.createClass({
     this._drawChart();
   },
 
-  render() {
-    return (
-      <div {..._.omit(this.props, 'children', 'options', 'chartData', 'chart', 'onChartMouseOut', 'onChartMouseOver')} />
-    );
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._drawChart);
   },
 
   /**
@@ -72,8 +58,8 @@ let GoogleChart = React.createClass({
    */
   _initializeChart() {
     this.adapter = new ChartDataGoogleDataAdapter(this.props.chartData);
-
-    this.chart = new this.props.googleChart(ReactDOM.findDOMNode(this));
+    const { googleChart: GoogleChartClass } = this.props;
+    this.chart = new GoogleChartClass(ReactDOM.findDOMNode(this));
 
     this._bindChartEvents();
     this._drawChart();
@@ -87,59 +73,6 @@ let GoogleChart = React.createClass({
     google.visualization.events.addListener(this.chart, 'select', this._handleChartSelect);
     google.visualization.events.addListener(this.chart, 'onmouseover', this._handleChartMouseOver);
     google.visualization.events.addListener(this.chart, 'onmouseout', this._handleChartMouseOut);
-  },
-
-  /**
-   * Called when the mouse moves over the chart
-   * Keeps track of what element the mouse is currently hovering
-   * @param {Event} e
-   */
-  _handleChartMouseMove(e) {
-    this._prevTargetID = this._targetID;
-    this._targetID = e.targetID;
-  },
-
-  /**
-   * Called when a chart data point or category is selected
-   * @param {Event} e
-   */
-  _handleChartSelect(e) {
-    if (!this.props.onChartSelect) {
-      return;
-    }
-
-    let filter = this.adapter.selectionToDataKeys(e);
-    let data = this.props.chartData.filterData(filter);
-
-    this.props.onChartSelect(data);
-  },
-
-  /**
-   * Called when the mouse enters a chart data point
-   * @param {Event} e
-   */
-  _handleChartMouseOver(e) {
-    if (!this.props.onChartMouseOver || this._targetID.indexOf('legendentry') === 0) {
-      // Don't execute mouseOver when the hovered element is the legend
-      return;
-    }
-
-    let filter = this.adapter.selectionToDataKeys(e);
-    let data = this.props.chartData.filterData(filter);
-
-    this.props.onChartMouseOver(data);
-  },
-
-  /**
-   * Called when the mouse leaves a chart data point
-   */
-  _handleChartMouseOut() {
-    if (!this.props.onChartMouseOut || this._prevTargetID.indexOf('legendentry') === 0) {
-      // Don't execute mouseOut when the previously hovered element is the legend
-      return;
-    }
-
-    this.props.onChartMouseOut();
   },
 
   /**
@@ -161,6 +94,73 @@ let GoogleChart = React.createClass({
    */
   _drawChart() {
     this.chart.draw(this.adapter.toGoogleDataArray(), this._getOptions());
+  },
+
+  /**
+   * Returns underlying chart's image URI representation
+   * @return {String}
+   */
+  getImageURI() {
+    return this.chart.getImageURI();
+  },
+
+  /**
+   * Called when the mouse moves over the chart
+   * Keeps track of what element the mouse is currently hovering
+   * @param {Event} e
+   */
+  _handleChartMouseMove(e) {
+    this._prevTargetID = this._targetID;
+    this._targetID = e.targetID;
+  },
+
+  /**
+   * Called when a chart data point or category is selected
+   * @param {Event} e
+   */
+  _handleChartSelect(e) {
+    if (!this.props.onChartSelect) {
+      return;
+    }
+
+    const filter = this.adapter.selectionToDataKeys(e);
+    const data = this.props.chartData.filterData(filter);
+
+    this.props.onChartSelect(data);
+  },
+
+  /**
+   * Called when the mouse enters a chart data point
+   * @param {Event} e
+   */
+  _handleChartMouseOver(e) {
+    if (!this.props.onChartMouseOver || this._targetID.indexOf('legendentry') === 0) {
+      // Don't execute mouseOver when the hovered element is the legend
+      return;
+    }
+
+    const filter = this.adapter.selectionToDataKeys(e);
+    const data = this.props.chartData.filterData(filter);
+
+    this.props.onChartMouseOver(data);
+  },
+
+  /**
+   * Called when the mouse leaves a chart data point
+   */
+  _handleChartMouseOut() {
+    if (!this.props.onChartMouseOut || this._prevTargetID.indexOf('legendentry') === 0) {
+      // Don't execute mouseOut when the previously hovered element is the legend
+      return;
+    }
+
+    this.props.onChartMouseOut();
+  },
+
+  render() {
+    return (
+      <div {..._.omit(this.props, 'children', 'options', 'chartData', 'chart', 'onChartMouseOut', 'onChartMouseOver')} />
+    );
   },
 
 });

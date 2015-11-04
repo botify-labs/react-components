@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-let Positioned = React.createClass({
+const Positioned = React.createClass({
 
   displayName: 'Positioned',
 
@@ -29,36 +29,25 @@ let Positioned = React.createClass({
   },
 
   componentDidMount() {
-    let node = ReactDOM.findDOMNode(this);
+    const node = ReactDOM.findDOMNode(this);
 
-    this.setState({
+    this.setState({ // eslint-disable-line react/no-did-mount-set-state
       width: node.offsetWidth,
       height: node.offsetHeight,
     });
   },
 
   componentDidUpdate(prevProps, prevState) {
-    let node = ReactDOM.findDOMNode(this);
-    let width = node.offsetWidth;
-    let height = node.offsetHeight;
+    const node = ReactDOM.findDOMNode(this);
+    const width = node.offsetWidth;
+    const height = node.offsetHeight;
 
     if (width !== prevState.width || height !== prevState.height) {
-      this.setState({
+      this.setState({ // eslint-disable-line react/no-did-update-set-state
         width: node.offsetWidth,
         height: node.offsetHeight,
       });
     }
-  },
-
-  render() {
-    let { style, children, ...otherProps } = this.props;
-    style = { ...this._getCommonStyle(), ...this._getPositionStyle(), ...style };
-
-    return (
-      <div {...otherProps} className="Positioned" style={style}>
-        {children}
-      </div>
-    );
   },
 
   _getCommonStyle() {
@@ -66,15 +55,15 @@ let Positioned = React.createClass({
   },
 
   _getPositionStyle() {
-    let { width, height } = this.state;
+    const { width, height } = this.state;
     if (width === null) {
       // The component hasn't rendered yet
       return { top: -9999, left: -9999 };
     }
 
-    let positionStyle = {};
-    let { position, margin } = this.props;
-    let containerWidth = document.body.offsetWidth;
+    const positionStyle = {};
+    const { position, margin } = this.props;
+    const containerWidth = document.body.offsetWidth;
 
     // Calculate the best position for the component so that
     //  * it won't overlay its given focus position
@@ -95,6 +84,17 @@ let Positioned = React.createClass({
     }
 
     return positionStyle;
+  },
+
+  render() {
+    const { children, style, ...otherProps } = this.props;
+    const enhancedStyle = { ...this._getCommonStyle(), ...this._getPositionStyle(), ...style };
+
+    return (
+      <div {...otherProps} className="Positioned" style={enhancedStyle}>
+        {children}
+      </div>
+    );
   },
 
 });

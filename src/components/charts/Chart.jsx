@@ -5,7 +5,7 @@ import Tooltip from '../tooltip/Tooltip';
 import TooltipTable from '../tooltip/TooltipTable';
 import ChartData from '../../models/ChartData';
 
-let Chart = React.createClass({
+const Chart = React.createClass({
 
   displayName: 'Chart',
 
@@ -21,6 +21,16 @@ let Chart = React.createClass({
 
   getImageURI() {
     return this.refs.chart.getImageURI();
+  },
+
+  _handleChartMouseOver(data) {
+    // Show the tooltip when a chart element is hovered
+    this.setState({hoveredData: data});
+  },
+
+  _handleChartMouseOut() {
+    // Hide the tooltip when a chart element stops being hovered
+    this.setState({hoveredData: null});
   },
 
   render() {
@@ -42,15 +52,15 @@ let Chart = React.createClass({
   },
 
   _renderTooltip() {
-    let data = this.state.hoveredData.entrySeq().map(([dataKeys, dataValues]) => {
-      let groups = dataKeys.entrySeq().map(([dimKey, groupKey], idx) => {
-        let dimension = this.props.chartData.getDimension(dimKey);
-        let group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
+    const data = this.state.hoveredData.entrySeq().map(([dataKeys, dataValues]) => {
+      const groups = dataKeys.entrySeq().map(([dimKey, groupKey], idx) => {
+        const dimension = this.props.chartData.getDimension(dimKey);
+        const group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
         return [dimension.get('label'), group.get('label')];
       });
 
-      let metrics = dataValues.map((value, idx) => {
-        let metric = this.props.chartData.getMetric(idx);
+      const metrics = dataValues.map((value, idx) => {
+        const metric = this.props.chartData.getMetric(idx);
         return [metric.get('label'), metric.get('render')(value)];
       });
 
@@ -62,16 +72,6 @@ let Chart = React.createClass({
         {data.toJS()}
       </Tooltip>
     );
-  },
-
-  _handleChartMouseOver(data) {
-    // Show the tooltip when a chart element is hovered
-    this.setState({hoveredData: data});
-  },
-
-  _handleChartMouseOut() {
-    // Hide the tooltip when a chart element stops being hovered
-    this.setState({hoveredData: null});
   },
 
 });

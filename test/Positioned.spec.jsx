@@ -5,7 +5,6 @@ import { render } from './utils';
 import Positioned from '../src/components/misc/Positioned';
 
 describe('Positioned', () => {
-
   it('should always be at least `margin`px from the top boundary of the page', () => {
     let rect;
     let positioned = render(
@@ -54,7 +53,7 @@ describe('Positioned', () => {
 
   it('should always be at least `margin`px from the right boundary of the page', () => {
     let rect;
-    let documentWidth = document.body.offsetWidth;
+    const documentWidth = document.body.offsetWidth;
 
     let positioned = render(
       <Positioned
@@ -76,5 +75,4 @@ describe('Positioned', () => {
     rect = ReactDOM.findDOMNode(positioned).getBoundingClientRect();
     expect(rect.right).toBe(documentWidth - 20);
   });
-
 });

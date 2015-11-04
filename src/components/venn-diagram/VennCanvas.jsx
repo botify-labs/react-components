@@ -40,7 +40,7 @@ const VennCanvas = React.createClass({
    * Recalculate the venn diagram so that it fits into the canvas
    */
   _scale() {
-    let {width, height} = ReactDOM.findDOMNode(this).getBoundingClientRect();
+    const {width, height} = ReactDOM.findDOMNode(this).getBoundingClientRect();
 
     if (width !== this.state.width || height !== this.state.height) {
       this.setState({width, height});
@@ -48,15 +48,15 @@ const VennCanvas = React.createClass({
   },
 
   render() {
-    let {vennData, onClick, onMouseOver, onMouseOut} = this.props;
-    let {width, height} = this.state;
-    let padding = 30;
+    const {vennData, onClick, onMouseOver, onMouseOut} = this.props;
+    const {width, height} = this.state;
+    const padding = 30;
 
-    let vennSets = vennData.getSets();
-    let vennIntersections = vennData.getIntersections();
+    const vennSets = vennData.getSets();
+    const vennIntersections = vennData.getIntersections();
 
     // Transform our data into a structure venn.js understands
-    let sets = vennSets
+    const sets = vennSets
       .map((set, idx) => {
         return {
           sets: [idx],
@@ -64,7 +64,7 @@ const VennCanvas = React.createClass({
         };
       })
       .toJS();
-    let intersections = vennIntersections
+    const intersections = vennIntersections
       .map(([keySets, intersection]) => {
         return {
           sets: keySets.map((set) => vennSets.indexOf(set)).toJS(),
@@ -82,7 +82,7 @@ const VennCanvas = React.createClass({
     // In order to support those cases display-wise we'd probably need to switch to a vector library more
     // powerful than standard SVG 1.1. Vector boolean operations are really hard to do in SVG 1.1, whereas
     // PaperJS has them built in.
-    let setElements = vennSets.map((set, idx) => {
+    const setElements = vennSets.map((set, idx) => {
       return {
         set: set,
         c1: circles[idx],
@@ -90,7 +90,7 @@ const VennCanvas = React.createClass({
         class: CircleDifference,
       };
     });
-    let interElements = vennIntersections.map(([keySets, intersection]) => {
+    const interElements = vennIntersections.map(([keySets, intersection]) => {
       return {
         set: intersection,
         c1: circles[vennSets.indexOf(keySets.first())],
@@ -98,7 +98,7 @@ const VennCanvas = React.createClass({
         class: CircleIntersection,
       };
     });
-    let elements = setElements.concat(interElements).map((el, idx) => {
+    const elements = setElements.concat(interElements).map((el, idx) => {
       return (
         <el.class
           key={idx}

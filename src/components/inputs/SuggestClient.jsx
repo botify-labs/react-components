@@ -11,12 +11,12 @@ const SuggestClient = React.createClass({
   displayName: 'SuggestClient',
 
   propTypes: {
-    suggestComponent: PropTypes.func.isRequired, //Component to render. either SuggestSelect or SuggestInput
+    suggestComponent: PropTypes.func.isRequired, // Component to render. either SuggestSelect or SuggestInput
     className: PropTypes.string,
     placeHolder: PropTypes.string,
     options: SuggestSelect.PropTypes.options.isRequired,
-    //(val, option, parent) => Boolean. Return true to keep.
-    filterOption: PropTypes.func, //By default filter option by their label.
+    // (val, option, parent) => Boolean. Return true to keep.
+    filterOption: PropTypes.func, // By default filter option by their label.
   },
 
   mixins: [
@@ -26,8 +26,8 @@ const SuggestClient = React.createClass({
   getDefaultProps() {
     return {
       filterOption: (val, option, parent) => {
-        val = String(val).replace(/[\\\^\$\*\+\?\.\(\)\|\{\}\[\]]/g, '\\$&'); //Escape regex special characters
-        const regex = new RegExp(val, 'i');
+        const value = String(val).replace(/[\\\^\$\*\+\?\.\(\)\|\{\}\[\]]/g, '\\$&'); // Escape regex special characters
+        const regex = new RegExp(value, 'i');
         return regex.test(option.label) || parent && regex.test(parent.label);
       },
     };
@@ -39,20 +39,16 @@ const SuggestClient = React.createClass({
     };
   },
 
-  handleFilterChange(filterValue) {
-    this.setState({ filterValue });
-  },
-
   filterOptions(filterValue) {
-    let {options, filterOption} = this.props;
-    let filteredOptions = !filterValue ? options : this._filterOptions(filterOption, filterValue, options);
+    const {options, filterOption} = this.props;
+    const filteredOptions = !filterValue ? options : this._filterOptions(filterOption, filterValue, options);
     return filteredOptions;
   },
 
   _filterOptions(filterOption, filterValue, options, parentOption) {
     return _.compact(_.map(options, option => {
-      //Keep if option not selectable or filterOption function return true.
-      let keepOption = option.isNotSelectable || filterOption(filterValue, option, parentOption);
+      // Keep if option not selectable or filterOption function return true.
+      const keepOption = option.isNotSelectable || filterOption(filterValue, option, parentOption);
       return keepOption && {
         ...option,
         options: option.isGroup ? this._filterOptions(filterOption, filterValue, option.options, option) : null,
@@ -60,9 +56,13 @@ const SuggestClient = React.createClass({
     }));
   },
 
+  handleFilterChange(filterValue) {
+    this.setState({ filterValue });
+  },
+
   render() {
-    let { suggestComponent: SuggestComponent, options, filterOption, className, ...otherProps } = this.props;
-    let filteredOptions = this.filterOptions(this.state.filterValue);
+    const { suggestComponent: SuggestComponent, options, filterOption, className, ...otherProps } = this.props;
+    const filteredOptions = this.filterOptions(this.state.filterValue);
 
     return (
       <SuggestComponent

@@ -14,30 +14,27 @@ describe('VennData', () => {
     return Map({ key: i++, size });
   }
 
-  let set1 = set(1);
-  let set2 = set(2);
-  let inter1 = set(3);
+  const set1 = set(1);
+  const set2 = set(2);
+  const inter1 = set(3);
 
   describe('addSet', () => {
-
     it('should add a set to the list of sets', () => {
       vennData.addSet(set1);
       expect(vennData.getSets().contains(set1)).toBe(true);
     });
 
     it('should validate the type of its argument', () => {
-      let fakeSet = {};
+      const fakeSet = {};
       expect(() => vennData.addSet(fakeSet)).toThrow();
     });
-
   });
 
   describe('addIntersection', () => {
-
     it('should add an intersection to the map of intersections', () => {
       vennData.addSet(set1);
       vennData.addSet(set2);
-      let sets = Set.of(set1, set2);
+      const sets = Set.of(set1, set2);
       vennData.addIntersection(sets, inter1);
       expect(vennData.intersections.has(sets)).toBe(true);
       expect(vennData.intersections.get(sets)).toBe(inter1);
@@ -45,14 +42,14 @@ describe('VennData', () => {
 
     it('should check the sets of an intersection belong to its list of sets', () => {
       vennData.addSet(set1);
-      let sets = Set.of(set1, set2);
+      const sets = Set.of(set1, set2);
       expect(() => vennData.addIntersection(sets, inter1)).toThrow();
     });
 
     it('should validate the type of its `sets` argument', () => {
       vennData.addSet(set1);
       vennData.addSet(set2);
-      let fakeSets = [set1, set2];
+      const fakeSets = [set1, set2];
       expect(() => {
         vennData.addIntersection(fakeSets, inter1);
       }).toThrow();
@@ -61,22 +58,20 @@ describe('VennData', () => {
     it('should validate the type of its `intersection` argument', () => {
       vennData.addSet(set1);
       vennData.addSet(set2);
-      let sets = Set.of(set1, set2);
-      let fakeIntersection = {};
+      const sets = Set.of(set1, set2);
+      const fakeIntersection = {};
       expect(() => vennData.addIntersection(sets, fakeIntersection)).toThrow();
     });
-
   });
 
   describe('getSizeOf()', () => {
-
-    let set100 = set(100);
-    let set200 = set(200);
-    let set300 = set(300);
-    let inter10 = set(10);
-    let inter25 = set(25);
-    let inter50 = set(50);
-    let inter100 = set(100);
+    const set100 = set(100);
+    const set200 = set(200);
+    const set300 = set(300);
+    const inter10 = set(10);
+    const inter25 = set(25);
+    const inter50 = set(50);
+    const inter100 = set(100);
 
     it('should return the correct size of inclusive sets and intersection', () => {
       vennData.addSet(set100);
@@ -139,16 +134,12 @@ describe('VennData', () => {
       expect(vennData.getSizeOf(set200, false)).toBe(85);
       expect(vennData.getSizeOf(set300, false)).toBe(160);
     });
-
   });
 
   describe('_testSet', () => {
-
     it('should throw if the `set` argument does not match the structure of a set', () => {
-      let fakeSet = { size: 100 };
+      const fakeSet = { size: 100 };
       expect(() => vennData._testSet(fakeSet)).toThrow();
     });
-
   });
-
 });

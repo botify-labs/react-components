@@ -9,9 +9,9 @@ import VennData from '../src/models/VennData';
 import Immutable from 'immutable';
 import Color from 'color';
 
-let COLORS = {}; //#lol
+const COLORS = {}; // #lol
 
-let chartData = new ChartData();
+const chartData = new ChartData();
 
 chartData.addMetric(Immutable.Map({
   label: 'Count',
@@ -38,43 +38,43 @@ chartData.addDimensionGroup('content_type', 'javascript', Immutable.Map({color: 
 chartData.addDimensionGroup('content_type', 'not_set', Immutable.Map({label: 'Not Set', color: COLORS.VERY_BAD}));
 
 chartData.setData(Immutable.Map({
-  'delay': 'fast',
-  'content_type': 'text_html',
+  delay: 'fast',
+  content_type: 'text_html',
 }), Immutable.List([1]));
 chartData.setData(Immutable.Map({
-  'delay': 'medium',
-  'content_type': 'text_html',
+  delay: 'medium',
+  content_type: 'text_html',
 }), Immutable.List([3]));
 chartData.setData(Immutable.Map({
-  'delay': 'medium',
-  'content_type': 'text_css',
+  delay: 'medium',
+  content_type: 'text_css',
 }), Immutable.List([4]));
 chartData.setData(Immutable.Map({
-  'delay': 'slowest',
-  'content_type': 'javascript',
+  delay: 'slowest',
+  content_type: 'javascript',
 }), Immutable.List([4]));
 
-let newUrls = 100;
-let disappearedUrls = 50;
-let allUrls = 150;
+const newUrls = 100;
+const disappearedUrls = 50;
+const allUrls = 150;
 
-let currentUrls = allUrls;
-let previousUrls = disappearedUrls + (allUrls - newUrls);
-let commonUrls = allUrls - newUrls;
+const currentUrls = allUrls;
+const previousUrls = disappearedUrls + (allUrls - newUrls);
+const commonUrls = allUrls - newUrls;
 
-let vennData = new VennData();
+const vennData = new VennData();
 
-let c1 = Color('#80bbe7');
-let c2 = Color('#ffbf85');
-let c3 = c1.clone().mix(c2, 0.5).negate();
+const c1 = Color('#80bbe7');
+const c2 = Color('#ffbf85');
+const c3 = c1.clone().mix(c2, 0.5).negate();
 
-let set1 = Immutable.Map({
+const set1 = Immutable.Map({
   size: currentUrls,
   color: c1.rgbString(),
   label: 'New URLs',
 });
 
-let set2 = Immutable.Map({
+const set2 = Immutable.Map({
   size: previousUrls,
   color: c2.rgbString(),
   label: 'Disappeared URLs',
@@ -83,7 +83,7 @@ let set2 = Immutable.Map({
 vennData.addSet(set1);
 vennData.addSet(set2);
 
-let set3 = Immutable.Map({
+const set3 = Immutable.Map({
   size: commonUrls,
   color: c3.rgbString(),
   label: 'Common URLs',
@@ -91,7 +91,7 @@ let set3 = Immutable.Map({
 
 vennData.addIntersection(Immutable.Set.of(set1, set2), set3);
 
-let ChartRenderer = React.createClass({
+const ChartRenderer = React.createClass({
 
   displayName: 'ChartRenderer',
 
@@ -100,7 +100,7 @@ let ChartRenderer = React.createClass({
   },
 
   render() {
-    let style = {
+    const style = {
       width: 1000,
       height: 500,
     };
@@ -114,20 +114,9 @@ let ChartRenderer = React.createClass({
 
 });
 
-let SpecificPanelController = React.createClass({
+const SpecificPanelController = React.createClass({
 
   displayName: 'SpecificPanelController',
-
-  render() {
-    return (
-      <Panel
-        title="Hello world"
-        defaultDisplayModeId="vennDiagram"
-        displayModes={this._getDisplayModes()}
-        actions={this._getActions()}
-      />
-    );
-  },
 
   _getDisplayModes() {
     return [
@@ -159,6 +148,41 @@ let SpecificPanelController = React.createClass({
     ];
   },
 
+  _exportChart() {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
+    const style = {
+      width: 1000,
+      height: 500,
+    };
+
+    const chart = React.render(
+      <ChartRenderer
+        style={style}
+        getImageURI={() => this.refs.chart.getImageURI()}
+      >
+        {this._renderChart()}
+      </ChartRenderer>
+    , div);
+
+    const imageURI = chart.getImageURI();
+    window.open(imageURI);
+
+    document.body.removeChild(div);
+  },
+
+  render() {
+    return (
+      <Panel
+        title="Hello world"
+        defaultDisplayModeId="vennDiagram"
+        displayModes={this._getDisplayModes()}
+        actions={this._getActions()}
+      />
+    );
+  },
+
   _renderChart() {
     return (
       <Chart
@@ -171,7 +195,7 @@ let SpecificPanelController = React.createClass({
   },
 
   _renderVennDiagram() {
-    let onClick = () => {
+    const onClick = () => {
       console.log('hello'); // eslint-disable-line
     };
     return (
@@ -191,30 +215,6 @@ let SpecificPanelController = React.createClass({
         chartData={chartData}
       />
     );
-  },
-
-  _exportChart() {
-    let div = document.createElement('div');
-    document.body.appendChild(div);
-
-    let style = {
-      width: 1000,
-      height: 500,
-    };
-
-    let chart = React.render(
-      <ChartRenderer
-        style={style}
-        getImageURI={() => this.refs.chart.getImageURI()}
-      >
-        {this._renderChart()}
-      </ChartRenderer>
-    , div);
-
-    let imageURI = chart.getImageURI();
-    window.open(imageURI);
-
-    document.body.removeChild(div);
   },
 
 });

@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import Positioned from './Positioned';
 import Append from './Append';
 
-let FollowCursor = React.createClass({
+const FollowCursor = React.createClass({
 
   displayName: 'FollowCursor',
 
@@ -21,8 +21,19 @@ let FollowCursor = React.createClass({
     };
   },
 
+  _handleMouseMove(e) {
+    // Keep track of the mouse position so that we can have the tooltip
+    // follow the cursor
+    this.setState({
+      mousePosition: {
+        top: e.pageY,
+        left: e.pageX,
+      },
+    });
+  },
+
   render() {
-    let { hasOverlay, renderOverlay, children, style, appendTo, ...otherProps } = this.props;
+    const { hasOverlay, renderOverlay, children, style, appendTo, ...otherProps } = this.props;
 
     let overlay;
     if (hasOverlay) {
@@ -45,17 +56,6 @@ let FollowCursor = React.createClass({
         {children}
       </div>
     );
-  },
-
-  _handleMouseMove(e) {
-    // Keep track of the mouse position so that we can have the tooltip
-    // follow the cursor
-    this.setState({
-      mousePosition: {
-        top: e.pageY,
-        left: e.pageX,
-      },
-    });
   },
 
 });

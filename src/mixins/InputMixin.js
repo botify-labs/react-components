@@ -24,7 +24,7 @@ export default function InputMixin(valueValidator) {
      * @param  {Any} commands Update commands, see https://facebook.github.io/react/docs/update.html
      */
     requestChange(commands) {
-      let { requestChange, value } = this.props.valueLink;
+      const { requestChange, value } = this.props.valueLink;
       requestChange(update(value, commands));
     },
 

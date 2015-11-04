@@ -17,7 +17,7 @@ const StringInput = React.createClass({
   ],
 
   render() {
-    let { className, ...otherProps } = this.props;
+    const { className, ...otherProps } = this.props;
 
     return (
       <input

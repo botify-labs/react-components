@@ -11,7 +11,7 @@ const Tooltip = React.createClass({
   },
 
   render() {
-    let { className, children, ...otherProps } = this.props;
+    const { className, children, ...otherProps } = this.props;
 
     return (
       <div {...otherProps} className={classNames('Tooltip', className)}>

@@ -39,9 +39,17 @@ const VennDiagram = React.createClass({
     };
   },
 
+  _handleMouseOver(thing) {
+    this.setState({activeSet: thing});
+  },
+
+  _handleMouseOut(thing) {
+    this.setState({activeSet: null});
+  },
+
   render() {
-    let {vennData, inclusive, onClick, ...otherProps} = this.props;
-    let {activeSet} = this.state;
+    const {vennData, inclusive, onClick, ...otherProps} = this.props;
+    const {activeSet} = this.state;
     return (
       <FollowCursor
         hasOverlay={!!activeSet}
@@ -68,17 +76,9 @@ const VennDiagram = React.createClass({
     );
   },
 
-  _handleMouseOver(thing) {
-    this.setState({activeSet: thing});
-  },
-
-  _handleMouseOut(thing) {
-    this.setState({activeSet: null});
-  },
-
   _renderTooltip() {
-    let {setLabel, sizeLabel, formatSize, vennData, inclusive} = this.props;
-    let {activeSet} = this.state;
+    const {setLabel, sizeLabel, formatSize, vennData, inclusive} = this.props;
+    const {activeSet} = this.state;
     return (
       <Tooltip className="VennChart-tooltip">
         <TooltipTable

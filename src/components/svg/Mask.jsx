@@ -5,8 +5,6 @@ const Mask = React.createClass({
 
   displayName: 'Mask',
 
-  mixins: [UniqueIdMixin],
-
   propTypes: {
     // Shape used to clip the Mask's children
     mask: PropTypes.node,
@@ -14,8 +12,10 @@ const Mask = React.createClass({
     children: PropTypes.node,
   },
 
+  mixins: [UniqueIdMixin],
+
   render() {
-    let { mask, children, style, ...otherProps } = this.props;
+    const { mask, children, style, ...otherProps } = this.props;
 
     return (
       <g>

@@ -4,7 +4,7 @@ import React from 'react';
  * Renders a 2xN table from its props
  * Primary purpose is to represent chart data in tooltips
  */
-let TooltipTable = React.createClass({
+const TooltipTable = React.createClass({
 
   displayName: 'TooltipTable',
 
@@ -13,19 +13,6 @@ let TooltipTable = React.createClass({
     // Their format is the same, they only differ in style.
     groups: React.PropTypes.arrayOf(React.PropTypes.array), // [[label, value], ...]
     metrics: React.PropTypes.arrayOf(React.PropTypes.array),
-  },
-
-  _renderRow(row, idx) {
-    return (
-      <tr key={idx} className="TooltipTable-cell">
-        <td className="TooltipTable-cell-label">
-          {row[0]}
-        </td>
-        <td className="TooltipTable-cell-value">
-          {row[1]}
-        </td>
-      </tr>
-    );
   },
 
   render() {
@@ -40,6 +27,19 @@ let TooltipTable = React.createClass({
           </tbody>
         </table>
       </div>
+    );
+  },
+
+  _renderRow(row, idx) {
+    return (
+      <tr key={idx} className="TooltipTable-cell">
+        <td className="TooltipTable-cell-label">
+          {row[0]}
+        </td>
+        <td className="TooltipTable-cell-value">
+          {row[1]}
+        </td>
+      </tr>
     );
   },
 

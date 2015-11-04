@@ -5,7 +5,7 @@ import FollowCursor from '../misc/FollowCursor';
 import Tooltip from '../tooltip/Tooltip';
 import TooltipTable from '../tooltip/TooltipTable';
 
-let stackPropType = PropTypes.shape({
+const stackPropType = PropTypes.shape({
   value: PropTypes.number.isRequired,
   label: PropTypes.string,
   color: PropTypes.string,
@@ -58,21 +58,9 @@ const HorizontalGauge = React.createClass({
     });
   },
 
-  _renderTooltip() {
-    let { stacks, all, formatAllValue, formatStackValue } = this.props;
-    return (
-      <Tooltip className="HorizontalGauge-tooltip">
-        <TooltipTable
-          groups={[[all.label, formatAllValue(all.value)]]}
-          metrics={stacks.map((stack) => [stack.label, formatStackValue(stack.value)])}
-        />
-      </Tooltip>
-    );
-  },
-
   render() {
-    let { stacks, all, style, renderTooltip, className, ...otherProps } = this.props;
-    let { hasTooltip } = this.state;
+    const { stacks, all, style, renderTooltip, className, ...otherProps } = this.props;
+    const { hasTooltip } = this.state;
 
     return (
       <FollowCursor
@@ -110,7 +98,18 @@ const HorizontalGauge = React.createClass({
         </div>
       </FollowCursor>
     );
+  },
 
+  _renderTooltip() {
+    const { stacks, all, formatAllValue, formatStackValue } = this.props;
+    return (
+      <Tooltip className="HorizontalGauge-tooltip">
+        <TooltipTable
+          groups={[[all.label, formatAllValue(all.value)]]}
+          metrics={stacks.map((stack) => [stack.label, formatStackValue(stack.value)])}
+        />
+      </Tooltip>
+    );
   },
 
 });

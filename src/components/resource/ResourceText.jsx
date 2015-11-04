@@ -19,7 +19,7 @@ const ResourceText = React.createClass({
   },
 
   render() {
-    let {className, resourceText, ...otherProps} = this.props;
+    const {className, resourceText, ...otherProps} = this.props;
     return (
       <div className={classNames(className, 'ResourceText')} {...otherProps}>
 

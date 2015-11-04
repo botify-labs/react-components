@@ -8,7 +8,7 @@ import ChartData from '../models/ChartData';
 import 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css';
 import 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js';
 
-let Table = React.createClass({
+const Table = React.createClass({
 
   displayName: 'Table',
 
@@ -41,31 +41,22 @@ let Table = React.createClass({
     },
   },
 
-  exportTable() {
-  },
-
   componentDidMount() {
     $(ReactDOM.findDOMNode(this)).dataTable(this._getOptions());
   },
 
-  render() {
-    return (
-      <div className="Table">
-        <table ref="table" className="table table-striped table-bordered dataTable no-footer">
-        </table>
-      </div>
-    );
+  exportTable() {
   },
 
   _getData() {
     return this.props.chartData.rawData.entrySeq().map(([dataKeys, dataValues]) => {
-      let groups = dataKeys.entrySeq().map(([dimKey, groupKey]) => {
-        let group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
+      const groups = dataKeys.entrySeq().map(([dimKey, groupKey]) => {
+        const group = this.props.chartData.getDimensionGroup(dimKey, groupKey);
         return group.get('label');
       });
 
-      let metrics = dataValues.map((value, index) => {
-        let metric = this.props.chartData.getMetric(index);
+      const metrics = dataValues.map((value, index) => {
+        const metric = this.props.chartData.getMetric(index);
         return metric.get('render')(value);
       });
 
@@ -74,13 +65,13 @@ let Table = React.createClass({
   },
 
   _getColumns() {
-    let dimensions = this.props.chartData.dimensions.entrySeq().map(([dimensionKey, dimensionMetadata]) => {
+    const dimensions = this.props.chartData.dimensions.entrySeq().map(([dimensionKey, dimensionMetadata]) => {
       return {
         title: dimensionMetadata.get('label'),
       };
     });
 
-    let metrics = this.props.chartData.metrics.map((metric) => {
+    const metrics = this.props.chartData.metrics.map((metric) => {
       return {
         title: metric.get('label'),
       };
@@ -100,6 +91,15 @@ let Table = React.createClass({
         this.forceUpdate();
       },
     };
+  },
+
+  render() {
+    return (
+      <div className="Table">
+        <table ref="table" className="table table-striped table-bordered dataTable no-footer">
+        </table>
+      </div>
+    );
   },
 
 });

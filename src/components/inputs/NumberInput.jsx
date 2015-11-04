@@ -8,6 +8,10 @@ const NumberInput = React.createClass({
 
   displayName: 'NumberInput',
 
+  propTypes: {
+    className: PropTypes.string,
+  },
+
   mixins: [
     InputMixin(PropTypes.number),
   ],
@@ -16,10 +20,6 @@ const NumberInput = React.createClass({
     return {
       trailingPoint: false,
     };
-  },
-
-  propTypes: {
-    className: PropTypes.string,
   },
 
   handleChange(value) {

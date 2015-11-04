@@ -28,19 +28,19 @@ const InputValidator = (Input, validator) => React.createClass({
     ...cloneStatics(Input),
     __isInputValidator: true,
     getDefaultValue() {
-      let defaultValue = getDefaultValue(Input);
+      const defaultValue = getDefaultValue(Input);
       return { isValid: validator(defaultValue), inputValue: defaultValue };
     },
   },
 
   _handleChange(v) {
-    let isValid = validator(v);
+    const isValid = validator(v);
     this.requestChange({ $set: { inputValue: v, isValid } });
   },
 
   render() {
-    let otherProps = _.omit(this.props, 'valueLink');
-    let { isValid, inputValue } = this.getValue();
+    const otherProps = _.omit(this.props, 'valueLink');
+    const { isValid, inputValue } = this.getValue();
 
     return (
       <div className={classNames('InputValidator', `InputValidator--${isValid ? 'valid' : 'invalid'}`)}>
@@ -54,7 +54,7 @@ const InputValidator = (Input, validator) => React.createClass({
 
 });
 
-InputValidator.isInputValidator = function(type) {
+InputValidator.isInputValidator = (type) => {
   return type.__isInputValidator;
 };
 

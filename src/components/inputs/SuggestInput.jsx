@@ -31,7 +31,7 @@ const DefaultOption = React.createClass({
   },
 
   render() {
-    let {
+    const {
       option: {id},
       ...otherProps,
     } = this.props;
@@ -49,10 +49,6 @@ const SuggestInput = React.createClass({
 
   displayName: 'SuggestInput',
 
-  mixins: [
-    InputMixin(optionIdPropType),
-  ],
-
   propTypes: {
     className: PropTypes.string,
     input: PropTypes.func,
@@ -62,7 +58,11 @@ const SuggestInput = React.createClass({
     onFilterChange: PropTypes.func,
   },
 
-  //Life Cycle methods
+  mixins: [
+    InputMixin(optionIdPropType),
+  ],
+
+  // Life Cycle methods
 
   getDefaultProps() {
     return {
@@ -80,7 +80,7 @@ const SuggestInput = React.createClass({
     };
   },
 
-  //Prop Helpers: isFocused
+  // Prop Helpers: isFocused
   focus() {
     this.setState({isFocused: true});
     this.openList();
@@ -91,7 +91,7 @@ const SuggestInput = React.createClass({
     this.closeList();
   },
 
-  //Prop Helpers: isListOpen
+  // Prop Helpers: isListOpen
   openList() {
     this.setState({isListOpen: true});
   },
@@ -113,6 +113,7 @@ const SuggestInput = React.createClass({
     case KEY_CODES.TAB:
       this.blur();
       break;
+    default: break;
     }
   },
 
@@ -187,8 +188,8 @@ const SuggestInput = React.createClass({
    * @return {ReactClass}
    */
   renderOption(option) {
-    let { optionRender: OptionRender } = this.props;
-    let { filterValue } = this.state;
+    const { optionRender: OptionRender } = this.props;
+    const { filterValue } = this.state;
 
     return (
       <OptionRender

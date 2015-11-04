@@ -28,7 +28,7 @@ import { isNumber } from 'lodash';
  * @property {Map<DataKeys, Number>}    rawData
  * @property {OrderMap<Any, Dimension>} dimensions
  */
-class ChartData{
+class ChartData {
 
   constructor() {
     this.rawData = Map();
@@ -43,10 +43,10 @@ class ChartData{
     this._testDataKeys(keys);
     this._testDataValue(value);
 
-    //Add data
+    // Add data
     this.rawData = this.rawData.set(keys, value);
 
-    //Add dimensions or/and groups if not exist
+    // Add dimensions or/and groups if not exist
     keys.forEach((groupKey, dimKey) => {
       if (!this.hasDimensionGroup(dimKey, groupKey)) {
         this.addDimensionGroup(dimKey, groupKey);
@@ -93,14 +93,14 @@ class ChartData{
     if (!Map.isMap(dimMetadata)) {
       throw new TypeError('dimMetadata is not a Map');
     }
-    let dimensionValue = dimMetadata.set('groups', OrderedMap());
+    const dimensionValue = dimMetadata.set('groups', OrderedMap());
 
     this.dimensions = this.dimensions.set(dimKey, dimensionValue);
   }
 
   getDimensionKeyByIndex(index, fromEnd) {
-    index = fromEnd ? (this.dimensions.count() - 1) - index : index;
-    return this.dimensions.keySeq().get(index);
+    const i = fromEnd ? (this.dimensions.count() - 1) - index : index;
+    return this.dimensions.keySeq().get(i);
   }
 
   /**

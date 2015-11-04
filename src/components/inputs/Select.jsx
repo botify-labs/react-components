@@ -24,10 +24,6 @@ const Select = React.createClass({
 
   displayName: 'Select',
 
-  mixins: [
-    InputMixin(PropTypes.string),
-  ],
-
   propTypes: {
     className: PropTypes.string,
     // List of select options `{ id, label }` or `{ isGroup, id, label, options }` in the case of an option group
@@ -36,6 +32,10 @@ const Select = React.createClass({
     // by default. Once another option is selected, it will disappear.
     nullLabel: PropTypes.string,
   },
+
+  mixins: [
+    InputMixin(PropTypes.string),
+  ],
 
   statics: {
     /**
@@ -47,7 +47,7 @@ const Select = React.createClass({
     getOption(options, optionId) {
       let found;
       for (let i = 0; i < options.length; i++) {
-        let option = options[i];
+        const option = options[i];
         // Option groups are identified by an `isGroup` property set to `true`
         if (option.isGroup) {
           found = Select.getOption(option.options, optionId);
@@ -67,17 +67,9 @@ const Select = React.createClass({
     this.requestChange({ $set: newValue });
   },
 
-  _renderOption(option) {
-    return (
-      <option key={option.id} value={option.id}>
-        {option.label}
-      </option>
-    );
-  },
-
   render() {
-    let { options, className, nullLabel, ...otherProps } = this.props;
-    let selectedOptionId = this.getValue();
+    const { options, className, nullLabel, ...otherProps } = this.props;
+    const selectedOptionId = this.getValue();
 
     return (
       <select
@@ -99,6 +91,14 @@ const Select = React.createClass({
           return this._renderOption(option);
         })}
       </select>
+    );
+  },
+
+  _renderOption(option) {
+    return (
+      <option key={option.id} value={option.id}>
+        {option.label}
+      </option>
     );
   },
 
