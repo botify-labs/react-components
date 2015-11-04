@@ -21,7 +21,7 @@ describe('FollowCursor', () => {
   it('should render its Positioned when `hasOverlay` prop is true', () => {
     const followCursor = render(
       <FollowCursor
-        hasOverlay={true}
+        hasOverlay
         renderOverlay={() => null}
       />
     );
@@ -32,7 +32,7 @@ describe('FollowCursor', () => {
   it('should pass mouse position to the rendered Tooltip', () => {
     const followCursor = render(
       <FollowCursor
-        hasOverlay={true}
+        hasOverlay
         renderOverlay={() => null}
       />
     );
