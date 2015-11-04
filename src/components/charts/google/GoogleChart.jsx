@@ -147,11 +147,13 @@ let GoogleChart = React.createClass({
    * @return {Object}
    */
   _getOptions() {
-    return _.assign({}, this.props.options, {
+    return {
       tooltip: {
         trigger: 'none',
       },
-    });
+      ...this.adapter.toGoogleOptions(),
+      ...this.props.options,
+    };
   },
 
   /**

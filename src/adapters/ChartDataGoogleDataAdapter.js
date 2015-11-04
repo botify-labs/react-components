@@ -46,26 +46,16 @@ class ChartDataGoogleDataAdapter{
     return google.visualization.arrayToDataTable(googleDataArray.toJS());
   }
 
-  toGoogleOptions(percentage) {
-    /*let googleOptions = this.chartData.options.merge(Map(  //DEFAULT OPTIONS TO BE PUT IN CHART COMPONENT
-      {
-        series: {},
-        vAxis: {
-            format: percentage ? '#,###.#%' : '#,###.#',
-        },
-        hAxis: {
-            format: percentage ? '#,###.#%' : '#,###.#',
-        },
-        tooltip: {
-            trigger: "none"
-        }
-      }
-    ));*/
-    let googleOptions = Map();
+  toGoogleOptions() {
+    let googleOptions = {
+      series: [],
+    };
 
-    googleOptions.set('series', this._getSeries().get('groups').map((group, key) => {
-      return Map({color: group.get('color')});
-    }).toList());
+    this._getSeries().get('groups').toList().forEach((group, key) => {
+      googleOptions.series[key] = {
+        color: group.get('color'),
+      };
+    });
 
     return googleOptions;
   }
