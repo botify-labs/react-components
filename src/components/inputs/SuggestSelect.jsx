@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 import update from 'react-addons-update';
 import _ from 'lodash';
 import cx from 'classnames';
