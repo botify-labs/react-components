@@ -104,7 +104,7 @@ class ChartDataGoogleDataAdapter{
 
       googleValuesArray = googleValuesArray.setIn(
         [xIndex, yIndex],
-        value.get(0) + googleValuesArray.getIn([xIndex, yIndex])  //Add to existing value
+        value + googleValuesArray.getIn([xIndex, yIndex])  //Add to existing value
       );
     });
     return googleValuesArray;
