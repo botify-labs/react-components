@@ -103,6 +103,10 @@ class ChartData {
     return this.dimensions.keySeq().get(i);
   }
 
+  getDimensionByIndex(index, fromEnd) {
+    return this.getDimension(this.getDimensionKeyByIndex(index, fromEnd));
+  }
+
   /**
    * @param {Any} dimKey
    * @return {Dimension}

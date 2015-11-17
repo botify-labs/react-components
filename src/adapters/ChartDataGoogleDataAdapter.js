@@ -65,14 +65,16 @@ class ChartDataGoogleDataAdapter {
    * @param  {Object} Object {row, column}
    * @return {DataKeys}
    */
-  selectionToDataKeys({row, column}) {
+  selectionToDataKeys({row, column}, {filterCategories = true, filterSeries = true}) {
     let filter = Map();
 
     // Series are indexed starting from 1, while categories are indexed starting from 0
-    const series = this._getSeries();
-    const serieKey = series.get('groups').keySeq().get(column - 1);
-    filter = filter.set(series.get('key'), serieKey);
-    if (row !== null) {
+    if (filterSeries) {
+      const series = this._getSeries();
+      const serieKey = series.get('groups').keySeq().get(column - 1);
+      filter = filter.set(series.get('key'), serieKey);
+    }
+    if (filterCategories && row !== null) {
       const categories = this._getCategories();
       const categoryKey = categories.get('groups').keySeq().get(row);
       filter = filter.set(categories.get('key'), categoryKey);
