@@ -16,13 +16,13 @@ const GoogleChartBase = React.createClass({
   propTypes: {
     // Called when chart data is selected
     onChartSelect: PropTypes.func,
-    onChartMouseEnterPart: PropTypes.func,
-    onChartMouseLeavePart: PropTypes.func,
+    onChartMouseOver: PropTypes.func,
+    onChartMouseOut: PropTypes.func,
     // Subclass of google.visualization.CoreChart
     googleChart: PropTypes.func,
     // Chart data
     chartData: PropTypes.instanceOf(ChartData).isRequired,
-    //Extended google chart options
+    // Extended google chart options
     options: PropTypes.shape({
       tooltip: PropTypes.shape({
         showWholeCategory: PropTypes.bool,
@@ -156,7 +156,6 @@ const GoogleChartBase = React.createClass({
 });
 
 
-
 const computeTooltipDataPoint = (hoverPart, chartData) => {
   const serieLabel = chartData.getDimensionByIndex(0).get('label');
   const serieValue = hoverPart.keySeq().get(0).valueSeq().get(0);
@@ -170,7 +169,7 @@ const computeTooltipDataPoint = (hoverPart, chartData) => {
   const metrics = [[ 'Total', hoverPart.valueSeq().get(0) ]];
 
   return { groups, metrics };
-}
+};
 
 const computeTooltipDataCategory = (hoverPart, chartData) => {
   const categoryLabel = chartData.getDimensionByIndex(1).get('label');
@@ -183,7 +182,7 @@ const computeTooltipDataCategory = (hoverPart, chartData) => {
     .toArray();
 
   return { groups, metrics };
-}
+};
 
 const DEFAULT_TOOLTIP = (hoverPart, chartData, options) => {
   const computeData = options.tooltip && options.tooltip.showWholeCategory ? computeTooltipDataCategory
@@ -217,7 +216,6 @@ export default class GoogleChart extends React.Component {
   }
 
   handleChartPartEnter(data) {
-    console.log('boo');
     this.setState({
       hoverPart: data,
     });
