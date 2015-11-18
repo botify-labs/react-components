@@ -157,6 +157,7 @@ const GoogleChartBase = React.createClass({
 
 
 const computeTooltipDataPoint = (hoverPart, chartData) => {
+  const serieRender = chartData.getDimensionByIndex(0).get('render');
   const serieLabel = chartData.getDimensionByIndex(0).get('label');
   const serieValue = hoverPart.keySeq().get(0).valueSeq().get(0);
   const categoryLabel = chartData.getDimensionByIndex(1).get('label');
@@ -166,18 +167,19 @@ const computeTooltipDataPoint = (hoverPart, chartData) => {
     [ categoryLabel, categoryValue ],
     [ serieLabel, serieValue ],
   ];
-  const metrics = [[ 'Total', hoverPart.valueSeq().get(0) ]];
+  const metrics = [[ 'Total', serieRender(hoverPart.valueSeq().get(0)) ]];
 
   return { groups, metrics };
 };
 
 const computeTooltipDataCategory = (hoverPart, chartData) => {
+  const serieRender = chartData.getDimensionByIndex(0).get('render');
   const categoryLabel = chartData.getDimensionByIndex(1).get('label');
   const categoryValue = hoverPart.keySeq().get(0).valueSeq().get(1);
 
   const groups = [[ categoryLabel, categoryValue ]];
   const metrics = hoverPart
-    .mapKeys(key => key.valueSeq().get(0))
+    .mapEntries(([key, value]) => [key.valueSeq().get(0), serieRender(value)])
     .entrySeq()
     .toArray();
 
