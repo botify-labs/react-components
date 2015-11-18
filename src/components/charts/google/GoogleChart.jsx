@@ -34,7 +34,7 @@ const GoogleChartBase = React.createClass({
     this.initializeChart();
 
     // Redraw the chart whenever the window is resized
-    window.addEventListener('resize', this._drawChart);
+    window.addEventListener('resize', this.drawChart);
   },
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -47,7 +47,7 @@ const GoogleChartBase = React.createClass({
   },
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this._drawChart);
+    window.removeEventListener('resize', this.drawChart);
   },
 
   /**
