@@ -37,7 +37,7 @@ class ChartDataGoogleDataAdapter {
     // categories C3  X  ValuesArray X
     //            C4  X              X
     //            C5  X  X  X  X  X  X
-    const googleDataArray = List();
+    let googleDataArray = List();
     googleDataArray = googleDataArray.push(seriesLabels.unshift(''));
     categoriesLabels.forEach((label, i) => {
       googleDataArray = googleDataArray.push(valuesArray.get(i).unshift(label));
