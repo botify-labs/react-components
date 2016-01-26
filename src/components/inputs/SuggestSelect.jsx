@@ -292,9 +292,19 @@ const SuggestSelect = React.createClass({
 
   // Elements Listeners
   onInputContainerClick(e) {
-    this.focus();
-    // Open the list as list might be already open.
-    this.openList();
+    const { isListOpen, isFocused } = this.state;
+
+    if (isFocused) {
+      this.blur();
+    } else {
+      this.focus();
+    }
+
+    if (isListOpen) {
+      this.closeList();
+    } else {
+      this.openList();
+    }
   },
 
   handleMouseDown(e) {
@@ -314,7 +324,7 @@ const SuggestSelect = React.createClass({
   },
 
   onFilterInputFocus(e) {
-    const {isListOpen, isFocused} = this.state;
+    const { isListOpen, isFocused } = this.state;
 
     if (!isFocused) {
       this.focus();
