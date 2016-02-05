@@ -17,6 +17,7 @@ const SuggestClient = React.createClass({
     options: SuggestSelect.PropTypes.options.isRequired,
     // (val, option, parent) => Boolean. Return true to keep.
     filterOption: PropTypes.func, // By default filter option by their label.
+    defaultListOpen: PropTypes.bool,
   },
 
   mixins: [
@@ -61,7 +62,7 @@ const SuggestClient = React.createClass({
   },
 
   render() {
-    const { suggestComponent: SuggestComponent, options, filterOption, className, ...otherProps } = this.props;
+    const { suggestComponent: SuggestComponent, defaultListOpen, options, filterOption, className, ...otherProps } = this.props;
     const filteredOptions = this.filterOptions(this.state.filterValue);
 
     return (
@@ -69,6 +70,7 @@ const SuggestClient = React.createClass({
         className={cx('SuggestClient', className)}
         options={filteredOptions}
         onFilterChange={this.handleFilterChange}
+        defaultListOpen={defaultListOpen}
         { ...otherProps }
       />
     );
