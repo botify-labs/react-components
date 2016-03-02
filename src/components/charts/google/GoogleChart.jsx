@@ -184,6 +184,13 @@ const computeTooltipDataSeries = ({ serieData }, chartData, options) => {
     .entrySeq()
     .toArray();
 
+  if (options.tooltip.displaySeriesTotal) {
+    const total = serieData.reduce((sum, value) => sum + value, 0);
+    metrics.push(
+      [ 'Total', total ]
+    );
+  }
+
   return { groups, metrics };
 };
 
@@ -207,7 +214,8 @@ export default class GoogleChart extends React.Component {
     tooltip: PropTypes.func,
     options: PropTypes.shape({
       tooltip: PropTypes.shape({
-        displayAllSeries: PropTypes.bool, // Display every points of the serie
+        displayAllSeries: PropTypes.bool,
+        displaySeriesTotal: PropTypes.bool,
       }),
     }),
   }
