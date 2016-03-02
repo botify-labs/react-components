@@ -173,7 +173,7 @@ const computeTooltipDataPoint = ({ pointData }, chartData, options) => {
   return { groups, metrics };
 };
 
-const computeTooltipDataCategory = ({ serieData }, chartData, options) => {
+const computeTooltipDataSeries = ({ serieData }, chartData, options) => {
   const serieRender = chartData.getDimensionByIndex(0).get('render');
   const categoryLabel = chartData.getDimensionByIndex(1).get('label');
   const categoryValue = serieData.keySeq().get(0).valueSeq().get(1);
@@ -188,7 +188,7 @@ const computeTooltipDataCategory = ({ serieData }, chartData, options) => {
 };
 
 const DEFAULT_TOOLTIP = (hoverPart, chartData, options) => {
-  const computeData = options.tooltip && options.tooltip.showEverySeriePoints ? computeTooltipDataCategory
+  const computeData = options.tooltip && options.tooltip.displayAllSeries ? computeTooltipDataSeries
                     : computeTooltipDataPoint;
   return (
     <TooltipTable
@@ -207,7 +207,7 @@ export default class GoogleChart extends React.Component {
     tooltip: PropTypes.func,
     options: PropTypes.shape({
       tooltip: PropTypes.shape({
-        showEverySeriePoints: PropTypes.bool, // Display every points of the serie
+        displayAllSeries: PropTypes.bool, // Display every points of the serie
       }),
     }),
   }
