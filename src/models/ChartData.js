@@ -142,7 +142,10 @@ class ChartData {
     if (!Map.isMap(groupMetadata)) {
       throw new TypeError('groupMetadata is not a Map');
     }
-    this.dimensions = this.dimensions.setIn([dimKey, 'groups', groupKey], groupMetadata);
+    const metadata = groupMetadata
+      .set('label', groupMetadata.get('label') || groupKey);
+
+    this.dimensions = this.dimensions.setIn([dimKey, 'groups', groupKey], metadata);
   }
 
   /**
