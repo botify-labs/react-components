@@ -23,11 +23,7 @@ const GoogleChartBase = React.createClass({
     // Chart data
     chartData: PropTypes.instanceOf(ChartData).isRequired,
     // Extended google chart options
-    options: PropTypes.shape({
-      tooltip: PropTypes.shape({
-        showWholeCategory: PropTypes.bool,
-      }),
-    }),
+    options: PropTypes.object,
   },
 
   componentDidMount() {
@@ -121,18 +117,23 @@ const GoogleChartBase = React.createClass({
    * @param {Event} e
    */
   handleChartMouseOver(e) {
-    const { onChartMouseOver, options: { tooltip }} = this.props;
+    const { onChartMouseOver } = this.props;
     if (!onChartMouseOver || this._targetID.indexOf('legendentry') === 0) {
       // Don't execute mouseOver when the hovered element is the legend
       return;
     }
 
-    const filter = this.adapter.selectionToDataKeys(e, {
-      filterSeries: tooltip && !tooltip.showWholeCategory,
-    });
-    const data = this.props.chartData.filterData(filter);
+    const pointData = this.props.chartData.filterData(
+      this.adapter.selectionToDataKeys(e),
+    );
 
-    this.props.onChartMouseOver(data);
+    const serieData = this.props.chartData.filterData(
+      this.adapter.selectionToDataKeys(e, {
+        filterSeries: false,
+      }),
+    );
+
+    this.props.onChartMouseOver(pointData, serieData);
   },
 
   /**
@@ -156,29 +157,29 @@ const GoogleChartBase = React.createClass({
 });
 
 
-const computeTooltipDataPoint = (hoverPart, chartData) => {
+const computeTooltipDataPoint = ({ pointData }, chartData, options) => {
   const serieRender = chartData.getDimensionByIndex(0).get('render');
   const serieLabel = chartData.getDimensionByIndex(0).get('label');
-  const serieValue = hoverPart.keySeq().get(0).valueSeq().get(0);
+  const serieValue = pointData.keySeq().get(0).valueSeq().get(0);
   const categoryLabel = chartData.getDimensionByIndex(1).get('label');
-  const categoryValue = hoverPart.keySeq().get(0).valueSeq().get(1);
+  const categoryValue = pointData.keySeq().get(0).valueSeq().get(1);
 
   const groups = [
     [ categoryLabel, categoryValue ],
     [ serieLabel, serieValue ],
   ];
-  const metrics = [[ 'Total', serieRender(hoverPart.valueSeq().get(0)) ]];
+  const metrics = [[ 'Total', serieRender(pointData.valueSeq().get(0)) ]];
 
   return { groups, metrics };
 };
 
-const computeTooltipDataCategory = (hoverPart, chartData) => {
+const computeTooltipDataCategory = ({ serieData }, chartData, options) => {
   const serieRender = chartData.getDimensionByIndex(0).get('render');
   const categoryLabel = chartData.getDimensionByIndex(1).get('label');
-  const categoryValue = hoverPart.keySeq().get(0).valueSeq().get(1);
+  const categoryValue = serieData.keySeq().get(0).valueSeq().get(1);
 
   const groups = [[ categoryLabel, categoryValue ]];
-  const metrics = hoverPart
+  const metrics = serieData
     .mapEntries(([key, value]) => [key.valueSeq().get(0), serieRender(value)])
     .entrySeq()
     .toArray();
@@ -187,11 +188,11 @@ const computeTooltipDataCategory = (hoverPart, chartData) => {
 };
 
 const DEFAULT_TOOLTIP = (hoverPart, chartData, options) => {
-  const computeData = options.tooltip && options.tooltip.showWholeCategory ? computeTooltipDataCategory
+  const computeData = options.tooltip && options.tooltip.showEverySeriePoints ? computeTooltipDataCategory
                     : computeTooltipDataPoint;
   return (
     <TooltipTable
-      {...computeData(hoverPart, chartData)}
+      {...computeData(hoverPart, chartData, options)}
     />
   );
 };
@@ -202,8 +203,13 @@ export default class GoogleChart extends React.Component {
 
   static propTypes = {
     chartData: React.PropTypes.instanceOf(ChartData).isRequired,
+    // Function to compute data in tooltip
     tooltip: PropTypes.func,
-    options: PropTypes.object,
+    options: PropTypes.shape({
+      tooltip: PropTypes.shape({
+        showEverySeriePoints: PropTypes.bool, // Display every points of the serie
+      }),
+    }),
   }
 
   static defaultProps = {
@@ -217,9 +223,12 @@ export default class GoogleChart extends React.Component {
     };
   }
 
-  handleChartPartEnter(data) {
+  handleChartPartEnter(pointData, serieData) {
     this.setState({
-      hoverPart: data,
+      hoverPart: {
+        pointData,
+        serieData,
+      },
     });
   }
 

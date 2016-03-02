@@ -65,7 +65,7 @@ class ChartDataGoogleDataAdapter {
    * @param  {Object} Object {row, column}
    * @return {DataKeys}
    */
-  selectionToDataKeys({row, column}, {filterCategories = true, filterSeries = true}) {
+  selectionToDataKeys({row, column}, {filterCategories = true, filterSeries = true} = {}) {
     let filter = Map();
 
     // Series are indexed starting from 1, while categories are indexed starting from 0
