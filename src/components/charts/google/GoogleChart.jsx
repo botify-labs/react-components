@@ -35,10 +35,11 @@ const GoogleChartBase = React.createClass({
 
   shouldComponentUpdate(nextProps, nextState) {
     // TODO: use immutable!
-    return !(nextProps.chartData === this.props.chartData);
+    return nextProps.chartData !== this.props.chartData;
   },
 
   componentDidUpdate(prevProps, prevState) {
+    this.updateData();
     this.drawChart();
   },
 
@@ -51,12 +52,17 @@ const GoogleChartBase = React.createClass({
    * This should only be called once.
    */
   initializeChart() {
-    const { googleChart: GoogleChartClass, chartData } = this.props;
-    this.adapter = new ChartDataGoogleDataAdapter(chartData);
+    const { googleChart: GoogleChartClass } = this.props;
     this.chart = new GoogleChartClass(ReactDOM.findDOMNode(this));
-
     this.bindChartEvents();
+
+    this.updateData();
     this.drawChart();
+  },
+
+  updateData() {
+    const { chartData } = this.props;
+    this.adapter = new ChartDataGoogleDataAdapter(chartData);
   },
 
   /**
@@ -117,23 +123,23 @@ const GoogleChartBase = React.createClass({
    * @param {Event} e
    */
   handleChartMouseOver(e) {
-    const { onChartMouseOver } = this.props;
+    const { chartData, onChartMouseOver } = this.props;
     if (!onChartMouseOver || this._targetID.indexOf('legendentry') === 0) {
       // Don't execute mouseOver when the hovered element is the legend
       return;
     }
 
-    const pointData = this.props.chartData.filterData(
+    const pointData = chartData.filterData(
       this.adapter.selectionToDataKeys(e),
     );
 
-    const serieData = this.props.chartData.filterData(
+    const seriesData = chartData.filterData(
       this.adapter.selectionToDataKeys(e, {
         filterSeries: false,
       }),
     );
 
-    this.props.onChartMouseOver(pointData, serieData);
+    this.props.onChartMouseOver(pointData, seriesData);
   },
 
   /**
@@ -173,19 +179,19 @@ const computeTooltipDataPoint = ({ pointData }, chartData, options) => {
   return { groups, metrics };
 };
 
-const computeTooltipDataSeries = ({ serieData }, chartData, options) => {
+const computeTooltipDataSeries = ({ seriesData }, chartData, options) => {
   const serieRender = chartData.getDimensionByIndex(0).get('render');
   const categoryLabel = chartData.getDimensionByIndex(1).get('label');
-  const categoryValue = serieData.keySeq().get(0).valueSeq().get(1);
+  const categoryValue = seriesData.keySeq().get(0).valueSeq().get(1);
 
   const groups = [[ categoryLabel, categoryValue ]];
-  const metrics = serieData
+  const metrics = seriesData
     .mapEntries(([key, value]) => [key.valueSeq().get(0), serieRender(value)])
     .entrySeq()
     .toArray();
 
   if (options.tooltip.displaySeriesTotal) {
-    const total = serieData.reduce((sum, value) => sum + value, 0);
+    const total = seriesData.reduce((sum, value) => sum + value, 0);
     metrics.push(
       [ 'Total', total ]
     );
@@ -231,11 +237,11 @@ export default class GoogleChart extends React.Component {
     };
   }
 
-  handleChartPartEnter(pointData, serieData) {
+  handleChartPartEnter(pointData, seriesData) {
     this.setState({
       hoverPart: {
         pointData,
-        serieData,
+        seriesData,
       },
     });
   }
