@@ -193,7 +193,7 @@ const computeTooltipDataSeries = ({ seriesData }, chartData, options) => {
   if (options.tooltip.displaySeriesTotal) {
     const total = seriesData.reduce((sum, value) => sum + value, 0);
     metrics.push(
-      [ 'Total', total ]
+      [ 'Total', serieRender(total) ]
     );
   }
 
