@@ -1,6 +1,9 @@
 import { Map, OrderedMap } from 'immutable';
 import { isNumber } from 'lodash';
 
+
+const DEFAULT_DIMENSION_RENDER = x => `${x}`;
+
 /**
  * @structure DataKeys
  * Map<Any,Any>  =>  <dimension key, group key>
@@ -11,6 +14,7 @@ import { isNumber } from 'lodash';
  * Map({
  *   groups: OrderMap<Any, DimensionGroup>
  *   label: String,
+ *   render: Func, (default () => {})
  *   ...
  * })
  */
@@ -87,13 +91,16 @@ class ChartData {
 
   /**
    * @param {Any} dimKey
-   * @param {Map<String,Any>} dimMetadata {label: <String>, color: <String>, ...}
+   * @param {Map<String,Any>} dimMetadata {label: String, render: Func, ...}
    */
   addDimension(dimKey, dimMetadata = Map()) {
     if (!Map.isMap(dimMetadata)) {
       throw new TypeError('dimMetadata is not a Map');
     }
-    const dimensionValue = dimMetadata.set('groups', OrderedMap());
+    const dimensionValue = dimMetadata
+      .set('groups', OrderedMap())
+      .set('label', dimMetadata.get('label') || dimKey)
+      .set('render', dimMetadata.get('render') || DEFAULT_DIMENSION_RENDER);
 
     this.dimensions = this.dimensions.set(dimKey, dimensionValue);
   }
@@ -101,6 +108,10 @@ class ChartData {
   getDimensionKeyByIndex(index, fromEnd) {
     const i = fromEnd ? (this.dimensions.count() - 1) - index : index;
     return this.dimensions.keySeq().get(i);
+  }
+
+  getDimensionByIndex(index, fromEnd) {
+    return this.getDimension(this.getDimensionKeyByIndex(index, fromEnd));
   }
 
   /**
@@ -122,7 +133,7 @@ class ChartData {
   /**
    * @param {Any} dimKey
    * @param {Any} groupKey
-   * @param {Map<String,Any>} groupMetadata {label: <String>, color: <String>, ...}
+   * @param {Map<String,Any>} groupMetadata {color: String, ...}
    */
   addDimensionGroup(dimKey, groupKey, groupMetadata = Map()) {
     if (!this.hasDimension(dimKey)) {
@@ -131,7 +142,10 @@ class ChartData {
     if (!Map.isMap(groupMetadata)) {
       throw new TypeError('groupMetadata is not a Map');
     }
-    this.dimensions = this.dimensions.setIn([dimKey, 'groups', groupKey], groupMetadata);
+    const metadata = groupMetadata
+      .set('label', groupMetadata.get('label') || groupKey);
+
+    this.dimensions = this.dimensions.setIn([dimKey, 'groups', groupKey], metadata);
   }
 
   /**

@@ -1,107 +1,96 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
 
+import FollowCursor from '../../misc/FollowCursor';
+import Tooltip from '../../tooltip/Tooltip';
+import TooltipTable from '../../tooltip/TooltipTable';
 import ChartData from '../../../models/ChartData';
 import ChartDataGoogleDataAdapter from '../../../adapters/ChartDataGoogleDataAdapter';
 
-/**
- * Wrapper around a generic Google Chart
- * TODO: Maybe use a mixin instead?
- * Something like ChartMixin({
- *   chart: google.visualization.PieChart
- * })
- */
-const GoogleChart = React.createClass({
 
-  displayName: 'GoogleChart',
+const GoogleChartBase = React.createClass({
+
+  displayName: 'GoogleChartBase',
 
   propTypes: {
     // Called when chart data is selected
-    onChartSelect: React.PropTypes.func,
-    // Called when chart data is hovered
-    onChartMouseOver: React.PropTypes.func,
-    // Called when chart data is not hovered anymore
-    onChartMouseOut: React.PropTypes.func,
+    onChartSelect: PropTypes.func,
+    onChartMouseOver: PropTypes.func,
+    onChartMouseOut: PropTypes.func,
     // Subclass of google.visualization.CoreChart
-    googleChart: React.PropTypes.func,
+    googleChart: PropTypes.func,
     // Chart data
-    chartData: React.PropTypes.instanceOf(ChartData),
-    // Chart options
-    // TODO: define structure
-    options: React.PropTypes.object,
+    chartData: PropTypes.instanceOf(ChartData).isRequired,
+    // Extended google chart options
+    options: PropTypes.object,
   },
 
   componentDidMount() {
-    this._initializeChart();
+    this.initializeChart();
 
     // Redraw the chart whenever the window is resized
-    window.addEventListener('resize', this._drawChart);
+    window.addEventListener('resize', this.drawChart);
   },
 
   shouldComponentUpdate(nextProps, nextState) {
     // TODO: use immutable!
-    return !(nextProps.chartData === this.props.chartData);
+    return nextProps.chartData !== this.props.chartData;
   },
 
   componentDidUpdate(prevProps, prevState) {
-    this._drawChart();
+    this.updateData();
+    this.drawChart();
   },
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this._drawChart);
+    window.removeEventListener('resize', this.drawChart);
   },
 
   /**
    * Instanciates the Google Chart from the chart constructor prop.
    * This should only be called once.
    */
-  _initializeChart() {
-    this.adapter = new ChartDataGoogleDataAdapter(this.props.chartData);
+  initializeChart() {
     const { googleChart: GoogleChartClass } = this.props;
     this.chart = new GoogleChartClass(ReactDOM.findDOMNode(this));
+    this.bindChartEvents();
 
-    this._bindChartEvents();
-    this._drawChart();
+    this.updateData();
+    this.drawChart();
+  },
+
+  updateData() {
+    const { chartData } = this.props;
+    this.adapter = new ChartDataGoogleDataAdapter(chartData);
   },
 
   /**
-   * Binds event handlers to chart events
+   * Redraws the chart with data and options props.
    */
-  _bindChartEvents() {
-    google.visualization.events.addListener(this.chart, 'onmousemove', this._handleChartMouseMove);
-    google.visualization.events.addListener(this.chart, 'select', this._handleChartSelect);
-    google.visualization.events.addListener(this.chart, 'onmouseover', this._handleChartMouseOver);
-    google.visualization.events.addListener(this.chart, 'onmouseout', this._handleChartMouseOut);
+  drawChart() {
+    this.chart.draw(this.adapter.toGoogleDataArray(), this.getOptions());
   },
 
   /**
    * Returns the google chart options
    * @return {Object}
    */
-  _getOptions() {
+  getOptions() {
     return {
-      tooltip: {
-        trigger: 'none',
-      },
       ...this.adapter.toGoogleOptions(),
       ...this.props.options,
     };
   },
 
   /**
-   * Redraws the chart with data and options props.
+   * Binds event handlers to chart events
    */
-  _drawChart() {
-    this.chart.draw(this.adapter.toGoogleDataArray(), this._getOptions());
-  },
-
-  /**
-   * Returns underlying chart's image URI representation
-   * @return {String}
-   */
-  getImageURI() {
-    return this.chart.getImageURI();
+  bindChartEvents() {
+    google.visualization.events.addListener(this.chart, 'onmousemove', this.handleChartMouseMove);
+    google.visualization.events.addListener(this.chart, 'select', this.handleChartSelect);
+    google.visualization.events.addListener(this.chart, 'onmouseover', this.handleChartMouseOver);
+    google.visualization.events.addListener(this.chart, 'onmouseout', this.handleChartMouseOut);
   },
 
   /**
@@ -109,7 +98,7 @@ const GoogleChart = React.createClass({
    * Keeps track of what element the mouse is currently hovering
    * @param {Event} e
    */
-  _handleChartMouseMove(e) {
+  handleChartMouseMove(e) {
     this._prevTargetID = this._targetID;
     this._targetID = e.targetID;
   },
@@ -118,7 +107,7 @@ const GoogleChart = React.createClass({
    * Called when a chart data point or category is selected
    * @param {Event} e
    */
-  _handleChartSelect(e) {
+  handleChartSelect(e) {
     if (!this.props.onChartSelect) {
       return;
     }
@@ -133,22 +122,30 @@ const GoogleChart = React.createClass({
    * Called when the mouse enters a chart data point
    * @param {Event} e
    */
-  _handleChartMouseOver(e) {
-    if (!this.props.onChartMouseOver || this._targetID.indexOf('legendentry') === 0) {
+  handleChartMouseOver(e) {
+    const { chartData, onChartMouseOver } = this.props;
+    if (!onChartMouseOver || this._targetID.indexOf('legendentry') === 0) {
       // Don't execute mouseOver when the hovered element is the legend
       return;
     }
 
-    const filter = this.adapter.selectionToDataKeys(e);
-    const data = this.props.chartData.filterData(filter);
+    const pointData = chartData.filterData(
+      this.adapter.selectionToDataKeys(e),
+    );
 
-    this.props.onChartMouseOver(data);
+    const categoryData = chartData.filterData(
+      this.adapter.selectionToDataKeys(e, {
+        filterSeries: false,
+      }),
+    );
+
+    this.props.onChartMouseOver(pointData, categoryData);
   },
 
   /**
    * Called when the mouse leaves a chart data point
    */
-  _handleChartMouseOut() {
+  handleChartMouseOut() {
     if (!this.props.onChartMouseOut || this._prevTargetID.indexOf('legendentry') === 0) {
       // Don't execute mouseOut when the previously hovered element is the legend
       return;
@@ -164,5 +161,136 @@ const GoogleChart = React.createClass({
   },
 
 });
+
+
+const computeTooltipDataPoint = ({ pointData }, chartData, options) => {
+  const seriesRender = chartData.getDimensionByIndex(0).get('render');
+  const seriesLabel = chartData.getDimensionByIndex(0).get('label');
+  const categoriesLabel = chartData.getDimensionByIndex(1).get('label');
+
+  const pointCategory = pointData.keySeq().get(0).valueSeq().get(1);
+  const pointSerie = pointData.keySeq().get(0).valueSeq().get(0);
+  const pointValue = pointData.valueSeq().get(0);
+
+  const groups = [
+    [ categoriesLabel, pointCategory ],
+    [ seriesLabel, pointSerie ],
+  ];
+  const metrics = [[ 'Total', seriesRender(pointValue) ]];
+
+  return { groups, metrics };
+};
+
+const computeTooltipDataSeries = ({ categoryData }, chartData, options) => {
+  const seriesRender = chartData.getDimensionByIndex(0).get('render');
+  const categoriesLabel = chartData.getDimensionByIndex(1).get('label');
+  const pointCategory = categoryData.keySeq().get(0).valueSeq().get(1);
+
+  const groups = [[ categoriesLabel, pointCategory ]];
+  const metrics = categoryData
+    .mapEntries(([key, value]) => [key.valueSeq().get(0), seriesRender(value)])
+    .entrySeq()
+    .toArray();
+
+  if (options.tooltip.showCategoryTotal) {
+    const total = categoryData.reduce((sum, value) => sum + value, 0);
+    metrics.push(
+      [ 'Total', seriesRender(total) ]
+    );
+  }
+
+  return { groups, metrics };
+};
+
+const DEFAULT_TOOLTIP = (hoverPart, chartData, options) => {
+  const computeData = options.tooltip && options.tooltip.showAllCategoryPoints ? computeTooltipDataSeries
+                    : computeTooltipDataPoint;
+  return (
+    <TooltipTable
+      {...computeData(hoverPart, chartData, options)}
+    />
+  );
+};
+
+export default class GoogleChart extends React.Component {
+
+  static displayName = 'GoogleChart';
+
+  static propTypes = {
+    chartData: React.PropTypes.instanceOf(ChartData).isRequired,
+    // Function to compute data in tooltip
+    tooltip: PropTypes.func,
+    options: PropTypes.shape({
+      tooltip: PropTypes.shape({
+        showAllCategoryPoints: PropTypes.bool,
+        showCategoryTotal: PropTypes.bool,
+      }),
+    }),
+  }
+
+  static defaultProps = {
+    tooltip: DEFAULT_TOOLTIP,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      hoverPart: null,
+    };
+  }
+
+  handleChartPartEnter(pointData, categoryData) {
+    this.setState({
+      hoverPart: {
+        pointData,
+        categoryData,
+      },
+    });
+  }
+
+  handleChartPartOut() {
+    this.setState({
+      hoverPart: null,
+    });
+  }
+
+  render() {
+    const { hoverPart } = this.state;
+    const showTooltip = !!hoverPart;
+
+    return (
+      <div className="GoogleChart">
+        <FollowCursor
+          hasOverlay={showTooltip}
+          renderOverlay={this.renderTooltip.bind(this)}
+        >
+          <GoogleChartBase
+            onChartMouseOver={this.handleChartPartEnter.bind(this)}
+            onChartMouseOut={this.handleChartPartOut.bind(this)}
+            { ...this.props }
+            options={{
+              ...this.props.options,
+              tooltip: {
+                trigger: 'none',
+                ...this.props.options.tooltip,
+              },
+            }}
+          />
+        </FollowCursor>
+      </div>
+    );
+  }
+
+  renderTooltip(overPart) {
+    const { tooltip, chartData, options } = this.props;
+    const { hoverPart } = this.state;
+
+    return (
+      <Tooltip className="GoogleChart-tooltip">
+        { tooltip(hoverPart, chartData, options) }
+      </Tooltip>
+    );
+  }
+}
 
 export default GoogleChart;
