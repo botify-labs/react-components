@@ -133,13 +133,13 @@ const GoogleChartBase = React.createClass({
       this.adapter.selectionToDataKeys(e),
     );
 
-    const seriesData = chartData.filterData(
+    const categoryData = chartData.filterData(
       this.adapter.selectionToDataKeys(e, {
         filterSeries: false,
       }),
     );
 
-    this.props.onChartMouseOver(pointData, seriesData);
+    this.props.onChartMouseOver(pointData, categoryData);
   },
 
   /**
@@ -164,36 +164,38 @@ const GoogleChartBase = React.createClass({
 
 
 const computeTooltipDataPoint = ({ pointData }, chartData, options) => {
-  const serieRender = chartData.getDimensionByIndex(0).get('render');
-  const serieLabel = chartData.getDimensionByIndex(0).get('label');
-  const serieValue = pointData.keySeq().get(0).valueSeq().get(0);
-  const categoryLabel = chartData.getDimensionByIndex(1).get('label');
-  const categoryValue = pointData.keySeq().get(0).valueSeq().get(1);
+  const seriesRender = chartData.getDimensionByIndex(0).get('render');
+  const seriesLabel = chartData.getDimensionByIndex(0).get('label');
+  const categoriesLabel = chartData.getDimensionByIndex(1).get('label');
+
+  const pointCategory = pointData.keySeq().get(0).valueSeq().get(1);
+  const pointSerie = pointData.keySeq().get(0).valueSeq().get(0);
+  const pointValue = pointData.valueSeq().get(0);
 
   const groups = [
-    [ categoryLabel, categoryValue ],
-    [ serieLabel, serieValue ],
+    [ categoriesLabel, pointCategory ],
+    [ seriesLabel, pointSerie ],
   ];
-  const metrics = [[ 'Total', serieRender(pointData.valueSeq().get(0)) ]];
+  const metrics = [[ 'Total', seriesRender(pointValue) ]];
 
   return { groups, metrics };
 };
 
-const computeTooltipDataSeries = ({ seriesData }, chartData, options) => {
-  const serieRender = chartData.getDimensionByIndex(0).get('render');
-  const categoryLabel = chartData.getDimensionByIndex(1).get('label');
-  const categoryValue = seriesData.keySeq().get(0).valueSeq().get(1);
+const computeTooltipDataSeries = ({ categoryData }, chartData, options) => {
+  const seriesRender = chartData.getDimensionByIndex(0).get('render');
+  const categoriesLabel = chartData.getDimensionByIndex(1).get('label');
+  const pointCategory = categoryData.keySeq().get(0).valueSeq().get(1);
 
-  const groups = [[ categoryLabel, categoryValue ]];
-  const metrics = seriesData
-    .mapEntries(([key, value]) => [key.valueSeq().get(0), serieRender(value)])
+  const groups = [[ categoriesLabel, pointCategory ]];
+  const metrics = categoryData
+    .mapEntries(([key, value]) => [key.valueSeq().get(0), seriesRender(value)])
     .entrySeq()
     .toArray();
 
-  if (options.tooltip.displaySeriesTotal) {
-    const total = seriesData.reduce((sum, value) => sum + value, 0);
+  if (options.tooltip.showCategoryTotal) {
+    const total = categoryData.reduce((sum, value) => sum + value, 0);
     metrics.push(
-      [ 'Total', serieRender(total) ]
+      [ 'Total', seriesRender(total) ]
     );
   }
 
@@ -201,7 +203,7 @@ const computeTooltipDataSeries = ({ seriesData }, chartData, options) => {
 };
 
 const DEFAULT_TOOLTIP = (hoverPart, chartData, options) => {
-  const computeData = options.tooltip && options.tooltip.displayAllSeries ? computeTooltipDataSeries
+  const computeData = options.tooltip && options.tooltip.showAllCategoryPoints ? computeTooltipDataSeries
                     : computeTooltipDataPoint;
   return (
     <TooltipTable
@@ -220,8 +222,8 @@ export default class GoogleChart extends React.Component {
     tooltip: PropTypes.func,
     options: PropTypes.shape({
       tooltip: PropTypes.shape({
-        displayAllSeries: PropTypes.bool,
-        displaySeriesTotal: PropTypes.bool,
+        showAllCategoryPoints: PropTypes.bool,
+        showCategoryTotal: PropTypes.bool,
       }),
     }),
   }
@@ -237,11 +239,11 @@ export default class GoogleChart extends React.Component {
     };
   }
 
-  handleChartPartEnter(pointData, seriesData) {
+  handleChartPartEnter(pointData, categoryData) {
     this.setState({
       hoverPart: {
         pointData,
-        seriesData,
+        categoryData,
       },
     });
   }
