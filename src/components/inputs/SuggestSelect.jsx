@@ -186,7 +186,7 @@ const SuggestSelect = React.createClass({
     this.setState({isFocused: true});
   },
   blur() {
-    this.setState({isFocused: false});
+    if (this.isMounted()) this.setState({isFocused: false});
   },
 
   // Prop Helpers: isListOpen
