@@ -75,6 +75,7 @@ const SuggestSelect = React.createClass({
     optionRender: PropTypes.func,
     hideGroupsWithoutOptions: PropTypes.bool,
     disabled: PropTypes.bool,
+    focused: PropTypes.bool,
     onFilterChange: PropTypes.func, // Called when input value (query) change. Whereas valueLink.requestChange is called when an option is selected.
   },
 
@@ -89,6 +90,7 @@ const SuggestSelect = React.createClass({
       placeHolder: '',
       optionRender: OptionDefault,
       hideGroupsWithoutOptions: true,
+      focused: false,
       disabled: false,
       onFilterChange: (query) => {},
     };
@@ -98,10 +100,22 @@ const SuggestSelect = React.createClass({
     return {
       filterValue: '',
       suggestedOptionId: this.getValue(),
-      isFocused: false,
+      isFocused: this.props.focused,
       isListOpen: false,
       openGroupsId: [],
     };
+  },
+
+  componentDidMount() {
+    if (this.state.isFocused) {
+      ReactDOM.findDOMNode(this.refs.searchInput).focus();
+    }
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.focused) {
+      this.setState({isFocused: true});
+    }
   },
 
   componentDidUpdate(prevProps, prevState) {
@@ -172,7 +186,7 @@ const SuggestSelect = React.createClass({
     this.setState({isFocused: true});
   },
   blur() {
-    this.setState({isFocused: false});
+    if (this.isMounted()) this.setState({isFocused: false});
   },
 
   // Prop Helpers: isListOpen
