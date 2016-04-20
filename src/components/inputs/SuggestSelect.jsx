@@ -107,13 +107,13 @@ const SuggestSelect = React.createClass({
   },
 
   componentDidMount() {
-    if(this.state.isFocused) {
+    if (this.state.isFocused) {
       ReactDOM.findDOMNode(this.refs.searchInput).focus();
     }
   },
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.focused){
+    if (nextProps.focused) {
       this.setState({isFocused: true});
     }
   },
