@@ -107,6 +107,7 @@ const SuggestSelect = React.createClass({
   },
 
   componentDidMount() {
+    this._mounted = true;
     if (this.state.isFocused) {
       ReactDOM.findDOMNode(this.refs.searchInput).focus();
     }
@@ -181,12 +182,16 @@ const SuggestSelect = React.createClass({
     }
   },
 
+  componentWillUnmount() {
+    this._mounted = false;
+  },
+
   // Prop Helpers: isFocused
   focus() {
     this.setState({isFocused: true});
   },
   blur() {
-    if (this.isMounted()) this.setState({isFocused: false});
+    if (this._mounted) this.setState({isFocused: false});
   },
 
   // Prop Helpers: isListOpen
@@ -387,6 +392,7 @@ const SuggestSelect = React.createClass({
 
   onOptionSelect(option, e) {
     this.selectOption(option.id);
+    if (!this._mounted) e.stopPropagation();
   },
 
   // Renders
