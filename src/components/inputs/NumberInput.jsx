@@ -32,7 +32,7 @@ const NumberInput = React.createClass({
   render() {
     const { className, ...otherProps } = this.props;
     const { trailingPoint } = this.state;
-    const value = `${this.getValue()}${trailingPoint ? '.' : ''}`;
+    const value = this.getValue() ? `${this.getValue()}${trailingPoint ? '.' : ''}` : '';
 
     return (
       <input
