@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import cx from 'classnames';
+import _ from 'lodash';
 
 import InputMixin from '../../mixins/InputMixin';
 
@@ -32,7 +33,7 @@ const NumberInput = React.createClass({
   render() {
     const { className, ...otherProps } = this.props;
     const { trailingPoint } = this.state;
-    const value = `${this.getValue()}${trailingPoint ? '.' : ''}`;
+    const value = _.isNumber(this.getValue()) && !_.isNaN(this.getValue()) ? `${this.getValue()}${trailingPoint ? '.' : ''}` : '';
 
     return (
       <input
