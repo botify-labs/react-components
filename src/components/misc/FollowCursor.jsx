@@ -15,6 +15,10 @@ const FollowCursor = React.createClass({
     appendTo: PropTypes.instanceOf(Node),
   },
 
+  defaultProps: {
+    appendTo: document.body,
+  },
+
   getInitialState() {
     return {
       mousePosition: {top: -9999, left: -9999},
